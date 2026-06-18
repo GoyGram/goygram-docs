@@ -4,9 +4,7 @@ title: "Split-brain in action — one runtime, two transports"
 ---
 Добро пожаловать на вики **GoyGram** — полный справочник по идеальной платформе Telegram с разделенным мозгом.
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png" alt="GoyGram Logo" width="650">
-</p>
+![GoyGram Logo](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
 
 ## Что охватывает эта вики
 
