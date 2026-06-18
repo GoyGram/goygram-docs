@@ -102,7 +102,32 @@ jobs:
               "Bot-API-Code-Generator.md": "Bot-API-Code-Generator.md",
               "Vault-Wire-Format.md": "Vault-Wire-Format.md",
               "Proxy-URL-Parsing.md": "Proxy-URL-Parsing.md",
-          }
+           }
+
+          # Determine which wiki files actually changed using git
+          import subprocess
+          wiki_sha_file = os.path.join(repo_root, ".wiki-head-sha")
+          current_sha = subprocess.run(
+              ["git", "rev-parse", "HEAD"],
+              cwd=wiki_dir, capture_output=True, text=True
+          ).stdout.strip()
+          prev_sha = ""
+          if os.path.exists(wiki_sha_file):
+              with open(wiki_sha_file, "r") as f:
+                  prev_sha = f.read().strip()
+          if prev_sha and current_sha != prev_sha:
+              result = subprocess.run(
+                  ["git", "diff", "--name-only", prev_sha, current_sha, "--", "*.md"],
+                  cwd=wiki_dir, capture_output=True, text=True
+              )
+              changed_wiki = set(result.stdout.strip().splitlines())
+              print(f"Git diff {prev_sha[:7]}..{current_sha[:7]} → {len(changed_wiki)} wiki files changed")
+          else:
+              changed_wiki = None
+              if not prev_sha:
+                  print("No previous wiki SHA — syncing all")
+              else:
+                  print("Wiki HEAD unchanged — no files to sync")
 
           changed = 0
           unchanged = 0
@@ -110,45 +135,65 @@ jobs:
           for wiki_file, doc_file in page_map.items():
               src = os.path.join(wiki_dir, wiki_file)
               dst = os.path.join(content_dir, doc_file)
-              if os.path.exists(src):
-                  with open(src, "r", encoding="utf-8") as f:
-                      content = f.read()
-                  title = doc_file.replace(".md", "").replace("-", " ")
-                  content = content.replace(
-                      "https://raw.githubusercontent.com/sepiol026-wq/GoyGram/refs/heads/main/GoyGram.png",
-                      "https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png"
-                  )
-                  content = content.replace(
-                      "https://github.com/sepiol026-wq/GoyGram",
-                      "https://github.com/GoyGram/GoyGram"
-                  )
-                  frontmatter = '---\ntitle: ' + title + '\n---\n\n'
-                  if content.lstrip().startswith('---'):
-                      frontmatter = ''
-                  new_content = frontmatter + content
-                  old_content = ""
-                  if os.path.exists(dst):
-                      with open(dst, "r", encoding="utf-8") as f:
-                          old_content = f.read()
-                  if new_content != old_content:
-                      with open(dst, "w", encoding="utf-8") as f:
-                          f.write(new_content)
-                      print(f"Updated: {doc_file}")
-                      changed += 1
-                      changed_files.append(doc_file)
-                  else:
-                      unchanged += 1
+              if not os.path.exists(src):
+                  continue
+              if changed_wiki is not None and wiki_file not in changed_wiki:
+                  unchanged += 1
+                  continue
+              with open(src, "r", encoding="utf-8") as f:
+                  content = f.read()
+              title = doc_file.replace(".md", "").replace("-", " ")
+              content = content.replace(
+                  "https://raw.githubusercontent.com/sepiol026-wq/GoyGram/refs/heads/main/GoyGram.png",
+                  "https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png"
+              )
+              content = content.replace(
+                  "https://github.com/sepiol026-wq/GoyGram",
+                  "https://github.com/GoyGram/GoyGram"
+              )
+              frontmatter = '---\ntitle: ' + title + '\n---\n\n'
+              if content.lstrip().startswith('---'):
+                  frontmatter = ''
+              new_content = frontmatter + content
+              old_content = ""
+              if os.path.exists(dst):
+                  with open(dst, "r", encoding="utf-8") as f:
+                      old_content = f.read()
+              if new_content != old_content:
+                  with open(dst, "w", encoding="utf-8") as f:
+                      f.write(new_content)
+                  print(f"Updated: {doc_file}")
+                  changed += 1
+                  changed_files.append(doc_file)
+              else:
+                  unchanged += 1
           print(f"Wiki sync — changed: {changed}, unchanged: {unchanged}")
           with open("/tmp/changed_wiki_files.txt", "w") as f:
               for name in changed_files:
                   f.write(name)
                   f.write(chr(10))
+          # Store current wiki HEAD SHA for next run
+          with open(wiki_sha_file, "w") as f:
+              f.write(current_sha)
           PYEOF
 
       - name: Translate to Russian
         run: |
           pip install deep-translator
           python3 scripts/translate-pages.py
+
+      - name: Commit synced pages
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "Sam Sepi0l"
+          git config user.email "248708733+sepiol026-wq@users.noreply.github.com"
+          git add content/docs/en/ content/docs/ru/ .wiki-head-sha
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "sync: update wiki pages and translations [skip ci]"
+            git push
+          fi
 
       - uses: actions/setup-node@v4
         with:
