@@ -9,7 +9,7 @@ export const source = loader({
 });
 
 export function getPage(slug: string[], lang: string) {
-  return source.getPage(slug, lang);
+  return source.getPage([lang, ...slug], lang);
 }
 
 export { getSidebarTree } from '@/lib/sidebar';
