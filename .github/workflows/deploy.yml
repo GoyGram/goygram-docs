@@ -27,7 +27,7 @@ jobs:
           python3 << 'PYEOF'
           import os
 
-          content_dir = "content/docs"
+          content_dir = "content/docs/en"
           wiki_dir = "wiki-temp"
           os.makedirs(content_dir, exist_ok=True)
 

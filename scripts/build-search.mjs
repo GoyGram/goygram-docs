@@ -152,7 +152,7 @@ async function main() {
   mkdirSync('public/ru', { recursive: true });
 
   console.log('Building EN search index...');
-  const enCount = await buildLocaleIndex('content/docs', 'public/search.json', '', 'english');
+  const enCount = await buildLocaleIndex('content/docs/en', 'public/search.json', '', 'english');
 
   console.log('Building RU search index...');
   const ruCount = await buildLocaleIndex('content/docs/ru', 'public/ru/search.json', '/ru', 'russian');
