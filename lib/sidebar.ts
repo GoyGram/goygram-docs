@@ -153,19 +153,24 @@ const sidebarTree: PageTree.Root = {
 
 function translateUrls(tree: PageTree.Root, locale: string): PageTree.Root {
   const prefix = `/${locale}`;
-  function walk(node: PageTree.Node): PageTree.Node {
-    if (node.type === 'page') {
-      return { ...node, url: `${prefix}${node.url}` };
-    }
-    if (node.type === 'folder') {
-      return {
-        ...node,
-        children: node.children.map(walk) as PageTree.Node[],
-      };
-    }
-    return node;
+  function walkChildren(nodes: PageTree.Node[]): PageTree.Node[] {
+    return nodes.map((node) => {
+      if (node.type === 'page') {
+        return { ...node, url: `${prefix}${node.url}` };
+      }
+      if (node.type === 'folder') {
+        return {
+          ...node,
+          children: walkChildren(node.children),
+        };
+      }
+      return node;
+    });
   }
-  return walk(tree) as PageTree.Root;
+  return {
+    ...tree,
+    children: tree.children ? walkChildren(tree.children) : [],
+  };
 }
 
 export function getSidebarTree(locale: string): PageTree.Root {
