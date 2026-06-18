@@ -1,5 +1,5 @@
 ---
-title: "MsgObj Reference"
+title: MsgObj Reference
 ---
 
 # MsgObj Reference

@@ -1,5 +1,5 @@
 ---
-title: "HTML to MTProto Entities"
+title: HTML to MTProto Entities
 ---
 
 # HTML to MTProto Entities

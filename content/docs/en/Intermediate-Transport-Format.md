@@ -1,5 +1,5 @@
 ---
-title: "Intermediate Transport Format"
+title: Intermediate Transport Format
 ---
 
 # Intermediate Transport Format

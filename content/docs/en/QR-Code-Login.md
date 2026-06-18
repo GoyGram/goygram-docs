@@ -1,5 +1,5 @@
 ---
-title: "QR Code Login"
+title: QR Code Login
 ---
 
 # QR Code Login

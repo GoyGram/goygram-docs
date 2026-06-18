@@ -1,7 +1,7 @@
 ---
 title: "HTML для объектов MTProto"
-
 ---
+
 # HTML для объектов MTProto
 
 При отправке сообщений через MTProto с помощью `parse_mode="HTML"` GoyGram преобразует теги HTML в формат объекта TL Telegram. Это анализатор регулярных выражений на чистом Python — без внешней библиотеки HTML.
@@ -95,7 +95,7 @@ if act in {'messages.sendMessage', 'app.bot.send_msg'}:
 
 ## Кодирование сущностей в TL
 
-Список сущностей сериализуется в формат TL с помощью `MTCodec._encode_entities()`:
+Список объектов сериализуется в формат TL с помощью `MTCodec._encode_entities()`:
 
 
 ```python

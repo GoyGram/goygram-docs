@@ -1,5 +1,5 @@
 ---
-title: "Bot API Types"
+title: Bot API Types
 ---
 
 # Bot API Types

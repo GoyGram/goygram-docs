@@ -1,5 +1,5 @@
 ---
-title: "MTProto Actions Reference"
+title: MTProto Actions Reference
 ---
 
 # MTProto Actions Reference

@@ -1,5 +1,5 @@
 ---
-title: "Proxy Support"
+title: Proxy Support
 ---
 
 # Proxy Support

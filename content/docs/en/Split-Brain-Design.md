@@ -1,5 +1,5 @@
 ---
-title: "Split-Brain Design"
+title: Split Brain Design
 ---
 
 # Split-Brain Design

@@ -1,5 +1,5 @@
 ---
-title: "2FA / SRP Password"
+title: 2FA SRP Password
 ---
 
 # 2FA / SRP Password

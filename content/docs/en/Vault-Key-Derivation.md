@@ -1,5 +1,5 @@
 ---
-title: "Vault Key Derivation"
+title: Vault Key Derivation
 ---
 
 # Vault Key Derivation

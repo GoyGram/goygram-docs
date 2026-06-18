@@ -1,5 +1,5 @@
 ---
-title: "Bot API Methods"
+title: Bot API Methods
 ---
 
 # Bot API Methods

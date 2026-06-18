@@ -1,5 +1,5 @@
 ---
-title: "Member / Admin Events"
+title: Member Admin Events
 ---
 
 # Member / Admin Events

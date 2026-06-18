@@ -1,5 +1,5 @@
 ---
-title: "Forum / Topic Management"
+title: Forum Topic Management
 ---
 
 # Forum / Topic Management

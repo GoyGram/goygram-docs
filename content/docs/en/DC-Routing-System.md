@@ -1,5 +1,5 @@
 ---
-title: "DC Routing System"
+title: DC Routing System
 ---
 
 # DC Routing System

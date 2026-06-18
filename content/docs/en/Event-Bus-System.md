@@ -1,5 +1,5 @@
 ---
-title: "Event Bus System"
+title: Event Bus System
 ---
 
 # Event Bus System

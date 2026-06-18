@@ -1,5 +1,5 @@
 ---
-title: "DH Key Exchange"
+title: DH Key Exchange
 ---
 
 # DH Key Exchange

@@ -1,5 +1,5 @@
 ---
-title: "StopPropagation"
+title: StopPropagation
 ---
 
 # StopPropagation

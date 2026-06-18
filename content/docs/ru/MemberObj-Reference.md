@@ -1,7 +1,7 @@
 ---
 title: "Ссылка на MemberObj"
-
 ---
+
 # Ссылка на MemberObj
 
 `MemberObj` представляет события изменения статуса участника чата — обновления `chat_member` и `my_chat_member` из потока длинного опроса Bot API.
@@ -85,7 +85,7 @@ if isinstance(mem, dict):
 ## Поток событий
 
 1. `BotNet.spin()` опрашивает `getUpdates` с помощью `allowed_updates=["chat_member", "my_chat_member"]`
-2. `BotNet.norm()` нормализует обновление в словарь с помощью `kind: "member"`.
+2. `BotNet.norm()` нормализует обновление в dict с помощью `kind: "member"`.
 3. Пакет передается на шину событий.
 4. `Disp.consume()` → `Disp.one()` создает `MemberObj` и выполняет итерацию `app.member_hook`.
 

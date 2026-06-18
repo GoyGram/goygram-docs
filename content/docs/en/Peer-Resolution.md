@@ -1,5 +1,5 @@
 ---
-title: "Peer Resolution"
+title: Peer Resolution
 ---
 
 # Peer Resolution

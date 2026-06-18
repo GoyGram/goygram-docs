@@ -1,5 +1,5 @@
 ---
-title: "Interactive Auth Flow"
+title: Interactive Auth Flow
 ---
 
 # Interactive Auth Flow

@@ -1,5 +1,5 @@
 ---
-title: "Poll Handling"
+title: Poll Handling
 ---
 
 # Poll Handling

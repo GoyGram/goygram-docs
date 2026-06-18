@@ -1,10 +1,10 @@
 ---
 title: "Транспортные интерфейсы"
-
 ---
+
 # Транспортные интерфейсы
 
-GoyGram абстрагирует два протокола связи Telegram за единым интерфейсом: **BotNet** (длинный опрос HTTP API Bot) и **MTNet** (MTProto TCP с шифрованием AES-IGE).
+GoyGram абстрагирует два протокола связи Telegram за единым интерфейсом: **BotNet** (длинный опрос Bot API HTTP) и **MTNet** (MTProto TCP с шифрованием AES-IGE).
 
 ## Архитектура
 
@@ -218,4 +218,4 @@ async def reply(self, txt, kbd=None, topic_id=None,
 ```
 
 
-`self.src` is preserved from the original packet (`"bot"` or `"mt"`), so replies automatically go through the same channel that delivered the message.
+`self.src` сохраняется из исходного пакета (`"bot"` или `"mt"`), поэтому ответы автоматически проходят по тому же каналу, по которому было доставлено сообщение.

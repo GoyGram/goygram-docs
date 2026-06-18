@@ -1,5 +1,5 @@
 ---
-title: "Quick Start: MTProto Userbot"
+title: Quick Start MTProto Userbot
 ---
 
 # Quick Start: MTProto Userbot

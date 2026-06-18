@@ -1,5 +1,5 @@
 ---
-title: "Session Vault (AES-256-GCM)"
+title: Session Vault AES 256 GCM
 ---
 
 # Session Vault (AES-256-GCM)

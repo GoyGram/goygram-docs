@@ -1,5 +1,5 @@
 ---
-title: "Multi-Session Architecture"
+title: Multi Session Architecture
 ---
 
 # Multi-Session Architecture

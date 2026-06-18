@@ -1,7 +1,7 @@
 ---
 title: "Формат сообщения MTProto"
-
 ---
+
 # Формат сообщения MTProto
 
 ## Транспортный уровень: IntermediateTransport

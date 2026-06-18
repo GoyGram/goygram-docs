@@ -1,5 +1,5 @@
 ---
-title: "RSA Public Key Registry"
+title: RSA Public Key Registry
 ---
 
 # RSA Public Key Registry

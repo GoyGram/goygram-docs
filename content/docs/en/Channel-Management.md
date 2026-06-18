@@ -1,5 +1,5 @@
 ---
-title: "Channel Management"
+title: Channel Management
 ---
 
 # Channel Management

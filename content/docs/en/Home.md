@@ -1,12 +1,10 @@
 ---
-title: "Split-brain in action — one runtime, two transports"
+title: Home
 ---
 
 Welcome to the **GoyGram** wiki — the complete reference for the ultimate split-brain Telegram framework.
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png" alt="GoyGram Logo" width="650">
-</p>
+![GoyGram Logo](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
 
 ## What This Wiki Covers
 

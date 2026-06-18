@@ -1,5 +1,5 @@
 ---
-title: "Connection Lifecycle"
+title: Connection Lifecycle
 ---
 
 # Connection Lifecycle

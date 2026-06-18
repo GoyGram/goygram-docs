@@ -1,5 +1,5 @@
 ---
-title: "Quick Start: Bot API"
+title: Quick Start Bot API
 ---
 
 # Quick Start: Bot API

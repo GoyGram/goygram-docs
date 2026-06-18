@@ -1,5 +1,5 @@
 ---
-title: "MTCodec – TL Codec"
+title: MTCodec TL Codec
 ---
 
 # MTCodec – TL Codec

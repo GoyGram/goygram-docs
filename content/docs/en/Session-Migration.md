@@ -1,5 +1,5 @@
 ---
-title: "Session Migration (.session → .vault)"
+title: Session Migration
 ---
 
 # Session Migration (.session → .vault)

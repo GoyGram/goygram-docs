@@ -1,5 +1,5 @@
 ---
-title: "CbObj Reference"
+title: CbObj Reference
 ---
 
 # CbObj Reference

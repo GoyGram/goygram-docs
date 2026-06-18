@@ -1,5 +1,5 @@
 ---
-title: "Bot API Code Generator"
+title: Bot API Code Generator
 ---
 
 # Bot API Code Generator

@@ -1,5 +1,5 @@
 ---
-title: "PollObj Reference"
+title: PollObj Reference
 ---
 
 # PollObj Reference

@@ -1,5 +1,5 @@
 ---
-title: "Bot API Dynamic Dispatch"
+title: Bot API Dynamic Dispatch
 ---
 
 # Bot API Dynamic Dispatch

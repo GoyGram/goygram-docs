@@ -1,5 +1,5 @@
 ---
-title: "Dispatcher & Handler Pipeline"
+title: Dispatcher and Handler Pipeline
 ---
 
 # Dispatcher & Handler Pipeline

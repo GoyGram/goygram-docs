@@ -1,5 +1,5 @@
 ---
-title: "MTProto Encryption (AES-IGE)"
+title: MTProto Encryption AES IGE
 ---
 
 # MTProto Encryption (AES-IGE)

@@ -1,5 +1,5 @@
 ---
-title: "Architecture Overview"
+title: Architecture Overview
 ---
 
 # Architecture Overview

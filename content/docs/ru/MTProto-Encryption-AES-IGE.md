@@ -1,7 +1,7 @@
 ---
-title: "Шифрование MTProto (AES-IGE)"
-
+title: "Шифрование MTProto AES IGE"
 ---
+
 # Шифрование MTProto (AES-IGE)
 
 AES-256-IGE (Infinite Garble Extension) — это собственный режим блочного шифрования Telegram, используемый для всех зашифрованных сообщений MTProto. GoyGram реализует это в Rust для максимальной производительности.

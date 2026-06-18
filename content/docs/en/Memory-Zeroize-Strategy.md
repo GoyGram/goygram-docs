@@ -1,5 +1,5 @@
 ---
-title: "Memory Zeroize Strategy"
+title: Memory Zeroize Strategy
 ---
 
 # Memory Zeroize Strategy

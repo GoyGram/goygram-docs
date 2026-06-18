@@ -1,5 +1,5 @@
 ---
-title: "Vault Wire Format"
+title: Vault Wire Format
 ---
 
 # Vault Wire Format

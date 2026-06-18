@@ -1,5 +1,5 @@
 ---
-title: "Rust Extension Core"
+title: Rust Extension Core
 ---
 
 # Rust Extension Core

@@ -1,5 +1,5 @@
 ---
-title: "CI/CD Pipeline"
+title: CI CD Pipeline
 ---
 
 # CI/CD Pipeline

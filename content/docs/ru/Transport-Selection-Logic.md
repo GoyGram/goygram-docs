@@ -1,8 +1,8 @@
 ---
-title: "Transport Selection Logic"
-
+title: "Логика выбора транспорта"
 ---
-# Transport Selection Logic
+
+# Логика выбора транспорта
 
 GoyGram поддерживает два транспорта — Bot API (HTTP) и MTProto (TCP). Метод `via()` определяет, какой транспорт использовать, а `MsgObj.reply()` автоматически маршрутизирует через правильный транспорт.
 

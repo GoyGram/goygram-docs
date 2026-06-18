@@ -1,5 +1,5 @@
 ---
-title: "TL Schema Generator"
+title: TL Schema Generator
 ---
 
 # TL Schema Generator

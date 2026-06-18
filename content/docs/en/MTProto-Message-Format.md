@@ -1,5 +1,5 @@
 ---
-title: "MTProto Message Format"
+title: MTProto Message Format
 ---
 
 # MTProto Message Format

@@ -1,5 +1,5 @@
 ---
-title: "Dynamic Method Resolution"
+title: Dynamic Method Resolution
 ---
 
 # Dynamic Method Resolution

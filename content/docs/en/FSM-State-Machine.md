@@ -1,5 +1,5 @@
 ---
-title: "FSM State Machine"
+title: FSM State Machine
 ---
 
 # FSM State Machine

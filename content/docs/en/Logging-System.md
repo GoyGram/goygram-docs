@@ -1,5 +1,5 @@
 ---
-title: "Logging System"
+title: Logging System
 ---
 
 # Logging System

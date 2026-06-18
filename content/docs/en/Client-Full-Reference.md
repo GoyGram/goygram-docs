@@ -1,5 +1,5 @@
 ---
-title: "Client – Full Reference"
+title: Client Full Reference
 ---
 
 # Client – Full Reference

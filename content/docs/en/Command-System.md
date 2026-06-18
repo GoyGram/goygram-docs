@@ -1,5 +1,5 @@
 ---
-title: "Command System"
+title: Command System
 ---
 
 # Command System
