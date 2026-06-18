@@ -1,3 +1,7 @@
+---
+title: "Multi-Session Architecture"
+---
+
 # Multi-Session Architecture
 
 GoyGram supports running multiple independent MTProto sessions from the same codebase, each with its own vault file, authentication, and connection. No session-sharing, no shared state — clean isolation.

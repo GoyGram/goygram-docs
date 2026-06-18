@@ -1,3 +1,7 @@
+---
+title: "Dynamic Method Resolution"
+---
+
 # Dynamic Method Resolution
 
 GoyGram lets you call **any Telegram method** without it being explicitly coded. `app.send_document(...)`, `app.get_chat(...)`, `app.mt_messages_get_dialogs(...)` — all resolve through `__getattr__` magic and dynamic dispatch.

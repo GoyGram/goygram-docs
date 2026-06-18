@@ -1,3 +1,7 @@
+---
+title: "PollObj Reference"
+---
+
 # PollObj Reference
 
 `PollObj` represents polls from the Bot API.

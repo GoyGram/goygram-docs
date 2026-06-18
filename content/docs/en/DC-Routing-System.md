@@ -1,3 +1,7 @@
+---
+title: "DC Routing System"
+---
+
 # DC Routing System
 
 GoyGram's DC (Data Center) routing is **dynamic at startup** with a hardcoded fallback map. Telegram has 5 production DCs — the framework determines which one to connect to based on configuration and runtime conditions.

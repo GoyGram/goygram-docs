@@ -1,3 +1,7 @@
+---
+title: "Keyboard System"
+---
+
 # Keyboard System
 
 GoyGram provides inline keyboards, reply keyboards, force-reply, and keyboard removal through a single dynamic builder — `KbdBuilder`. No hardcoded button classes. Every field passes through as-is to the Telegram API.

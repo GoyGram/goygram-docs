@@ -1,3 +1,7 @@
+---
+title: "Quick Start: MTProto Userbot"
+---
+
 # Quick Start: MTProto Userbot
 
 Run a Telegram user account (not a bot) with GoyGram. This gives you access to everything a normal Telegram client can do — dialogs, reactions, channels, and more.

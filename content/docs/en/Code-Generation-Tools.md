@@ -1,3 +1,7 @@
+---
+title: "Code Generation Tools"
+---
+
 # Code Generation Tools
 
 GoyGram includes two code generation tools in the `tools/` directory:

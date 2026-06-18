@@ -1,3 +1,7 @@
+---
+title: "Webhook Management"
+---
+
 # Webhook Management
 
 GoyGram supports Bot API webhooks alongside its default long-polling mode. Three dedicated methods are available.

@@ -1,3 +1,7 @@
+---
+title: "Session Migration (.session → .vault)"
+---
+
 # Session Migration (.session → .vault)
 
 GoyGram can migrate existing Telethon/Pyrogram `.session` files into its encrypted `.vault` format. After migration, the original `.session` file is **securely zeroized and deleted**.

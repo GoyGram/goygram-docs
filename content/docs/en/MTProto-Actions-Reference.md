@@ -1,3 +1,7 @@
+---
+title: "MTProto Actions Reference"
+---
+
 # MTProto Actions Reference
 
 All MTProto actions available via `app.mt_req(action, **kw)` or the generated `app.mt_<action>(**kw)` wrappers. This is what the codebase actually supports — reverse-engineered from `_build_body()` in `vendor/mtproto.py`.

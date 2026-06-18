@@ -1,3 +1,7 @@
+---
+title: "Vault Wire Format"
+---
+
 # Vault Wire Format
 
 The exact binary layout of a `.vault` file, byte by byte.

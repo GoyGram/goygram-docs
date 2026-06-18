@@ -1,3 +1,7 @@
+---
+title: "MsgObj Reference"
+---
+
 # MsgObj Reference
 
 `MsgObj` wraps incoming messages from both Bot API and MTProto transports. Every `on_msg` handler receives one.

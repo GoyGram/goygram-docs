@@ -1,3 +1,7 @@
+---
+title: "Peer Resolution"
+---
+
 # Peer Resolution
 
 MTProto requires serialized TL "input peer" objects for most chat operations. GoyGram resolves Python chat IDs into TL-serialized peer references automatically.

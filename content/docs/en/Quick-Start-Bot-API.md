@@ -1,3 +1,7 @@
+---
+title: "Quick Start: Bot API"
+---
+
 # Quick Start: Bot API
 
 Get a Telegram bot running in 30 seconds with GoyGram.

@@ -1,3 +1,7 @@
+---
+title: "Rust Extension Core"
+---
+
 # Rust Extension Core
 
 The Rust native library (`goygram.ext`) is the beating heart of GoyGram's performance. Every encrypted MTProto packet and every session vault passes through it. Without it, the framework would be a toy.

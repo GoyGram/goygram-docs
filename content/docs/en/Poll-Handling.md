@@ -1,3 +1,7 @@
+---
+title: "Poll Handling"
+---
+
 # Poll Handling
 
 How poll events flow through GoyGram and the `PollObj` event type.

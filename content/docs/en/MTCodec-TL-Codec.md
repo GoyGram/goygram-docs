@@ -1,3 +1,7 @@
+---
+title: "MTCodec – TL Codec"
+---
+
 # MTCodec – TL Codec
 
 The `MTCodec` class (`goygram/vendor/tl_core.py`) is the hand-written Type Language (TL) serializer for MTProto. It constructs every TL message byte-by-byte using struct packing and custom encoding functions.

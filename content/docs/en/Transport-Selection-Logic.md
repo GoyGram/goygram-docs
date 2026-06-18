@@ -1,3 +1,7 @@
+---
+title: "Transport Selection Logic"
+---
+
 # Transport Selection Logic
 
 GoyGram supports dual transports — Bot API (HTTP) and MTProto (TCP). The `via()` method determines which transport to use, and `MsgObj.reply()` automatically routes through the correct one.

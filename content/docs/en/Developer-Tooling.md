@@ -1,3 +1,7 @@
+---
+title: "Developer Tooling"
+---
+
 # Developer Tooling
 
 Built-in introspection tools for exploring GoyGram's API surface.

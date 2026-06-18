@@ -1,3 +1,7 @@
+---
+title: "MTProto Transport"
+---
+
 # MTProto Transport
 
 `MTNet` (`goygram/vendor/mtproto.py`) is the raw TCP MTProto transport. It handles everything from socket connection to DH key exchange to AES-IGE packet encryption to TL message parsing. This is the most complex component in GoyGram.

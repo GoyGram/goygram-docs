@@ -1,3 +1,7 @@
+---
+title: "Vault Key Derivation"
+---
+
 # Vault Key Derivation
 
 The vault encryption key is derived from machine-specific data using PBKDF2 with 600,000 iterations. This page documents the complete derivation pipeline.

@@ -1,3 +1,7 @@
+---
+title: "CbObj Reference"
+---
+
 # CbObj Reference
 
 `CbObj` wraps callback query events from inline keyboard button presses. Bot API only.

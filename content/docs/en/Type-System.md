@@ -1,3 +1,7 @@
+---
+title: "Type System"
+---
+
 # Type System
 
 GoyGram uses Python `__slots__` for zero-overhead field storage in all core event objects. This eliminates `__dict__`, saving memory during high-throughput event processing.

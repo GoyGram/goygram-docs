@@ -1,3 +1,7 @@
+---
+title: "DH Key Exchange"
+---
+
 # DH Key Exchange
 
 The Diffie-Hellman key exchange is the three-step handshake that establishes the shared 256-byte `auth_key` between client and Telegram server. GoyGram implements this entirely in Python, with Rust doing only the AES-IGE decryption of the DH answer.

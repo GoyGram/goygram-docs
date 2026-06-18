@@ -1,3 +1,7 @@
+---
+title: "Channel Management"
+---
+
 # Channel Management
 
 MTProto channel operations available through GoyGram.

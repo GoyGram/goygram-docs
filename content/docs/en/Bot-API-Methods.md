@@ -1,3 +1,7 @@
+---
+title: "Bot API Methods"
+---
+
 # Bot API Methods
 
 GoyGram's Bot API layer supports ALL Telegram Bot API methods through dynamic dispatch. This page documents the mechanism and available methods.

@@ -1,3 +1,7 @@
+---
+title: "FSM State Machine"
+---
+
 # FSM State Machine
 
 GoyGram includes a built-in Finite State Machine for tracking per-chat+user conversation states. It's ideal for multi-step flows like registration wizards, survey bots, or any sequential interaction.

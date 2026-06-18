@@ -1,3 +1,7 @@
+---
+title: "MTProto Message Format"
+---
+
 # MTProto Message Format
 
 ## Transport Layer: IntermediateTransport

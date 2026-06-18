@@ -1,3 +1,7 @@
+---
+title: "Bot API Transport"
+---
+
 # Bot API Transport
 
 The Bot API transport (`goygram/vendor/botapi.py`) implements Telegram's HTTPS Bot API using `aiohttp` with long-polling `getUpdates`.

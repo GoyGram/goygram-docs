@@ -1,3 +1,7 @@
+---
+title: "Interactive Auth Flow"
+---
+
 # Interactive Auth Flow
 
 When `bootstrap_session()` can't find a valid `.vault` file and no `.session` file exists to migrate, GoyGram launches a terminal-first interactive authorization flow. This is the full login experience — phone number entry, code verification, optional 2FA, and QR code scanning.

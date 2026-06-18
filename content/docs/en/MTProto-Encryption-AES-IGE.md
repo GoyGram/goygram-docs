@@ -1,3 +1,7 @@
+---
+title: "MTProto Encryption (AES-IGE)"
+---
+
 # MTProto Encryption (AES-IGE)
 
 AES-256-IGE (Infinite Garble Extension) is Telegram's custom block cipher mode used for all MTProto encrypted messages. GoyGram implements this in Rust for maximum performance.

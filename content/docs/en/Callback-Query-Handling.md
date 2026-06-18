@@ -1,3 +1,7 @@
+---
+title: "Callback Query Handling"
+---
+
 # Callback Query Handling
 
 Callback Queries are events from inline keyboard buttons received through `update.callback_query` in the Bot API long-polling stream. GoyGram normalizes these into `CbObj` instances and routes them through `on_cb` handlers.

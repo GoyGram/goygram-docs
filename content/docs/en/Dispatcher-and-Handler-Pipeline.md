@@ -1,3 +1,7 @@
+---
+title: "Dispatcher & Handler Pipeline"
+---
+
 # Dispatcher & Handler Pipeline
 
 The dispatcher (`goygram/core/disp.py`) is the event router. It consumes raw dicts from the bus, wraps them in typed event objects, and fires registered handlers with `StopPropagation` flow control.

@@ -1,6 +1,7 @@
 ---
----
+title: "AppCfg/BotCfg/MtCfg"
 
+---
 # AppCfg/BotCfg/MtCfg
 
 Классы модели конфигурации, которые объединяют разделенные транспорты GoyGram.

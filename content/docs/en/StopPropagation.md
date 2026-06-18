@@ -1,3 +1,7 @@
+---
+title: "StopPropagation"
+---
+
 # StopPropagation
 
 `StopPropagation` is a flow control exception that stops the handler chain for the current event. It's the mechanism for saying "I handled this — nobody else needs to."

@@ -1,3 +1,7 @@
+---
+title: "Transport Interfaces"
+---
+
 # Transport Interfaces
 
 GoyGram abstracts two Telegram communication protocols behind a unified interface: **BotNet** (Bot API HTTP long polling) and **MTNet** (MTProto TCP with AES-IGE encryption).

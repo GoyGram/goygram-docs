@@ -1,3 +1,7 @@
+---
+title: "Phone Number Login"
+---
+
 # Phone Number Login
 
 The phone number login flow is the traditional SMS/code-based MTProto authentication. Used when QR code login isn't selected or fails.

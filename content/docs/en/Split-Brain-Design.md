@@ -1,3 +1,7 @@
+---
+title: "Split-Brain Design"
+---
+
 # Split-Brain Design
 
 The "split-brain" is GoyGram's defining architectural pattern: **two completely independent transport implementations feeding a single unified event pipeline.** The Python layer makes this feel seamless; the internals are aggressively separated.

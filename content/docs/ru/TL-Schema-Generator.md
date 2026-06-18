@@ -1,6 +1,7 @@
 ---
----
+title: "Генератор схемы TL"
 
+---
 # Генератор схемы TL
 
 Утилита `tools/gen_mtproto.py` генерирует `goygram/tl/schema.py` — классы Python для всех конструкторов TL, используемых в MTProto.

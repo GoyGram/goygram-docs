@@ -1,3 +1,7 @@
+---
+title: "Message Handling"
+---
+
 # Message Handling
 
 How messages flow from Telegram servers to your handler function, through every layer of GoyGram.

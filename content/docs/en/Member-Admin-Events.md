@@ -1,3 +1,7 @@
+---
+title: "Member / Admin Events"
+---
+
 # Member / Admin Events
 
 Chat member updates — joins, leaves, promotions, bans, restrictions. Handled via `on_member()` and `MemberObj`.

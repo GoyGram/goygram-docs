@@ -1,3 +1,7 @@
+---
+title: "QR Code Login"
+---
+
 # QR Code Login
 
 QR code login uses `auth.exportLoginToken` / `auth.importLoginToken` to authorize without entering a phone number. The user scans a QR code with their main Telegram client.

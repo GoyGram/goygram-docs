@@ -1,3 +1,7 @@
+---
+title: "RSA Public Key Registry"
+---
+
 # RSA Public Key Registry
 
 GoyGram hardcodes all 8 Telegram production RSA public keys used for the DH key exchange. These are the keys that sign the `p_q_inner_data` during auth key generation.

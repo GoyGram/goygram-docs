@@ -1,3 +1,7 @@
+---
+title: "AppCfg / BotCfg / MtCfg"
+---
+
 # AppCfg / BotCfg / MtCfg
 
 The configuration model classes that wire GoyGram's split-brain transports together.

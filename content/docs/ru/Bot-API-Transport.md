@@ -1,6 +1,7 @@
 ---
----
+title: "API транспорта ботов"
 
+---
 # API транспорта ботов
 
 Транспорт API бота (`goygram/vendor/botapi.py`) реализует API бота HTTPS Telegram с использованием `aiohttp` с длинным опросом `getUpdates`.

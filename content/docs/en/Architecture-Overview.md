@@ -1,3 +1,7 @@
+---
+title: "Architecture Overview"
+---
+
 # Architecture Overview
 
 GoyGram is built on a **split-brain architecture**: a high-level Python API that feels ergonomic and pythonic, backed by a Rust extension module that handles every cryptographic operation and TL serialization at native speed.

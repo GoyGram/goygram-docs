@@ -1,3 +1,7 @@
+---
+title: "HTML to MTProto Entities"
+---
+
 # HTML to MTProto Entities
 
 When sending messages via MTProto with `parse_mode="HTML"`, GoyGram converts HTML tags to Telegram's TL entity format. This is a pure-Python regex parser — no external HTML library.

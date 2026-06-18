@@ -1,6 +1,7 @@
 ---
----
+title: "Ссылка на MemberObj"
 
+---
 # Ссылка на MemberObj
 
 `MemberObj` представляет события изменения статуса участника чата — обновления `chat_member` и `my_chat_member` из потока длинного опроса Bot API.

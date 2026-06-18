@@ -1,3 +1,7 @@
+---
+title: "2FA / SRP Password"
+---
+
 # 2FA / SRP Password
 
 When an account has two-factor authentication enabled, GoyGram automatically handles the SRP (Secure Remote Password) challenge. This is a zero-knowledge password proof — your password never leaves the client in plaintext.

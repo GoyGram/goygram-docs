@@ -1,3 +1,7 @@
+---
+title: "Event Bus System"
+---
+
 # Event Bus System
 
 The event bus is the simplest component in GoyGram — and that's entirely intentional. It's a thin wrapper around `asyncio.Queue` with exactly one constraint: events must be `{"src": str, "data": dict}` dicts.

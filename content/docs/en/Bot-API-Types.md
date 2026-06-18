@@ -1,3 +1,7 @@
+---
+title: "Bot API Types"
+---
+
 # Bot API Types
 
 GoyGram includes a set of lightweight typed wrappers for core Bot API data structures in `goygram/api/types.py`. These types use `__slots__` and expose `to_dict()` for clean serialization. Keyboard types are handled by the dynamic `KbdBuilder` (see [Keyboard System](Keyboard-System)) — no hardcoded button classes.

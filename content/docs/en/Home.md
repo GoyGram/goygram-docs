@@ -1,3 +1,7 @@
+---
+title: "Split-brain in action — one runtime, two transports"
+---
+
 Welcome to the **GoyGram** wiki — the complete reference for the ultimate split-brain Telegram framework.
 
 <p align="center">

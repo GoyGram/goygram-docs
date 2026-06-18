@@ -1,3 +1,7 @@
+---
+title: "Bot API Dynamic Dispatch"
+---
+
 # Bot API Dynamic Dispatch
 
 GoyGram provides transparent access to the entire Bot API method surface through Python's `__getattr__` mechanism. Any `snake_case` method name is converted to `CamelCase` on the fly and dispatched as a Bot API call — no manual method registration needed.

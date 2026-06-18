@@ -1,3 +1,7 @@
+---
+title: "Forum / Topic Management"
+---
+
 # Forum / Topic Management
 
 GoyGram provides full forum topic management through both transports. All forum methods are implemented directly on `AppCore` and exposed via `GoyGram`.

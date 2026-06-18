@@ -1,3 +1,7 @@
+---
+title: "Proxy URL Parsing"
+---
+
 # Proxy URL Parsing
 
 GoyGram supports SOCKS5 and HTTP CONNECT proxies for MTProto connections.

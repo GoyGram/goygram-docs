@@ -1,3 +1,7 @@
+---
+title: "Command System"
+---
+
 # Command System
 
 GoyGram's command system uses the `command` filter class, which hooks into the regular `on_msg` handler pipeline. Commands are **not** a separate dispatch path — they are message handlers with a specialized filter.

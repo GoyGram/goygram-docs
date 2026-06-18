@@ -1,3 +1,7 @@
+---
+title: "Logging System"
+---
+
 # Logging System
 
 GoyGram uses Python's built-in `logging` module with a single environment variable for configuration.

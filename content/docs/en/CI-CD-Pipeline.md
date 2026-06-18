@@ -1,3 +1,7 @@
+---
+title: "CI/CD Pipeline"
+---
+
 # CI/CD Pipeline
 
 GoyGram uses GitHub Actions for continuous delivery. Every tag push (`v*`) triggers a multi-OS wheel build + PyPI publish.

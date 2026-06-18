@@ -1,3 +1,7 @@
+---
+title: "Bot API Code Generator"
+---
+
 # Bot API Code Generator
 
 The `tools/gen_botapi.py` utility generates `goygram/api/types.py` and `goygram/api/methods.py` — typed Python classes for the Bot API.

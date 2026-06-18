@@ -1,3 +1,7 @@
+---
+title: "Proxy Support"
+---
+
 # Proxy Support
 
 GoyGram supports SOCKS5 and HTTP CONNECT proxies for MTProto connections. Both are bolt-on — they wrap the TCP socket during connection, then MTProto runs transparently on top.

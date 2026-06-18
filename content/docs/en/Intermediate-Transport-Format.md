@@ -1,3 +1,7 @@
+---
+title: "Intermediate Transport Format"
+---
+
 # Intermediate Transport Format
 
 The wire format used by MTProto after the initial `0xEF` abridged transport handshake. All encrypted MTProto packets use this framing.

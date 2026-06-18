@@ -1,3 +1,7 @@
+---
+title: "Migration Guide"
+---
+
 # Migration Guide
 
 Migrating from other Python Telegram frameworks to GoyGram.

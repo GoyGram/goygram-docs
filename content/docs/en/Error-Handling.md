@@ -1,3 +1,7 @@
+---
+title: "Error Handling"
+---
+
 # Error Handling
 
 GoyGram has a typed exception hierarchy for RPC errors, a `StopPropagation` mechanism for handler flow control, and per-handler error isolation in the dispatcher.

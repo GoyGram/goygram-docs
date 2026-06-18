@@ -1,3 +1,7 @@
+---
+title: "Memory Zeroize Strategy"
+---
+
 # Memory Zeroize Strategy
 
 GoyGram aggressively cleans up sensitive data from memory through its "Session Eater" (zeroize) strategy. This applies primarily to session migration and vault handling.

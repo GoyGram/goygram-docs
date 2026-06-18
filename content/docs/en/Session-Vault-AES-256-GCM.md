@@ -1,3 +1,7 @@
+---
+title: "Session Vault (AES-256-GCM)"
+---
+
 # Session Vault (AES-256-GCM)
 
 The session vault is GoyGram's encrypted local storage for MTProto session data. It replaces the legacy `.session` SQLite file with an AES-256-GCM authenticated encrypted blob.

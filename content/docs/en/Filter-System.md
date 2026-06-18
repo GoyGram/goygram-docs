@@ -1,3 +1,7 @@
+---
+title: "Filter System"
+---
+
 # Filter System
 
 GoyGram's filter system provides **100+ composable filters** for every event type. Filters support boolean operators (`&`, `|`, `~`, `^`, `-`), expression tree introspection, and stateful patterns like `cooldown`, `limit`, and `once`.

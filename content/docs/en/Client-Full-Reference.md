@@ -1,3 +1,7 @@
+---
+title: "Client – Full Reference"
+---
+
 # Client – Full Reference
 
 The `GoyGram` class (and its internal `AppCore`) provides the complete public API. This page documents every method, property, and hook available.

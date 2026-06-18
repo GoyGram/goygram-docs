@@ -1,3 +1,7 @@
+---
+title: "MTProto Raw Calls"
+---
+
 # MTProto Raw Calls
 
 MTProto calls use the `mt_` prefix and flow through `MTNet._rpc_call()`. The system follows a request-response pattern with `asyncio.Future`-based correlation.

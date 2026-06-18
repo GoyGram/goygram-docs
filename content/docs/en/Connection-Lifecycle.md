@@ -1,3 +1,7 @@
+---
+title: "Connection Lifecycle"
+---
+
 # Connection Lifecycle
 
 How GoyGram establishes, maintains, and tears down network connections for both transports.

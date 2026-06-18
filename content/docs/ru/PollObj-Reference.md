@@ -1,6 +1,7 @@
 ---
----
+title: "Ссылка на PollObj"
 
+---
 # Ссылка на PollObj
 
 `PollObj` представляет опросы из Bot API.

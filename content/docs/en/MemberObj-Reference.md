@@ -1,3 +1,7 @@
+---
+title: "MemberObj Reference"
+---
+
 # MemberObj Reference
 
 `MemberObj` represents chat member status change events — `chat_member` and `my_chat_member` updates from the Bot API long-polling stream.

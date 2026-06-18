@@ -1,6 +1,7 @@
 ---
----
+title: "Генератор кода API бота"
 
+---
 # Генератор кода API бота
 
 Утилита `tools/gen_botapi.py` генерирует `goygram/api/types.py` и `goygram/api/methods.py` — типизированные классы Python для Bot API.
