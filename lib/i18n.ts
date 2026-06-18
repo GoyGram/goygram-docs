@@ -4,7 +4,6 @@ export const i18n = defineI18nUI(
   {
     defaultLanguage: 'en',
     languages: ['en', 'ru'],
-    hideLocale: 'default-locale',
   },
   {
     en: { displayName: 'English' },
