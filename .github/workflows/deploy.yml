@@ -104,6 +104,8 @@ jobs:
               "Proxy-URL-Parsing.md": "Proxy-URL-Parsing.md",
           }
 
+          changed = 0
+          unchanged = 0
           for wiki_file, doc_file in page_map.items():
               src = os.path.join(wiki_dir, wiki_file)
               dst = os.path.join(content_dir, doc_file)
@@ -122,9 +124,19 @@ jobs:
                   frontmatter = '---\ntitle: ' + title + '\n---\n\n'
                   if content.lstrip().startswith('---'):
                       frontmatter = ''
-                  with open(dst, "w", encoding="utf-8") as f:
-                      f.write(frontmatter + content)
-                  print(f"Updated: {doc_file}")
+                  new_content = frontmatter + content
+                  old_content = ""
+                  if os.path.exists(dst):
+                      with open(dst, "r", encoding="utf-8") as f:
+                          old_content = f.read()
+                  if new_content != old_content:
+                      with open(dst, "w", encoding="utf-8") as f:
+                          f.write(new_content)
+                      print(f"Updated: {doc_file}")
+                      changed += 1
+                  else:
+                      unchanged += 1
+          print(f"Wiki sync — changed: {changed}, unchanged: {unchanged}")
           PYEOF
 
       - name: Translate to Russian
