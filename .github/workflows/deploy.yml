@@ -127,6 +127,11 @@ jobs:
                   print(f"Updated: {doc_file}")
           PYEOF
 
+      - name: Translate to Russian
+        run: |
+          pip install deep-translator
+          python3 scripts/translate-pages.py
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22

@@ -1,5 +1,106 @@
 import type * as PageTree from 'fumadocs-core/page-tree';
 
+const RU_NAMES: Record<string, string> = {
+  'GoyGram Docs': 'GoyGram Документация',
+  'Getting Started': 'Начало работы',
+  'Home': 'Главная',
+  'Quick Start (Bot API)': 'Быстрый старт (Bot API)',
+  'Quick Start (MTProto)': 'Быстрый старт (MTProto)',
+  'Installation': 'Установка',
+  'Migration Guide': 'Руководство по миграции',
+  'Core Architecture': 'Архитектура ядра',
+  'Architecture Overview': 'Обзор архитектуры',
+  'Split-Brain Design': 'Разделённый мозг',
+  'Rust Extension Core': 'Ядро расширения Rust',
+  'Event Bus System': 'Система шины событий',
+  'Dispatcher & Handler Pipeline': 'Конвейер диспетчера и обработчика',
+  'Dynamic Method Resolution': 'Динамическое разрешение методов',
+  'Transport Selection Logic': 'Логика выбора транспорта',
+  'Type System': 'Система типов',
+  'FSM State Machine': 'Конечный автомат FSM',
+  'StopPropagation': 'Остановка распространения',
+  'Networking': 'Сеть',
+  'Bot API Transport': 'Транспорт Bot API',
+  'MTProto Transport': 'Транспорт MTProto',
+  'MTProto Encryption (AES-IGE)': 'Шифрование MTProto (AES-IGE)',
+  'DH Key Exchange': 'Обмен ключами DH',
+  'MTProto Message Format': 'Формат сообщений MTProto',
+  'DC Routing System': 'Маршрутизация DC',
+  'Proxy Support': 'Поддержка прокси',
+  'Connection Lifecycle': 'Жизненный цикл соединения',
+  'Authentication & Security': 'Аутентификация и безопасность',
+  'Session Vault (AES-256-GCM)': 'Хранилище сессий (AES-256-GCM)',
+  'Interactive Auth Flow': 'Интерактивная аутентификация',
+  'Phone Number Login': 'Вход по номеру телефона',
+  'QR Code Login': 'Вход по QR-коду',
+  '2FA / SRP Password': '2FA / SRP пароль',
+  'Session Migration': 'Миграция сессии',
+  'Memory Zeroize Strategy': 'Обнуление памяти',
+  'Vault Key Derivation': 'Генерация ключа хранилища',
+  'Client API Reference': 'Справочник клиентского API',
+  'GoyGram Client – Full Reference': 'Клиент — полный справочник',
+  'Message Handling': 'Обработка сообщений',
+  'Callback Query Handling': 'Обработка callback-запросов',
+  'Poll Handling': 'Обработка опросов',
+  'Member/Admin Events': 'События участников / админов',
+  'Command System': 'Система команд',
+  'Filter System': 'Система фильтров',
+  'Keyboard System': 'Система клавиатур',
+  'HTML to MTProto Entities': 'HTML в MTProto-сущности',
+  'Bot API Layer': 'Слой Bot API',
+  'Bot API Methods': 'Методы Bot API',
+  'Bot API Types': 'Типы Bot API',
+  'Bot API Dynamic Dispatch': 'Динамическая диспетчеризация Bot API',
+  'Webhook Management': 'Управление вебхуками',
+  'MTProto Layer': 'Слой MTProto',
+  'MTProto Actions Reference': 'Справочник действий MTProto',
+  'MTProto Raw Calls': 'Прямые вызовы MTProto',
+  'Peer Resolution': 'Разрешение пиров',
+  'Channel Management': 'Управление каналами',
+  'Forum/Topic Management': 'Управление форумами / темами',
+  'Advanced': 'Продвинутые',
+  'Multi-Session Architecture': 'Мультисессионная архитектура',
+  'Error Handling': 'Обработка ошибок',
+  'Logging System': 'Система логирования',
+  'Developer Tooling': 'Инструменты разработчика',
+  'Code Generation Tools': 'Инструменты кодогенерации',
+  'CI/CD Pipeline': 'CI/CD пайплайн',
+  'Configuration Models': 'Модели конфигурации',
+  'AppCfg / BotCfg / MtCfg': 'AppCfg / BotCfg / MtCfg',
+  'Transport Interfaces': 'Транспортные интерфейсы',
+  'Event Objects': 'Объекты событий',
+  'MsgObj Reference': 'Справочник MsgObj',
+  'CbObj Reference': 'Справочник CbObj',
+  'MemberObj Reference': 'Справочник MemberObj',
+  'PollObj Reference': 'Справочник PollObj',
+  'Internals': 'Внутреннее устройство',
+  'AES-256-GCM': 'AES-256-GCM',
+  'AES-IGE': 'AES-IGE',
+  'MTCodec – TL Codec': 'MTCodec — TL кодек',
+  'RSA Public Key Registry': 'Реестр ключей RSA',
+  'Intermediate Transport Format': 'Промежуточный транспортный формат',
+  'TL Schema Generator': 'Генератор TL-схем',
+  'Bot API Code Generator': 'Генератор кода Bot API',
+  'Vault Wire Format': 'Vault wire-формат',
+  'Proxy URL Parsing': 'Парсинг прокси URL',
+};
+
+function translateNames(tree: PageTree.Root): void {
+  function walk(node: PageTree.Node) {
+    if ('name' in node && node.name in RU_NAMES) {
+      node.name = RU_NAMES[node.name];
+    }
+    if ('children' in node) {
+      for (const child of node.children) {
+        walk(child);
+      }
+    }
+  }
+  for (const child of tree.children) {
+    walk(child);
+  }
+}
+
 const sidebarTree: PageTree.Root = {
   name: 'GoyGram Docs',
   children: [
@@ -175,5 +276,7 @@ function translateUrls(tree: PageTree.Root, locale: string): PageTree.Root {
 
 export function getSidebarTree(locale: string): PageTree.Root {
   if (locale === 'en') return sidebarTree;
-  return translateUrls(sidebarTree, locale);
+  const ruTree = translateUrls(sidebarTree, locale);
+  translateNames(ruTree);
+  return ruTree;
 }
