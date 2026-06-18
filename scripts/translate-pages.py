@@ -9,6 +9,7 @@ import os
 import re
 import time
 import sys
+import hashlib
 from pathlib import Path
 from deep_translator import GoogleTranslator
 
@@ -233,15 +234,28 @@ def process_text(text: str) -> str:
     return translated
 
 
-def translate_file(src_path: Path):
-    """Translate a single markdown file if source is newer than existing translation."""
-    out_path = OUT_DIR / src_path.name
+def compute_source_hash(src_content: str) -> str:
+    """Compute a hash of the stripped source content (ignoring frontmatter)."""
+    # Strip frontmatter to compare body only
+    _, body = split_frontmatter(src_content)
+    return hashlib.sha256(body.strip().encode()).hexdigest()
 
-    if out_path.exists() and out_path.stat().st_mtime >= src_path.stat().st_mtime:
-        return None  # skip — already up to date
+
+def translate_file(src_path: Path):
+    """Translate a single markdown file if source content changed since last translation."""
+    out_path = OUT_DIR / src_path.name
 
     with open(src_path, "r", encoding="utf-8") as f:
         content = f.read()
+
+    new_hash = compute_source_hash(content)
+
+    if out_path.exists():
+        with open(out_path, "r", encoding="utf-8") as f:
+            existing = f.read()
+        existing_fm, _ = split_frontmatter(existing)
+        if existing_fm.get("_source_hash") == new_hash:
+            return None  # skip — up to date
 
     fm, body = split_frontmatter(content)
 
@@ -267,6 +281,7 @@ def translate_file(src_path: Path):
     for k, v in translated_fm.items():
         val = v.replace('"', '\\"')
         lines.append(f'{k}: "{val}"')
+    lines.append(f'_source_hash: "{new_hash}"')
     lines.append("---")
     lines.append("")
     lines.append(translated_body)
