@@ -1,0 +1,147 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [wiki-updated]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: GoyGram/GoyGram.wiki
+          token: ${{ secrets.PAGES_TOKEN }}
+          path: wiki-temp
+
+      - name: Sync wiki pages to content
+        run: |
+          python3 << 'PYEOF'
+          import os
+
+          content_dir = "content/docs"
+          wiki_dir = "wiki-temp"
+          os.makedirs(content_dir, exist_ok=True)
+
+          page_map = {
+              "Home.md": "Home.md",
+              "Quick-Start-Bot-API.md": "Quick-Start-Bot-API.md",
+              "Quick-Start-MTProto-Userbot.md": "Quick-Start-MTProto-Userbot.md",
+              "Installation.md": "Installation.md",
+              "Migration-Guide.md": "Migration-Guide.md",
+              "Architecture-Overview.md": "Architecture-Overview.md",
+              "Split-Brain-Design.md": "Split-Brain-Design.md",
+              "Rust-Extension-Core.md": "Rust-Extension-Core.md",
+              "Event-Bus-System.md": "Event-Bus-System.md",
+              "Dispatcher-and-Handler-Pipeline.md": "Dispatcher-and-Handler-Pipeline.md",
+              "Dynamic-Method-Resolution.md": "Dynamic-Method-Resolution.md",
+              "Transport-Selection-Logic.md": "Transport-Selection-Logic.md",
+              "Type-System.md": "Type-System.md",
+              "FSM-State-Machine.md": "FSM-State-Machine.md",
+              "StopPropagation.md": "StopPropagation.md",
+              "AES-256-GCM.md": "AES-256-GCM.md",
+              "AES-IGE.md": "AES-IGE.md",
+              "Bot-API-Transport.md": "Bot-API-Transport.md",
+              "MTProto-Transport.md": "MTProto-Transport.md",
+              "MTProto-Encryption-AES-IGE.md": "MTProto-Encryption-AES-IGE.md",
+              "DH-Key-Exchange.md": "DH-Key-Exchange.md",
+              "MTProto-Message-Format.md": "MTProto-Message-Format.md",
+              "DC-Routing-System.md": "DC-Routing-System.md",
+              "Proxy-Support.md": "Proxy-Support.md",
+              "Connection-Lifecycle.md": "Connection-Lifecycle.md",
+              "Session-Vault-AES-256-GCM.md": "Session-Vault-AES-256-GCM.md",
+              "Interactive-Auth-Flow.md": "Interactive-Auth-Flow.md",
+              "Phone-Number-Login.md": "Phone-Number-Login.md",
+              "QR-Code-Login.md": "QR-Code-Login.md",
+              "2FA-SRP-Password.md": "2FA-SRP-Password.md",
+              "Session-Migration.md": "Session-Migration.md",
+              "Memory-Zeroize-Strategy.md": "Memory-Zeroize-Strategy.md",
+              "Vault-Key-Derivation.md": "Vault-Key-Derivation.md",
+              "Client-Full-Reference.md": "Client-Full-Reference.md",
+              "Message-Handling.md": "Message-Handling.md",
+              "Callback-Query-Handling.md": "Callback-Query-Handling.md",
+              "Poll-Handling.md": "Poll-Handling.md",
+              "Member-Admin-Events.md": "Member-Admin-Events.md",
+              "Command-System.md": "Command-System.md",
+              "Filter-System.md": "Filter-System.md",
+              "Keyboard-System.md": "Keyboard-System.md",
+              "HTML-to-MTProto-Entities.md": "HTML-to-MTProto-Entities.md",
+              "Bot-API-Methods.md": "Bot-API-Methods.md",
+              "Bot-API-Types.md": "Bot-API-Types.md",
+              "Bot-API-Dynamic-Dispatch.md": "Bot-API-Dynamic-Dispatch.md",
+              "Webhook-Management.md": "Webhook-Management.md",
+              "MTProto-Actions-Reference.md": "MTProto-Actions-Reference.md",
+              "MTProto-Raw-Calls.md": "MTProto-Raw-Calls.md",
+              "Peer-Resolution.md": "Peer-Resolution.md",
+              "Channel-Management.md": "Channel-Management.md",
+              "Forum-Topic-Management.md": "Forum-Topic-Management.md",
+              "Multi-Session-Architecture.md": "Multi-Session-Architecture.md",
+              "Error-Handling.md": "Error-Handling.md",
+              "Logging-System.md": "Logging-System.md",
+              "Developer-Tooling.md": "Developer-Tooling.md",
+              "Code-Generation-Tools.md": "Code-Generation-Tools.md",
+              "CI-CD-Pipeline.md": "CI-CD-Pipeline.md",
+              "AppCfg-BotCfg-MtCfg.md": "AppCfg-BotCfg-MtCfg.md",
+              "Transport-Interfaces.md": "Transport-Interfaces.md",
+              "MsgObj-Reference.md": "MsgObj-Reference.md",
+              "CbObj-Reference.md": "CbObj-Reference.md",
+              "MemberObj-Reference.md": "MemberObj-Reference.md",
+              "PollObj-Reference.md": "PollObj-Reference.md",
+              "MTCodec-TL-Codec.md": "MTCodec-TL-Codec.md",
+              "RSA-Public-Key-Registry.md": "RSA-Public-Key-Registry.md",
+              "Intermediate-Transport-Format.md": "Intermediate-Transport-Format.md",
+              "TL-Schema-Generator.md": "TL-Schema-Generator.md",
+              "Bot-API-Code-Generator.md": "Bot-API-Code-Generator.md",
+              "Vault-Wire-Format.md": "Vault-Wire-Format.md",
+              "Proxy-URL-Parsing.md": "Proxy-URL-Parsing.md",
+          }
+
+          for wiki_file, doc_file in page_map.items():
+              src = os.path.join(wiki_dir, wiki_file)
+              dst = os.path.join(content_dir, doc_file)
+              if os.path.exists(src):
+                  with open(src, "r", encoding="utf-8") as f:
+                      content = f.read()
+                  title = doc_file.replace(".md", "").replace("-", " ")
+                  content = content.replace(
+                      "https://raw.githubusercontent.com/sepiol026-wq/GoyGram/refs/heads/main/GoyGram.png",
+                      "https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png"
+                  )
+                  content = content.replace(
+                      "https://github.com/sepiol026-wq/GoyGram",
+                      "https://github.com/GoyGram/GoyGram"
+                  )
+                  frontmatter = '---\ntitle: ' + title + '\n---\n\n'
+                  if content.lstrip().startswith('---'):
+                      frontmatter = ''
+                  with open(dst, "w", encoding="utf-8") as f:
+                      f.write(frontmatter + content)
+                  print(f"Updated: {doc_file}")
+          PYEOF
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy to goygram.github.io
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAGES_TOKEN }}
+          external_repository: GoyGram/goygram.github.io
+          publish_branch: main
+          publish_dir: ./out
+          force_orphan: false
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com

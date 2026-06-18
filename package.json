@@ -1,0 +1,31 @@
+{
+  "name": "goygram-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "touch out/.nojekyll"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@orama/orama": "^3.1.18",
+    "@shikijs/engine-javascript": "^4.2.0",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^25.9.3",
+    "@types/react": "^19.2.17",
+    "fumadocs-core": "^16.10.4",
+    "fumadocs-mdx": "^15.0.12",
+    "fumadocs-ui": "^16.10.4",
+    "lucide-react": "^1.21.0",
+    "next": "^16.2.9",
+    "postcss": "^8.5.15",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^6.0.3"
+  }
+}

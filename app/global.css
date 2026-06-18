@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/preset.css';
+@import 'fumadocs-ui/css/catppuccin.css';
+
+@layer base {
+  article img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  article pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  article table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  article {
+    overflow-wrap: break-word;
+  }
+
+  article > div[align] {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
