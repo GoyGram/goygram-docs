@@ -1,5 +1,4 @@
 import './global.css';
-import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
 
@@ -11,20 +10,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
-        <RootProvider
-          theme={{
-            defaultTheme: 'dark',
-            enableSystem: false,
-          }}
-          search={{
-            options: {
-              type: 'static',
-              api: '/search.json',
-            },
-          }}
-        >
-          {children}
-        </RootProvider>
+        {children}
       </body>
     </html>
   );

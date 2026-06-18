@@ -2,9 +2,6 @@ import { create, insertMultiple, save } from '@orama/orama';
 import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
-const CONTENT_DIR = 'content/docs';
-const OUTPUT_FILE = 'public/search.json';
-
 function extractFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return { title: '', description: '', body: content };
@@ -36,7 +33,6 @@ function extractHeadings(content) {
 
 function extractContentSections(body) {
   const sections = body.split(/\n\n+/).filter(s => s.trim() && !s.match(/^#{1,4}\s/));
-  // Deduplicate by trimming and taking only distinct meaningful sections
   const seen = new Set();
   const result = [];
   for (const s of sections) {
@@ -52,70 +48,81 @@ function extractContentSections(body) {
   return result.slice(0, 10);
 }
 
-const files = readdirSync(CONTENT_DIR).filter(f => f.endsWith('.md'));
+async function buildLocaleIndex(contentDir, outputFile, localePrefix, language) {
+  const files = readdirSync(contentDir).filter(f => f.endsWith('.md'));
+  if (files.length === 0) {
+    console.log(`  No .md files in ${contentDir}`);
+    return 0;
+  }
 
-const docs = [];
-for (const file of files) {
-  const raw = readFileSync(join(CONTENT_DIR, file), 'utf-8');
-  const { title, description, body } = extractFrontmatter(raw);
-  const pageTitle = title || basename(file, '.md').replace(/-/g, ' ');
-  const pageId = file.replace('.md', '');
-  const url = `/docs/${pageId}`;
-  const headings = extractHeadings(body);
-  const sections = extractContentSections(body);
-  const tags = [];
-  const breadcrumbs = [];
+  const docs = [];
+  for (const file of files) {
+    const raw = readFileSync(join(contentDir, file), 'utf-8');
+    const { title, description, body } = extractFrontmatter(raw);
+    const pageTitle = title || basename(file, '.md').replace(/-/g, ' ');
+    const pageId = file.replace('.md', '');
+    const url = `${localePrefix}/docs/${pageId}`;
+    const headings = extractHeadings(body);
+    const sections = extractContentSections(body);
+    const breadcrumbs = [];
+    const tags = [];
 
-  docs.push({
-    id: pageId,
-    page_id: pageId,
-    type: 'page',
-    content: pageTitle,
-    breadcrumbs,
-    tags,
-    url,
-  });
-
-  if (description) {
     docs.push({
-      id: `${pageId}-desc`,
+      id: pageId,
       page_id: pageId,
-      type: 'text',
-      content: description,
+      type: 'page',
+      content: pageTitle,
       breadcrumbs,
       tags,
       url,
     });
+
+    if (description) {
+      docs.push({
+        id: `${pageId}-desc`,
+        page_id: pageId,
+        type: 'text',
+        content: description,
+        breadcrumbs,
+        tags,
+        url,
+      });
+    }
+
+    for (let hi = 0; hi < headings.length; hi++) {
+      const h = headings[hi];
+      docs.push({
+        id: `${pageId}-h-${hi}`,
+        page_id: pageId,
+        type: 'heading',
+        content: h.content,
+        breadcrumbs,
+        tags,
+        url: `${url}#${h.id}`,
+      });
+    }
+
+    for (let i = 0; i < sections.length; i++) {
+      docs.push({
+        id: `${pageId}-c-${i}`,
+        page_id: pageId,
+        type: 'text',
+        content: sections[i].content,
+        breadcrumbs,
+        tags,
+        url,
+      });
+    }
   }
 
-  for (let hi = 0; hi < headings.length; hi++) {
-    const h = headings[hi];
-    docs.push({
-      id: `${pageId}-h-${hi}`,
-      page_id: pageId,
-      type: 'heading',
-      content: h.content,
-      breadcrumbs,
-      tags,
-      url: `${url}#${h.id}`,
-    });
+  // No document count guard — let all through
+  if (docs.length === 0) {
+    console.log(`  No searchable content in ${contentDir}`);
+    return 0;
   }
 
-  for (let i = 0; i < sections.length; i++) {
-    docs.push({
-      id: `${pageId}-c-${i}`,
-      page_id: pageId,
-      type: 'text',
-      content: sections[i].content,
-      breadcrumbs,
-      tags,
-      url,
-    });
-  }
-}
-
-const db = await create({
-  schema: {
+  // @orama/orama v3 uses more flexible schemas
+  const schema = {
     id: 'string',
     page_id: 'string',
     type: 'string',
@@ -123,13 +130,37 @@ const db = await create({
     breadcrumbs: 'string[]',
     tags: 'string[]',
     url: 'string',
-  },
-  language: 'english',
+  };
+
+  try {
+    const db = await create({ schema, language });
+    await insertMultiple(db, docs);
+    const saved = save(db);
+
+    mkdirSync(outputFile.substring(0, outputFile.lastIndexOf('/')), { recursive: true });
+    // Fumadocs static expects "type" and the index data at top level
+    writeFileSync(outputFile, JSON.stringify(saved, null, 2));
+    return docs.length;
+  } catch (err) {
+    console.error(`  Build error for ${localePrefix}:`, err.message);
+    return 0;
+  }
+}
+
+async function main() {
+  mkdirSync('public', { recursive: true });
+  mkdirSync('public/ru', { recursive: true });
+
+  console.log('Building EN search index...');
+  const enCount = await buildLocaleIndex('content/docs/en', 'public/search.json', '', 'english');
+
+  console.log('Building RU search index...');
+  const ruCount = await buildLocaleIndex('content/docs/ru', 'public/ru/search.json', '/ru', 'russian');
+
+  console.log(`Done: EN=${enCount} docs, RU=${ruCount} docs`);
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
 });
-
-await insertMultiple(db, docs);
-const saved = save(db);
-
-mkdirSync('public', { recursive: true });
-writeFileSync(OUTPUT_FILE, JSON.stringify({ ...saved, type: 'advanced' }));
-console.log(`Generated search index: ${docs.length} documents from ${files.length} pages`);
