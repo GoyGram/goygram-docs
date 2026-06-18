@@ -35,7 +35,7 @@ export default async function Page(props: {
 }
 
 export async function generateStaticParams() {
-  const contentDir = path.join(process.cwd(), 'content/docs/en');
+  const contentDir = path.join(process.cwd(), 'content/docs');
   const files = fs.readdirSync(contentDir).filter(f => f.endsWith('.md'));
   return files.map(f => ({
     slug: [f.replace('.md', '')],
