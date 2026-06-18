@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/build-search.mjs",
     "build": "next build",
     "postbuild": "touch out/.nojekyll"
   },
