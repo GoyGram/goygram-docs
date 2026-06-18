@@ -9,7 +9,6 @@ import os
 import re
 import time
 import sys
-import hashlib
 from pathlib import Path
 from deep_translator import GoogleTranslator
 
@@ -234,28 +233,12 @@ def process_text(text: str) -> str:
     return translated
 
 
-def compute_source_hash(src_content: str) -> str:
-    """Compute a hash of the stripped source content (ignoring frontmatter)."""
-    # Strip frontmatter to compare body only
-    _, body = split_frontmatter(src_content)
-    return hashlib.sha256(body.strip().encode()).hexdigest()
-
-
 def translate_file(src_path: Path):
-    """Translate a single markdown file if source content changed since last translation."""
+    """Translate a single markdown file. Returns True on success."""
     out_path = OUT_DIR / src_path.name
 
     with open(src_path, "r", encoding="utf-8") as f:
         content = f.read()
-
-    new_hash = compute_source_hash(content)
-
-    if out_path.exists():
-        with open(out_path, "r", encoding="utf-8") as f:
-            existing = f.read()
-        existing_fm, _ = split_frontmatter(existing)
-        if existing_fm.get("_source_hash") == new_hash:
-            return None  # skip — up to date
 
     fm, body = split_frontmatter(content)
 
@@ -281,7 +264,6 @@ def translate_file(src_path: Path):
     for k, v in translated_fm.items():
         val = v.replace('"', '\\"')
         lines.append(f'{k}: "{val}"')
-    lines.append(f'_source_hash: "{new_hash}"')
     lines.append("---")
     lines.append("")
     lines.append(translated_body)
@@ -294,33 +276,49 @@ def translate_file(src_path: Path):
 
 
 def main():
+    # If a list of changed source files exists, only translate those
+    # (plus any source files that don't have a RU translation yet)
+    changed_list_path = Path("/tmp/changed_wiki_files.txt")
+    if changed_list_path.exists():
+        with open(changed_list_path, "r") as f:
+            changed_names = set(line.strip() for line in f if line.strip())
+        print(f"Wiki sync changed {len(changed_names)} files; will only translate those + any new files")
+    else:
+        changed_names = None
+
     src_files = sorted(SRC_DIR.glob("*.md"))
     if not src_files:
         print(f"No .md files found in {SRC_DIR}")
         return 1
 
-    print(f"Found {len(src_files)} files to translate")
+    # Filter: translate only changed files, plus files without existing RU
+    to_translate = []
+    skipped = 0
+    for sp in src_files:
+        out_path = OUT_DIR / sp.name
+        if changed_names is not None:
+            if sp.name not in changed_names and out_path.exists():
+                skipped += 1
+                continue
+        to_translate.append(sp)
+
+    print(f"Found {len(src_files)} total, {skipped} skipped (unchanged), {len(to_translate)} to translate")
     print(f"Rate limit: {DELAY_SECONDS}s between files")
     print()
 
-    skipped = 0
     translated = 0
     failed = []
-    for i, path in enumerate(src_files, 1):
-        print(f"[{i}/{len(src_files)}] {path.name} ... ", end="", flush=True)
+    for i, path in enumerate(to_translate, 1):
+        print(f"[{i}/{len(to_translate)}] {path.name} ... ", end="", flush=True)
         try:
-            result = translate_file(path)
-            if result is None:
-                print("SKIP (up to date)")
-                skipped += 1
-            else:
-                print("OK")
-                translated += 1
+            translate_file(path)
+            print("OK")
+            translated += 1
         except Exception as e:
             print(f"FAILED: {e}")
             failed.append(path.name)
 
-        if i < len(src_files):
+        if i < len(to_translate):
             time.sleep(DELAY_SECONDS)
 
     print()

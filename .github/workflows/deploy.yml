@@ -106,6 +106,7 @@ jobs:
 
           changed = 0
           unchanged = 0
+          changed_files = []
           for wiki_file, doc_file in page_map.items():
               src = os.path.join(wiki_dir, wiki_file)
               dst = os.path.join(content_dir, doc_file)
@@ -134,9 +135,13 @@ jobs:
                           f.write(new_content)
                       print(f"Updated: {doc_file}")
                       changed += 1
+                      changed_files.append(doc_file)
                   else:
                       unchanged += 1
           print(f"Wiki sync — changed: {changed}, unchanged: {unchanged}")
+          with open("/tmp/changed_wiki_files.txt", "w") as f:
+              for name in changed_files:
+                  f.write(name + "\\n")
           PYEOF
 
       - name: Translate to Russian
