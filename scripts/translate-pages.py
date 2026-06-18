@@ -234,8 +234,11 @@ def process_text(text: str) -> str:
 
 
 def translate_file(src_path: Path):
-    """Translate a single markdown file."""
+    """Translate a single markdown file if source is newer than existing translation."""
     out_path = OUT_DIR / src_path.name
+
+    if out_path.exists() and out_path.stat().st_mtime >= src_path.stat().st_mtime:
+        return None  # skip — already up to date
 
     with open(src_path, "r", encoding="utf-8") as f:
         content = f.read()
@@ -282,12 +285,19 @@ def main():
     print(f"Rate limit: {DELAY_SECONDS}s between files")
     print()
 
+    skipped = 0
+    translated = 0
     failed = []
     for i, path in enumerate(src_files, 1):
         print(f"[{i}/{len(src_files)}] {path.name} ... ", end="", flush=True)
         try:
-            translate_file(path)
-            print("OK")
+            result = translate_file(path)
+            if result is None:
+                print("SKIP (up to date)")
+                skipped += 1
+            else:
+                print("OK")
+                translated += 1
         except Exception as e:
             print(f"FAILED: {e}")
             failed.append(path.name)
@@ -296,12 +306,11 @@ def main():
             time.sleep(DELAY_SECONDS)
 
     print()
+    print(f"Translated: {translated}, Skipped: {skipped}, Failed: {len(failed)}")
     if failed:
         print(f"Failed: {', '.join(failed)}")
         return 1
-    else:
-        print("All files translated successfully!")
-        return 0
+    return 0
 
 
 if __name__ == "__main__":
