@@ -87,7 +87,7 @@ const RU_NAMES: Record<string, string> = {
 
 function translateNames(tree: PageTree.Root): void {
   function walk(node: PageTree.Node) {
-    if ('name' in node && node.name in RU_NAMES) {
+    if ('name' in node && typeof node.name === 'string' && node.name in RU_NAMES) {
       node.name = RU_NAMES[node.name];
     }
     if ('children' in node) {
