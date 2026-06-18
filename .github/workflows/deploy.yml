@@ -106,7 +106,7 @@ jobs:
 
           # Determine which wiki files actually changed using git
           import subprocess
-          wiki_sha_file = os.path.join(repo_root, ".wiki-head-sha")
+          wiki_sha_file = ".wiki-head-sha"
           current_sha = subprocess.run(
               ["git", "rev-parse", "HEAD"],
               cwd=wiki_dir, capture_output=True, text=True
