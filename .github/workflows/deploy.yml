@@ -141,7 +141,8 @@ jobs:
           print(f"Wiki sync — changed: {changed}, unchanged: {unchanged}")
           with open("/tmp/changed_wiki_files.txt", "w") as f:
               for name in changed_files:
-                  f.write(name + "\\n")
+                  f.write(name)
+                  f.write(chr(10))
           PYEOF
 
       - name: Translate to Russian
