@@ -259,6 +259,9 @@ def translate_file(src_path: Path):
     else:
         translated_body = body
 
+    # Fix headings that lost space after # (e.g. "###2А." → "### 2А.")
+    translated_body = re.sub(r"^(#{1,6})([^\s#])", r"\1 \2", translated_body, flags=re.MULTILINE)
+
     # Reconstruct
     lines = ["---"]
     for k, v in translated_fm.items():
