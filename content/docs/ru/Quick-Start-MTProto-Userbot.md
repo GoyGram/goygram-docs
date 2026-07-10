@@ -2,143 +2,39 @@
 title: "Быстрый запуск пользовательского бота MTProto"
 ---
 
-# Быстрый старт: пользовательский робот MTProto
+# Быстрый старт — MTProto Userbot
 
-Запустите учетную запись пользователя Telegram (не бота) с помощью GoyGram. Это дает вам доступ ко всему, что может делать обычный клиент Telegram — диалогам, реакциям, каналам и многому другому.
-
-## 1. Установить
-
-
-```bash
-pip install goygram
-```
-
-
-Требуется Python 3.11+.
-
-## 2. Получите учетные данные API
-
-Перейдите на [my.telegram.org](https://my.telegram.org), войдите в систему, перейдите в раздел «Инструменты разработки API» и создайте приложение. Вы получите:
-- **Идентификатор API** (целое число)
-- **Хеш API** (шестнадцатеричная строка из 32 символов)
-
-Держите это в секрете. Это индивидуальность вашего приложения.
-
-## 3. Напишите своего пользовательского бота
+Это минимальное приложение-юзербот. При первом запуске выполняется интерактивная авторизация Telegram, если указанное хранилище еще не содержит действительный сеанс.
 
 
 ```python
 import asyncio
 from goygram import GoyGram, filters
+from goygram.filters import command
 
 app = GoyGram(
     api_id=123456,
-    api_hash="0123456789abcdef0123456789abcdef",
-    session_name="my_account"
+    api_hash="your_api_hash",
+    session_name="my_first_userbot",
 )
 
-@app.on_cmd(".ping")
-async def ping(msg):
-    await msg.reply("<b>🏓 PONG!</b> GoyGram is running.", parse_mode="HTML")
+@app.on_msg(filt=command("ping") & filters.me)
+async def ping_handler(msg):
+    await msg.reply("Pong!")
 
-asyncio.run(app.run())
+if __name__ == "__main__":
+    asyncio.run(app.run())
 ```
 
 
-## 4. Первый запуск — интерактивный вход
+Отправьте `/ping` или `!ping` с авторизованного аккаунта. `filters.me` ограничивает этот обработчик исходящими сообщениями из этой учетной записи.
 
-При первом запуске вы увидите процесс входа в TUI:
+## Что происходит при запуске
 
+1. GoyGram выбирает дата-центр Telegram, затем создает или возобновляет работу `my_first_userbot.vault`.
+2. При отсутствии действующего ключа авторизации запрашивается номер телефона и код входа; Также может быть запрошен Telegram 2FA.
+3. Он запускает программу чтения MTProto и отправляет входящие обновления зарегистрированным обработчикам.
 
-```
-GoyGram Interactive Login
+Вызовите `app.stop()` из обработчика или отмените задачу, чтобы полностью завершить `app.run()`.
 
-? Choose login method:
-  > QR Code Login
-    Phone Number Login
-```
-
-
-Выберите один:
-- **QR-код**: сканируйте с помощью другого клиента Telegram (Настройки → Устройства → Сканировать QR).
-- **Номер телефона**: введите свой номер, получите код, введите его.
-
-Если у вас включен 2FA, вам будет предложено ввести пароль.
-
-После успешного входа:
-
-```
-Success! Session saved to my_account.vault
-```
-
-
-При последующих запусках хранилище загружается автоматически — повторный вход в систему не требуется.
-
-## 5. Что вы можете сделать
-
-### Команды
-
-
-```python
-@app.on_cmd(".ping")
-async def ping(msg): ...
-
-@app.on_cmd(".del")
-async def delete_last(msg):
-    await msg.delete()
-```
-
-
-### Отслеживание собственных сообщений
-
-
-```python
-@app.on_msg(filt=filters.text & filters.me)
-async def self_logger(msg):
-    if msg.text.lower() == "test":
-        await msg.edit("Test passed!")
-```
-
-
-### Действия MTProto
-
-
-```python
-# Get dialogs
-dialogs = await app.mt_messages_get_dialogs(limit=50)
-
-# Send reactions
-await app.mt_messages_send_reaction(chat_id=..., msg_id=..., reaction="👍")
-
-# Get chat members
-members = await app.mt_channels_get_participants(chat_id=-10012345678, limit=200)
-
-# Join channel
-await app.mt_channels_join_channel(chat_id=-10012345678)
-```
-
-
-### Именованные сеансы (несколько аккаунтов)
-
-
-```python
-worker1 = GoyGram(api_id=APP_ID, api_hash=APP_HASH, session_name="farm_1")
-worker2 = GoyGram(api_id=APP_ID, api_hash=APP_HASH, session_name="farm_2")
-
-await asyncio.gather(worker1.run(), worker2.run())
-```
-
-
-## Примечания по безопасности
-
-- Ваш сеанс хранится в зашифрованном виде в `my_account.vault`.
-– Никогда не делитесь своим файлом `.vault` — он содержит ваш ключ авторизации.
-- Используйте `GOYGRAM_VAULT_KEY` env var для детерминированного ввода ключей в CI/контейнерах.
-- Платформа обнуляет старые файлы `.session` во время миграции.
-
-## Ведение журнала
-
-
-```bash
-GOYGRAM_LOG=DEBUG python userbot.py
-```
+См. [[Сеансы и аутентификация|Сеансы и аутентификация]], [[Обработчики и обновления|Обработчики и обновления]] и [[MTProto-Calls|Вызовы MTProto]].

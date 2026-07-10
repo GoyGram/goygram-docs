@@ -1,3 +1,7 @@
+---
+title: Home
+---
+
 # GoyGram
 
 GoyGram is an asynchronous Python library for Telegram bots and MTProto userbots. One application object exposes a shared event model, composable filters, dynamic Bot API calls, and raw MTProto calls.

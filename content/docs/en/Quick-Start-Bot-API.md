@@ -1,3 +1,7 @@
+---
+title: Quick Start Bot API
+---
+
 # Quick Start — Bot API
 
 ```python

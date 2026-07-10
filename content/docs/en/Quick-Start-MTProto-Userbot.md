@@ -1,3 +1,7 @@
+---
+title: Quick Start MTProto Userbot
+---
+
 # Quick Start — MTProto Userbot
 
 This is the minimal userbot application. The first run performs interactive Telegram authorization if the named vault does not already contain a valid session.

@@ -1,3 +1,7 @@
+---
+title: Installation
+---
+
 # Installation
 
 GoyGram is distributed on PyPI. It requires **Python 3.11+** and builds a Rust extension through Maturin.
