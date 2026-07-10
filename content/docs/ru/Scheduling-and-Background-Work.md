@@ -1,3 +1,7 @@
+---
+title: "Scheduling and background work"
+---
+
 # Scheduling and background work
 
 GoyGram deliberately keeps application scheduling simple: the client owns Telegram I/O, while your application owns background tasks and cancellation policy.

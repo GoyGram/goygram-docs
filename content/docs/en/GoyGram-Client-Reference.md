@@ -1,3 +1,7 @@
+---
+title: "GoyGram Client Reference"
+---
+
 # GoyGram Client Reference
 
 ```python

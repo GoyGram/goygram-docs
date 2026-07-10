@@ -1,3 +1,7 @@
+---
+title: "Sessions and Authentication"
+---
+
 # Sessions and Authentication
 
 MTProto authorization is stored in `<session_name>.vault`; the default name is `default.vault`.

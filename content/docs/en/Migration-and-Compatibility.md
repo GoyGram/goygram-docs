@@ -1,3 +1,7 @@
+---
+title: "Migration and compatibility"
+---
+
 # Migration and compatibility
 
 This guide covers the current compact GoyGram API. Prefer the public `GoyGram` object and documented event objects over private transport fields.

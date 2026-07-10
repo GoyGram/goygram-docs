@@ -1,3 +1,7 @@
+---
+title: "Bot API Calls"
+---
+
 # Bot API Calls
 
 GoyGram maps snake_case attributes to Telegram Bot API camelCase methods:

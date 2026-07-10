@@ -1,3 +1,7 @@
+---
+title: "MTProto Calls"
+---
+
 # MTProto Calls
 
 Use `mt_` followed by a TL namespace and snake_case method name. GoyGram converts it to the TL method name dynamically:

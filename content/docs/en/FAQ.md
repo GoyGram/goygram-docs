@@ -1,3 +1,7 @@
+---
+title: "FAQ"
+---
+
 # FAQ
 
 ## Can one application use Bot API and MTProto together?

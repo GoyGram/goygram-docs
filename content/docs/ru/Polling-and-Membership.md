@@ -1,3 +1,7 @@
+---
+title: "Polls and membership updates"
+---
+
 # Polls and membership updates
 
 GoyGram exposes dedicated handlers for Telegram polls and chat-member changes. Register them before `run()` just like message handlers.

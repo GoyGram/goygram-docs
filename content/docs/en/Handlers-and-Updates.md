@@ -1,3 +1,7 @@
+---
+title: "Handlers and Updates"
+---
+
 # Handlers and Updates
 
 Register asynchronous functions before `run()`.

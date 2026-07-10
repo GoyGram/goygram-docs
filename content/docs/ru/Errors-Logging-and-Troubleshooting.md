@@ -1,3 +1,7 @@
+---
+title: "Errors, Logging, and Troubleshooting"
+---
+
 # Errors, Logging, and Troubleshooting
 
 GoyGram exposes Telegram and transport exceptions from `goygram.errors`, including `GoyError`, `BadRequest`, `Unauthorized`, `Forbidden`, `NotFound`, `Conflict`, `FloodWait`, `ServerError`, `NetworkError`, `MTProtoError`, `TLSerializationError`, and `TLDeserializationError`.

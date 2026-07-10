@@ -1,3 +1,7 @@
+---
+title: "Event Objects"
+---
+
 # Event Objects
 
 GoyGram normalizes Bot API and MTProto updates into lightweight event objects.

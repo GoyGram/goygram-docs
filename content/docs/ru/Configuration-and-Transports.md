@@ -1,3 +1,7 @@
+---
+title: "Configuration and transports"
+---
+
 # Configuration and transports
 
 `GoyGram` accepts Bot API and MTProto settings in the same constructor. Supplying a bot token enables Bot API long polling. Supplying `api_id` and `api_hash` enables MTProto and its session bootstrap.

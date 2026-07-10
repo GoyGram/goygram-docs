@@ -1,3 +1,7 @@
+---
+title: "Filters"
+---
+
 # Filters
 
 Filters are callable predicates. Combine them with `&`, `|`, and `~`.

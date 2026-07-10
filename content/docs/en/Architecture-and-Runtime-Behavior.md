@@ -1,3 +1,7 @@
+---
+title: "Architecture and Runtime Behavior"
+---
+
 # Architecture and Runtime Behavior
 
 GoyGram has a single application core with optional Bot API and MTProto transports. Both feed an internal event bus; the dispatcher converts updates into event objects and invokes the registered handler collections.

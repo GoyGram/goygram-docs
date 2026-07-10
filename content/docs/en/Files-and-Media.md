@@ -1,3 +1,7 @@
+---
+title: "Files and media"
+---
+
 # Files and media
 
 Bot API media is sent through the same dynamic-call surface as every other Bot API method. Use Telegram's method parameters directly and pass the resulting keyword arguments to GoyGram.
