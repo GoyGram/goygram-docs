@@ -1,282 +1,105 @@
 import type * as PageTree from 'fumadocs-core/page-tree';
 
 const RU_NAMES: Record<string, string> = {
-  'GoyGram Docs': 'GoyGram Документация',
-  'Getting Started': 'Начало работы',
-  'Home': 'Главная',
-  'Quick Start (Bot API)': 'Быстрый старт (Bot API)',
-  'Quick Start (MTProto)': 'Быстрый старт (MTProto)',
+  'GoyGram Docs': 'Документация GoyGram',
+  'Getting started': 'Начало работы',
+  'Reference': 'Справочник',
+  'Build features': 'Разработка функций',
+  'Technical reference': 'Технический справочник',
+  'Overview': 'Обзор',
   'Installation': 'Установка',
-  'Migration Guide': 'Руководство по миграции',
-  'Core Architecture': 'Архитектура ядра',
-  'Architecture Overview': 'Обзор архитектуры',
-  'Split-Brain Design': 'Разделённый мозг',
-  'Rust Extension Core': 'Ядро расширения Rust',
-  'Event Bus System': 'Система шины событий',
-  'Dispatcher & Handler Pipeline': 'Конвейер диспетчера и обработчика',
-  'Dynamic Method Resolution': 'Динамическое разрешение методов',
-  'Transport Selection Logic': 'Логика выбора транспорта',
-  'Type System': 'Система типов',
-  'FSM State Machine': 'Конечный автомат FSM',
-  'StopPropagation': 'Остановка распространения',
-  'Networking': 'Сеть',
-  'Bot API Transport': 'Транспорт Bot API',
-  'MTProto Transport': 'Транспорт MTProto',
-  'MTProto Encryption (AES-IGE)': 'Шифрование MTProto (AES-IGE)',
-  'DH Key Exchange': 'Обмен ключами DH',
-  'MTProto Message Format': 'Формат сообщений MTProto',
-  'DC Routing System': 'Маршрутизация DC',
-  'Proxy Support': 'Поддержка прокси',
-  'Connection Lifecycle': 'Жизненный цикл соединения',
-  'Authentication & Security': 'Аутентификация и безопасность',
-  'Session Vault (AES-256-GCM)': 'Хранилище сессий (AES-256-GCM)',
-  'Interactive Auth Flow': 'Интерактивная аутентификация',
-  'Phone Number Login': 'Вход по номеру телефона',
-  'QR Code Login': 'Вход по QR-коду',
-  '2FA / SRP Password': '2FA / SRP пароль',
-  'Session Migration': 'Миграция сессии',
-  'Memory Zeroize Strategy': 'Обнуление памяти',
-  'Vault Key Derivation': 'Генерация ключа хранилища',
-  'Client API Reference': 'Справочник клиентского API',
-  'GoyGram Client – Full Reference': 'Клиент — полный справочник',
-  'Message Handling': 'Обработка сообщений',
-  'Callback Query Handling': 'Обработка callback-запросов',
-  'Poll Handling': 'Обработка опросов',
-  'Member/Admin Events': 'События участников / админов',
-  'Command System': 'Система команд',
-  'Filter System': 'Система фильтров',
-  'Keyboard System': 'Система клавиатур',
-  'HTML to MTProto Entities': 'HTML в MTProto-сущности',
-  'Bot API Layer': 'Слой Bot API',
-  'Bot API Methods': 'Методы Bot API',
-  'Bot API Types': 'Типы Bot API',
-  'Bot API Dynamic Dispatch': 'Динамическая диспетчеризация Bot API',
-  'Webhook Management': 'Управление вебхуками',
-  'MTProto Layer': 'Слой MTProto',
-  'MTProto Actions Reference': 'Справочник действий MTProto',
-  'MTProto Raw Calls': 'Прямые вызовы MTProto',
-  'Peer Resolution': 'Разрешение пиров',
-  'Channel Management': 'Управление каналами',
-  'Forum/Topic Management': 'Управление форумами / темами',
-  'Advanced': 'Продвинутые',
-  'Multi-Session Architecture': 'Мультисессионная архитектура',
-  'Error Handling': 'Обработка ошибок',
-  'Logging System': 'Система логирования',
-  'Developer Tooling': 'Инструменты разработчика',
-  'Code Generation Tools': 'Инструменты кодогенерации',
-  'CI/CD Pipeline': 'CI/CD пайплайн',
-  'Configuration Models': 'Модели конфигурации',
-  'AppCfg / BotCfg / MtCfg': 'AppCfg / BotCfg / MtCfg',
-  'Transport Interfaces': 'Транспортные интерфейсы',
-  'Event Objects': 'Объекты событий',
-  'MsgObj Reference': 'Справочник MsgObj',
-  'CbObj Reference': 'Справочник CbObj',
-  'MemberObj Reference': 'Справочник MemberObj',
-  'PollObj Reference': 'Справочник PollObj',
-  'Internals': 'Внутреннее устройство',
-  'AES-256-GCM': 'AES-256-GCM',
-  'AES-IGE': 'AES-IGE',
-  'MTCodec – TL Codec': 'MTCodec — TL кодек',
-  'RSA Public Key Registry': 'Реестр ключей RSA',
-  'Intermediate Transport Format': 'Промежуточный транспортный формат',
-  'TL Schema Generator': 'Генератор TL-схем',
-  'Bot API Code Generator': 'Генератор кода Bot API',
-  'Vault Wire Format': 'Vault wire-формат',
-  'Proxy URL Parsing': 'Парсинг прокси URL',
+  'Quick start: Bot API': 'Быстрый старт: Bot API',
+  'Quick start: MTProto userbot': 'Быстрый старт: MTProto-юзербот',
+  'Configuration and transports': 'Конфигурация и транспорты',
+  'Client reference': 'Справочник клиента',
+  'Handlers and updates': 'Обработчики и обновления',
+  'Event objects': 'Объекты событий',
+  'Filters': 'Фильтры',
+  'Bot API calls': 'Вызовы Bot API',
+  'MTProto calls': 'Вызовы MTProto',
+  'Keyboards, formatting and state': 'Клавиатуры, форматирование и состояние',
+  'Sessions and authentication': 'Сессии и аутентификация',
+  'Polls and membership updates': 'Опросы и обновления участников',
+  'Files and media': 'Файлы и медиа',
+  'Scheduling and background work': 'Планирование и фоновые задачи',
+  'Architecture and runtime behavior': 'Архитектура и поведение во время работы',
+  'Errors, logging and troubleshooting': 'Ошибки, логирование и диагностика',
+  'Migration and compatibility': 'Миграция и совместимость',
+  'FAQ': 'Вопросы и ответы',
 };
 
 function translateNames(tree: PageTree.Root): void {
-  function walk(node: PageTree.Node) {
+  const walk = (node: PageTree.Node): void => {
     if ('name' in node && typeof node.name === 'string' && node.name in RU_NAMES) {
       node.name = RU_NAMES[node.name];
     }
-    if ('children' in node) {
-      for (const child of node.children) {
-        walk(child);
-      }
-    }
-  }
-  for (const child of tree.children) {
-    walk(child);
-  }
+    if ('children' in node) node.children.forEach(walk);
+  };
+  tree.children.forEach(walk);
 }
+
+const page = (name: string, slug: string): PageTree.Node => ({
+  type: 'page', name, url: `/docs/${slug}`,
+});
 
 const sidebarTree: PageTree.Root = {
   name: 'GoyGram Docs',
   children: [
     {
-      type: 'folder',
-      name: 'Getting Started',
-      defaultOpen: true,
+      type: 'folder', name: 'Getting started', defaultOpen: true,
       children: [
-        { type: 'page', name: 'Home', url: '/docs/Home' },
-        { type: 'page', name: 'Quick Start (Bot API)', url: '/docs/Quick-Start-Bot-API' },
-        { type: 'page', name: 'Quick Start (MTProto)', url: '/docs/Quick-Start-MTProto-Userbot' },
-        { type: 'page', name: 'Installation', url: '/docs/Installation' },
-        { type: 'page', name: 'Migration Guide', url: '/docs/Migration-Guide' },
+        page('Overview', 'Home'),
+        page('Installation', 'Installation'),
+        page('Quick start: Bot API', 'Quick-Start-Bot-API'),
+        page('Quick start: MTProto userbot', 'Quick-Start-MTProto-Userbot'),
+        page('Configuration and transports', 'Configuration-and-Transports'),
       ],
     },
     {
-      type: 'folder',
-      name: 'Core Architecture',
-      defaultOpen: false,
+      type: 'folder', name: 'Reference', defaultOpen: false,
       children: [
-        { type: 'page', name: 'Architecture Overview', url: '/docs/Architecture-Overview' },
-        { type: 'page', name: 'Split-Brain Design', url: '/docs/Split-Brain-Design' },
-        { type: 'page', name: 'Rust Extension Core', url: '/docs/Rust-Extension-Core' },
-        { type: 'page', name: 'Event Bus System', url: '/docs/Event-Bus-System' },
-        { type: 'page', name: 'Dispatcher & Handler Pipeline', url: '/docs/Dispatcher-and-Handler-Pipeline' },
-        { type: 'page', name: 'Dynamic Method Resolution', url: '/docs/Dynamic-Method-Resolution' },
-        { type: 'page', name: 'Transport Selection Logic', url: '/docs/Transport-Selection-Logic' },
-        { type: 'page', name: 'Type System', url: '/docs/Type-System' },
-        { type: 'page', name: 'FSM State Machine', url: '/docs/FSM-State-Machine' },
-        { type: 'page', name: 'StopPropagation', url: '/docs/StopPropagation' },
+        page('Client reference', 'GoyGram-Client-Reference'),
+        page('Handlers and updates', 'Handlers-and-Updates'),
+        page('Event objects', 'Event-Objects'),
+        page('Filters', 'Filters'),
+        page('Bot API calls', 'Bot-API-Calls'),
+        page('MTProto calls', 'MTProto-Calls'),
       ],
     },
     {
-      type: 'folder',
-      name: 'Networking',
-      defaultOpen: false,
+      type: 'folder', name: 'Build features', defaultOpen: false,
       children: [
-        { type: 'page', name: 'Bot API Transport', url: '/docs/Bot-API-Transport' },
-        { type: 'page', name: 'MTProto Transport', url: '/docs/MTProto-Transport' },
-        { type: 'page', name: 'MTProto Encryption (AES-IGE)', url: '/docs/MTProto-Encryption-AES-IGE' },
-        { type: 'page', name: 'DH Key Exchange', url: '/docs/DH-Key-Exchange' },
-        { type: 'page', name: 'MTProto Message Format', url: '/docs/MTProto-Message-Format' },
-        { type: 'page', name: 'DC Routing System', url: '/docs/DC-Routing-System' },
-        { type: 'page', name: 'Proxy Support', url: '/docs/Proxy-Support' },
-        { type: 'page', name: 'Connection Lifecycle', url: '/docs/Connection-Lifecycle' },
+        page('Keyboards, formatting and state', 'Keyboards-Formatting-and-State'),
+        page('Sessions and authentication', 'Sessions-and-Authentication'),
+        page('Polls and membership updates', 'Polling-and-Membership'),
+        page('Files and media', 'Files-and-Media'),
+        page('Scheduling and background work', 'Scheduling-and-Background-Work'),
       ],
     },
     {
-      type: 'folder',
-      name: 'Authentication & Security',
-      defaultOpen: false,
+      type: 'folder', name: 'Technical reference', defaultOpen: false,
       children: [
-        { type: 'page', name: 'Session Vault (AES-256-GCM)', url: '/docs/Session-Vault-AES-256-GCM' },
-        { type: 'page', name: 'Interactive Auth Flow', url: '/docs/Interactive-Auth-Flow' },
-        { type: 'page', name: 'Phone Number Login', url: '/docs/Phone-Number-Login' },
-        { type: 'page', name: 'QR Code Login', url: '/docs/QR-Code-Login' },
-        { type: 'page', name: '2FA / SRP Password', url: '/docs/2FA-SRP-Password' },
-        { type: 'page', name: 'Session Migration', url: '/docs/Session-Migration' },
-        { type: 'page', name: 'Memory Zeroize Strategy', url: '/docs/Memory-Zeroize-Strategy' },
-        { type: 'page', name: 'Vault Key Derivation', url: '/docs/Vault-Key-Derivation' },
-      ],
-    },
-    {
-      type: 'folder',
-      name: 'Client API Reference',
-      defaultOpen: false,
-      children: [
-        { type: 'page', name: 'GoyGram Client – Full Reference', url: '/docs/Client-Full-Reference' },
-        { type: 'page', name: 'Message Handling', url: '/docs/Message-Handling' },
-        { type: 'page', name: 'Callback Query Handling', url: '/docs/Callback-Query-Handling' },
-        { type: 'page', name: 'Poll Handling', url: '/docs/Poll-Handling' },
-        { type: 'page', name: 'Member/Admin Events', url: '/docs/Member-Admin-Events' },
-        { type: 'page', name: 'Command System', url: '/docs/Command-System' },
-        { type: 'page', name: 'Filter System', url: '/docs/Filter-System' },
-        { type: 'page', name: 'Keyboard System', url: '/docs/Keyboard-System' },
-        { type: 'page', name: 'HTML to MTProto Entities', url: '/docs/HTML-to-MTProto-Entities' },
-      ],
-    },
-    {
-      type: 'folder',
-      name: 'Bot API Layer',
-      defaultOpen: false,
-      children: [
-        { type: 'page', name: 'Bot API Methods', url: '/docs/Bot-API-Methods' },
-        { type: 'page', name: 'Bot API Types', url: '/docs/Bot-API-Types' },
-        { type: 'page', name: 'Bot API Dynamic Dispatch', url: '/docs/Bot-API-Dynamic-Dispatch' },
-        { type: 'page', name: 'Webhook Management', url: '/docs/Webhook-Management' },
-      ],
-    },
-    {
-      type: 'folder',
-      name: 'MTProto Layer',
-      defaultOpen: false,
-      children: [
-        { type: 'page', name: 'MTProto Actions Reference', url: '/docs/MTProto-Actions-Reference' },
-        { type: 'page', name: 'MTProto Raw Calls', url: '/docs/MTProto-Raw-Calls' },
-        { type: 'page', name: 'Peer Resolution', url: '/docs/Peer-Resolution' },
-        { type: 'page', name: 'Channel Management', url: '/docs/Channel-Management' },
-        { type: 'page', name: 'Forum/Topic Management', url: '/docs/Forum-Topic-Management' },
-      ],
-    },
-    {
-      type: 'folder',
-      name: 'Advanced',
-      defaultOpen: false,
-      children: [
-        { type: 'page', name: 'Multi-Session Architecture', url: '/docs/Multi-Session-Architecture' },
-        { type: 'page', name: 'Error Handling', url: '/docs/Error-Handling' },
-        { type: 'page', name: 'Logging System', url: '/docs/Logging-System' },
-        { type: 'page', name: 'Developer Tooling', url: '/docs/Developer-Tooling' },
-        { type: 'page', name: 'Code Generation Tools', url: '/docs/Code-Generation-Tools' },
-        { type: 'page', name: 'CI/CD Pipeline', url: '/docs/CI-CD-Pipeline' },
-      ],
-    },
-    {
-      type: 'folder',
-      name: 'Configuration Models',
-      defaultOpen: false,
-      children: [
-        { type: 'page', name: 'AppCfg / BotCfg / MtCfg', url: '/docs/AppCfg-BotCfg-MtCfg' },
-        { type: 'page', name: 'Transport Interfaces', url: '/docs/Transport-Interfaces' },
-      ],
-    },
-    {
-      type: 'folder',
-      name: 'Event Objects',
-      defaultOpen: false,
-      children: [
-        { type: 'page', name: 'MsgObj Reference', url: '/docs/MsgObj-Reference' },
-        { type: 'page', name: 'CbObj Reference', url: '/docs/CbObj-Reference' },
-        { type: 'page', name: 'MemberObj Reference', url: '/docs/MemberObj-Reference' },
-        { type: 'page', name: 'PollObj Reference', url: '/docs/PollObj-Reference' },
-      ],
-    },
-    {
-      type: 'folder',
-      name: 'Internals',
-      defaultOpen: false,
-      children: [
-        { type: 'page', name: 'MTCodec – TL Codec', url: '/docs/MTCodec-TL-Codec' },
-        { type: 'page', name: 'RSA Public Key Registry', url: '/docs/RSA-Public-Key-Registry' },
-        { type: 'page', name: 'Intermediate Transport Format', url: '/docs/Intermediate-Transport-Format' },
-        { type: 'page', name: 'TL Schema Generator', url: '/docs/TL-Schema-Generator' },
-        { type: 'page', name: 'Bot API Code Generator', url: '/docs/Bot-API-Code-Generator' },
-        { type: 'page', name: 'Vault Wire Format', url: '/docs/Vault-Wire-Format' },
-        { type: 'page', name: 'Proxy URL Parsing', url: '/docs/Proxy-URL-Parsing' },
+        page('Architecture and runtime behavior', 'Architecture-and-Runtime-Behavior'),
+        page('Errors, logging and troubleshooting', 'Errors-Logging-and-Troubleshooting'),
+        page('Migration and compatibility', 'Migration-and-Compatibility'),
+        page('FAQ', 'FAQ'),
       ],
     },
   ],
 };
 
 function translateUrls(tree: PageTree.Root, locale: string): PageTree.Root {
-  const prefix = `/${locale}`;
-  function walkChildren(nodes: PageTree.Node[]): PageTree.Node[] {
-    return nodes.map((node) => {
-      if (node.type === 'page') {
-        return { ...node, url: `${prefix}${node.url}` };
-      }
-      if (node.type === 'folder') {
-        return {
-          ...node,
-          children: walkChildren(node.children),
-        };
-      }
-      return node;
-    });
-  }
-  return {
-    ...tree,
-    children: tree.children ? walkChildren(tree.children) : [],
-  };
+  const walk = (nodes: PageTree.Node[]): PageTree.Node[] => nodes.map((node) => {
+    if (node.type === 'page') return { ...node, url: `/${locale}${node.url}` };
+    if (node.type === 'folder') return { ...node, children: walk(node.children) };
+    return node;
+  });
+  return { ...tree, children: walk(tree.children) };
 }
 
 export function getSidebarTree(locale: string): PageTree.Root {
   if (locale === 'en') return sidebarTree;
-  const ruTree = translateUrls(sidebarTree, locale);
-  translateNames(ruTree);
-  return ruTree;
+  const tree = translateUrls(sidebarTree, locale);
+  translateNames(tree);
+  return tree;
 }

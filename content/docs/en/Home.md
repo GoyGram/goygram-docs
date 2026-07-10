@@ -1,50 +1,39 @@
----
-title: Home
----
+# GoyGram
 
-Welcome to the **GoyGram** wiki — the complete reference for the ultimate split-brain Telegram framework.
+GoyGram is an asynchronous Python library for Telegram bots and MTProto userbots. One application object exposes a shared event model, composable filters, dynamic Bot API calls, and raw MTProto calls.
 
-![GoyGram Logo](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
+Current documented release: **0.7.15**. The package requires Python 3.11 or newer.
 
-## What This Wiki Covers
+## Choose a transport
 
-Every single line of GoyGram is documented here. No hand-waving, no "trust me bro." Just what the bits actually do.
+- **Bot API** — pass `bot_token`; use Telegram Bot API methods and receive bot updates by long polling.
+- **MTProto** — pass `api_id` and `api_hash`; authenticate a Telegram user account and receive MTProto updates.
+- **Both** — configure both transports only when needed. Prefix a chat ID with `bot:` or `mt:` to select a transport for helpers that accept a chat ID.
 
-### What You'll Find Here
+## Start here
 
-- **Core Architecture** — How the split-brain Python+Rust design actually works under the hood. Event bus topology, dispatcher pipeline, and the dynamic method resolution system that lets you call `app.sendDocument(...)` without it being a hardcoded method.
-- **Networking Deep-Dive** — Both Bot API (HTTP long-polling via aiohttp) and MTProto (raw TCP socket with full DH key exchange, AES-IGE encryption, and RSA public-key verification). Every packet format, every encryption step.
-- **Authentication & Security** — The complete session vault system (AES-256-GCM with PBKDF2 key derivation from machine-id), interactive login flows (phone number + QR code), 2FA/SRP password handling, third-party `.session` migration with secure zeroization, and the `GOYGRAM_VAULT_KEY` override mechanism.
-- **Full Client API Reference** — Every public method, every event type (`MsgObj`, `CbObj`, `PollObj`, `MemberObj`), the filter system with boolean composition, command routing, and keyboard builders.
-- **Internals & Tooling** — The TL codec that builds MTProto TL-serialized bytes by hand, the RSA key registry with all 8 Telegram public keys, the code generation tools that scrape Telegram's Bot API docs and TL schema, and the `maturin`-based Rust extension build pipeline.
-- **Advanced Patterns** — Multi-session farming, dual-transport routing, proxy tunneling (SOCKS5 + HTTP CONNECT), dynamic DC migration on `PHONE_MIGRATE` errors, and the QR code login token lifecycle.
+- [[Installation]]
+- [[Quick-Start-Bot-API|Quick start: Bot API]]
+- [[Quick-Start-MTProto-Userbot|Quick start: MTProto userbot]]
+- [[Configuration-and-Transports|Configuration and transports]]
+- [[Handlers-and-Updates|Handlers and updates]]
+- [[Filters]]
 
-## Quick Navigation
+## Build features
 
-- **Just getting started?** → [Quick Start: Bot API](Quick-Start-Bot-API) or [Quick Start: MTProto Userbot](Quick-Start-MTProto-Userbot)
-- **Want to understand the architecture?** → [Architecture Overview](Architecture-Overview) → [Split-Brain Design](Split-Brain-Design)
-- **Digging into networking?** → [Bot API Transport](Bot-API-Transport) or [MTProto Transport](MTProto-Transport)
-- **Auth deep-dive?** → [Session Vault (AES-256-GCM)](Session-Vault-AES-256-GCM) → [Interactive Auth Flow](Interactive-Auth-Flow)
-- **API reference?** → [Client Full Reference](Client-Full-Reference) → [MTProto Actions Reference](MTProto-Actions-Reference)
+- [[Keyboards-Formatting-and-State|Keyboards, formatting and state]]
+- [[Polling-and-Membership|Polls and membership updates]]
+- [[Files-and-Media|Files and media]]
+- [[Scheduling-and-Background-Work|Scheduling and background work]]
 
-## Project Snapshot
+## Reference
 
-```python
-# Split-brain in action — one runtime, two transports
-from goygram import GoyGram, filters
-
-app = GoyGram(
-    bot_token="123456:ABC_TOKEN",     # Bot API transport
-    api_id=123456,                     # MTProto transport
-    api_hash="abcdef0123456789",
-    session_name="my_account",
-)
-
-@app.on_msg(filt=filters.text)
-async def echo(msg):
-    await msg.reply("Received on either transport. GoyGram handles routing.")
-```
-
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg?style=for-the-badge&logo=python)](https://www.python.org)
-[![Rust Core](https://img.shields.io/badge/Rust_Core-Blazing_Fast-orange.svg?style=for-the-badge&logo=rust)](https://www.rust-lang.org/)
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-red.svg?style=for-the-badge)](https://www.gnu.org/licenses/agpl-3.0)
+- [[GoyGram-Client-Reference|Client reference]]
+- [[Event-Objects|Event objects]]
+- [[Bot-API-Calls|Bot API calls]]
+- [[MTProto-Calls|MTProto calls]]
+- [[Sessions-and-Authentication|Sessions and authentication]]
+- [[Architecture-and-Runtime-Behavior|Architecture and runtime behavior]]
+- [[Errors-Logging-and-Troubleshooting|Errors, logging and troubleshooting]]
+- [[Migration-and-Compatibility|Migration and compatibility]]
+- [[FAQ]]
