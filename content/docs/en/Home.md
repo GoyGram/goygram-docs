@@ -45,4 +45,4 @@ These are two different Telegram interfaces. A bot token is for Bot API. `api_id
 
 Never put a bot token, API hash, session file, auth key, or vault file in GitHub issues, source code, or logs.
 
-For the current release and platform details, use the [GitHub repository](https://github.com/GoyGram/GoyGram). The documentation explains how to use the library; build and release details belong in the repository.
+For the current release, see the [GitHub repository](https://github.com/GoyGram/GoyGram). This Wiki and the documentation site explain how to use the framework.
