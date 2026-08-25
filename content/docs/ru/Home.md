@@ -6,7 +6,7 @@ title: "Home"
 
 ![Логотип GoyGram](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
 
-GoyGram — библиотека Python для Telegram.
+GoyGram — фреймворк на Python для Telegram.
 
 Она умеет работать двумя разными способами:
 
