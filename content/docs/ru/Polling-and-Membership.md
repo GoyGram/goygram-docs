@@ -1,12 +1,13 @@
 ---
-title: "Polls and membership updates"
+title: "Polling and Membership"
 ---
 
-# Polls and membership updates
+# Опросы и обновления членства
 
-GoyGram exposes dedicated handlers for Telegram polls and chat-member changes. Register them before `run()` just like message handlers.
+GoyGram предоставляет специальные обработчики для опросов Telegram и изменений участников чата. Зарегистрируйте их перед `run()`, как и обработчики сообщений.
 
-## Poll updates
+## Обновления опросов
+
 
 ```python
 @app.on_poll
@@ -16,9 +17,11 @@ async def poll_changed(poll):
         print(answer.text, answer.voter_count)
 ```
 
-`PollObj` contains the poll identifier, question, options, total voter count, anonymous/multiple-answer flags, close state, and the correct option information supplied by Telegram for quiz polls.
 
-Use a filter when only a subset is useful:
+`PollObj` содержит идентификатор опроса, вопрос, параметры, общее количество проголосовавших, флаги анонимности/множественных ответов, состояние закрытия и правильную информацию о параметрах, предоставляемую Telegram для опросов-викторин.
+
+Используйте фильтр, когда полезно только подмножество:
+
 
 ```python
 from goygram import filters
@@ -28,7 +31,9 @@ async def closed_poll(poll):
     print("closed:", poll.question)
 ```
 
-## Chat-member updates
+
+## Обновления участников чата
+
 
 ```python
 @app.on_member
@@ -36,11 +41,13 @@ async def member_changed(member):
     print(member.chat.id, member.from_user.id)
 ```
 
-`MemberObj` represents a `my_chat_member` or `chat_member` Bot API update. Its `old_chat_member` and `new_chat_member` fields preserve the Telegram payload, allowing applications to compare status or permissions according to their own policy.
 
-## Raw updates
+`MemberObj` представляет собой обновление API бота `my_chat_member` или `chat_member`. Его поля `old_chat_member` и `new_chat_member` сохраняют полезную нагрузку Telegram, позволяя приложениям сравнивать статус или разрешения в соответствии с их собственной политикой.
 
-Not every Telegram update has a specialized object. Use `on_update` for the original update payload:
+## Необработанные обновления
+
+Не каждое обновление Telegram имеет специализированный объект. Используйте `on_update` для исходных полезных данных обновления:
+
 
 ```python
 @app.on_update
@@ -48,6 +55,7 @@ async def audit(update):
     print(update)
 ```
 
-Raw updates are useful for observability and for Bot API additions that have not yet gained a convenience event. Do not rely on one exact dictionary shape across Bot API and MTProto; inspect and normalize the data needed by your application.
 
-Related: [[Handlers-and-Updates]], [[Event-Objects]], and [[Filters]].
+Необработанные обновления полезны для наблюдения и для дополнений API ботов, которые еще не получили удобство. Не полагайтесь на одну точную форму словаря в Bot API и MTProto; проверять и нормализовать данные, необходимые вашему приложению.
+
+Связано: [[Обработчики и обновления]], [[Объекты событий]] и [[Фильтры]].

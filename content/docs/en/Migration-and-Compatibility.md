@@ -1,5 +1,5 @@
 ---
-title: "Migration and compatibility"
+title: Migration and Compatibility
 ---
 
 # Migration and compatibility

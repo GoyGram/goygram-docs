@@ -1,5 +1,5 @@
 ---
-title: "Polls and membership updates"
+title: Polling and Membership
 ---
 
 # Polls and membership updates

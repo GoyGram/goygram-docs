@@ -6,6 +6,7 @@ title: "Filters"
 
 Filters are callable predicates. Combine them with `&`, `|`, and `~`.
 
+
 ```python
 from goygram import filters
 from goygram.filters import command, regex
@@ -18,6 +19,7 @@ async def ban(msg):
 async def links(msg):
     ...
 ```
+
 
 ## Core message filters
 

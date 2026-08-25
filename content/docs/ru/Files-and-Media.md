@@ -1,5 +1,5 @@
 ---
-title: "Files and media"
+title: "Файлы и медиа"
 ---
 
 # Files and media
@@ -7,6 +7,7 @@ title: "Files and media"
 Bot API media is sent through the same dynamic-call surface as every other Bot API method. Use Telegram's method parameters directly and pass the resulting keyword arguments to GoyGram.
 
 ## Send a file or media reference
+
 
 ```python
 await app.send_document(
@@ -22,9 +23,11 @@ await app.send_photo(
 )
 ```
 
+
 A Telegram `file_id` is the most efficient way to resend media that Telegram already knows. URLs are accepted by methods that Telegram supports. For multipart uploads, use the parameter form supported by the current Bot API transport and test it against your target Telegram endpoint.
 
 ## Forward and copy messages
+
 
 ```python
 await app.forward_message(
@@ -40,11 +43,13 @@ await app.copy_message(
 )
 ```
 
+
 Dynamic names are converted from snake case to Bot API camel case: `copy_message` becomes `copyMessage`.
 
 ## Inspect incoming content
 
 A message handler receives `MsgObj`. Common fields include `text`, `caption`, `photo`, `document`, `video`, `audio`, `voice`, `sticker`, and `reply_to_message`. Bot API fields that GoyGram does not normalize remain accessible through `msg.raw`.
+
 
 ```python
 @app.on_msg
@@ -52,6 +57,7 @@ async def inspect(msg):
     if msg.document:
         await msg.reply("Document received")
 ```
+
 
 ## MTProto media
 

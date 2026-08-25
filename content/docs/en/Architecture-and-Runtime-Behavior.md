@@ -1,5 +1,5 @@
 ---
-title: "Architecture and Runtime Behavior"
+title: Architecture and Runtime Behavior
 ---
 
 # Architecture and Runtime Behavior

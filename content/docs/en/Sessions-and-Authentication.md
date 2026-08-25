@@ -1,5 +1,5 @@
 ---
-title: "Sessions and Authentication"
+title: Sessions and Authentication
 ---
 
 # Sessions and Authentication

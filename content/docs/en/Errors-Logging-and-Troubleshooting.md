@@ -1,5 +1,5 @@
 ---
-title: "Errors, Logging, and Troubleshooting"
+title: Errors Logging and Troubleshooting
 ---
 
 # Errors, Logging, and Troubleshooting

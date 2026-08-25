@@ -1,5 +1,5 @@
 ---
-title: "Bot API Calls"
+title: Bot API Calls
 ---
 
 # Bot API Calls

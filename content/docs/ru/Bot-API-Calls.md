@@ -6,10 +6,12 @@ title: "Bot API Calls"
 
 GoyGram maps snake_case attributes to Telegram Bot API camelCase methods:
 
+
 ```python
 await app.send_message(chat_id=123, text="Hello")
 await app.delete_message(chat_id=123, message_id=456)
 ```
+
 
 The examples above call `sendMessage` and `deleteMessage`. Keyword arguments with `None` values are omitted. Returned values are the API response as provided by the transport.
 

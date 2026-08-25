@@ -6,6 +6,7 @@ title: "Handlers and Updates"
 
 Register asynchronous functions before `run()`.
 
+
 ```python
 @app.on_msg
 async def every_message(msg):
@@ -19,6 +20,7 @@ async def incoming_text(msg):
 async def help_command(msg):
     await msg.reply("Commands are case-insensitive by default.")
 ```
+
 
 ## Handler registration
 

@@ -1,5 +1,5 @@
 ---
-title: "Scheduling and background work"
+title: "Планирование и фоновая работа"
 ---
 
 # Scheduling and background work
@@ -9,6 +9,7 @@ GoyGram deliberately keeps application scheduling simple: the client owns Telegr
 ## Start a periodic task
 
 Create background work from your program's async entry point, then run the client in the same event loop.
+
 
 ```python
 import asyncio
@@ -32,11 +33,13 @@ async def main():
 asyncio.run(main())
 ```
 
+
 Keep a reference to every task you create. On shutdown, cancel tasks and await them with `return_exceptions=True` so a cancelled sleep does not mask a real shutdown error.
 
 ## Avoid blocking handlers
 
 Handlers share the event loop with Telegram polling and MTProto reads. Do not run blocking I/O or CPU-heavy work directly inside a handler. Prefer an asynchronous library, queue work to a worker, or move CPU-bound work to `asyncio.to_thread` / a process pool.
+
 
 ```python
 @app.on_cmd("report")
@@ -44,6 +47,7 @@ async def report(msg):
     result = await asyncio.to_thread(build_report)
     await msg.reply(result)
 ```
+
 
 ## State expiration
 

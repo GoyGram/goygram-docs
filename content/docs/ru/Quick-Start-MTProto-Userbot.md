@@ -1,10 +1,10 @@
 ---
-title: "Быстрый запуск пользовательского бота MTProto"
+title: "Quick Start MTProto Userbot"
 ---
 
-# Быстрый старт — MTProto Userbot
+# Quick Start — MTProto Userbot
 
-Это минимальное приложение-юзербот. При первом запуске выполняется интерактивная авторизация Telegram, если указанное хранилище еще не содержит действительный сеанс.
+This is the minimal userbot application. The first run performs interactive Telegram authorization if the named vault does not already contain a valid session.
 
 
 ```python
@@ -27,14 +27,14 @@ if __name__ == "__main__":
 ```
 
 
-Отправьте `/ping` или `!ping` с авторизованного аккаунта. `filters.me` ограничивает этот обработчик исходящими сообщениями из этой учетной записи.
+Send `/ping` from the authorized account. `filters.me` limits this handler to outgoing messages from that account.
 
-## Что происходит при запуске
+## What happens at startup
 
-1. GoyGram выбирает дата-центр Telegram, затем создает или возобновляет работу `my_first_userbot.vault`.
-2. При отсутствии действующего ключа авторизации запрашивается номер телефона и код входа; Также может быть запрошен Telegram 2FA.
-3. Он запускает программу чтения MTProto и отправляет входящие обновления зарегистрированным обработчикам.
+1. GoyGram selects a Telegram data center, then creates or resumes `my_first_userbot.vault`.
+2. With no valid authorization key, it prompts for a phone number and login code; Telegram 2FA may also be requested.
+3. It starts the MTProto reader and dispatches incoming updates to registered handlers.
 
-Вызовите `app.stop()` из обработчика или отмените задачу, чтобы полностью завершить `app.run()`.
+Call `app.stop()` from a handler or cancel the task to end `app.run()` cleanly.
 
-См. [[Сеансы и аутентификация|Сеансы и аутентификация]], [[Обработчики и обновления|Обработчики и обновления]] и [[MTProto-Calls|Вызовы MTProto]].
+See [[Sessions-and-Authentication|Sessions and authentication]], [[Handlers-and-Updates|Handlers and updates]], and [[MTProto-Calls|MTProto calls]].

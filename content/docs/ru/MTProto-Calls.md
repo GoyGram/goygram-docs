@@ -6,6 +6,7 @@ title: "MTProto Calls"
 
 Use `mt_` followed by a TL namespace and snake_case method name. GoyGram converts it to the TL method name dynamically:
 
+
 ```python
 dialogs = await app.mt_messages_get_dialogs(
     offset_date=0,
@@ -16,13 +17,16 @@ dialogs = await app.mt_messages_get_dialogs(
 )
 ```
 
+
 This calls `messages.getDialogs`.
 
 You can also use an explicit name:
 
+
 ```python
 result = await app.mt_req("messages.getDialogs", limit=5, hash=0)
 ```
+
 
 `mt_req()` removes keyword arguments whose value is `None`, converts values with `to_dict()`, and supplies the configured `api_id` and `api_hash` unless you explicitly provide them.
 

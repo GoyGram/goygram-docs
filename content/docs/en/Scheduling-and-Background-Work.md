@@ -1,5 +1,5 @@
 ---
-title: "Scheduling and background work"
+title: Scheduling and Background Work
 ---
 
 # Scheduling and background work

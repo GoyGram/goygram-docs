@@ -6,9 +6,11 @@ title: "Sessions and Authentication"
 
 MTProto authorization is stored in `<session_name>.vault`; the default name is `default.vault`.
 
+
 ```python
 app = GoyGram(api_id=123456, api_hash="…", session_name="work")
 ```
+
 
 On startup, GoyGram loads `work.vault` if present. It restores the authorization key, selected data center, and known account ID. If no usable session exists, startup enters the interactive authorization flow:
 

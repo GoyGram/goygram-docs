@@ -2,27 +2,27 @@
 title: "Architecture and Runtime Behavior"
 ---
 
-# Architecture and Runtime Behavior
+# Архитектура и поведение во время выполнения
 
-GoyGram has a single application core with optional Bot API and MTProto transports. Both feed an internal event bus; the dispatcher converts updates into event objects and invokes the registered handler collections.
+GoyGram имеет единое ядро приложения с дополнительными API-интерфейсами Bot и транспортами MTProto. Оба питают внутреннюю шину событий; диспетчер преобразует обновления в объекты событий и вызывает зарегистрированные коллекции обработчиков.
 
-## Startup order
+## Порядок запуска
 
-`run()` starts the dispatcher and FSM engine first. It then starts Bot API polling if configured. For MTProto it bootstraps authorization, starts the MTProto connection and reader, and requests update state before waiting for `stop()`.
+`run()` сначала запускает диспетчер и механизм FSM. Затем он запускает опрос Bot API, если он настроен. Для MTProto он загружает авторизацию, запускает соединение MTProto и устройство чтения, а также запрашивает состояние обновления перед ожиданием `stop()`.
 
-## Dynamic dispatch
+## Динамическая отправка
 
-Bot API and MTProto method wrappers are resolved with `__getattr__`, rather than being generated as Python methods:
+Оболочки методов Bot API и MTProto разрешаются с помощью `__getattr__`, а не генерируются как методы Python:
 
-- `send_message(...)` becomes Bot API `sendMessage`.
-- `mt_messages_get_dialogs(...)` becomes MTProto `messages.getDialogs`.
+- `send_message(...)` становится API бота `sendMessage`.
+- `mt_messages_get_dialogs(...)` становится MTProto `messages.getDialogs`.
 
-This means new supported schema methods do not require a Python wrapper release, but it also means argument validation follows the upstream transport/schema rather than static Python signatures.
+Это означает, что новые поддерживаемые методы схемы не требуют выпуска оболочки Python, но это также означает, что проверка аргументов следует за восходящим транспортом/схемой, а не за статическими сигнатурами Python.
 
-## Schema and Rust extension
+## Расширение схемы и Rust
 
-The MTProto layer initializes TL schema data through the Rust extension and schema manager. Serialization uses the Rust extension when available. Schema data has bundled/bootstrap and remote-refresh paths; applications should not depend on internal schema-cache formats.
+Уровень MTProto инициализирует данные схемы TL через расширение Rust и менеджер схем. Сериализация использует расширение Rust, если оно доступно. Данные схемы имеют пути связывания/загрузки и удаленного обновления; приложения не должны зависеть от внутренних форматов кэша схемы.
 
-## Data-center routing
+## Маршрутизация центров обработки данных
 
-MTProto without an explicit host queries dynamic data-center configuration and selects DC 2. A built-in endpoint is used only as a fallback if this lookup fails. A loaded vault can subsequently select its saved data center.
+MTProto без явного хоста запрашивает динамическую конфигурацию центра обработки данных и выбирает DC 2. Встроенная конечная точка используется только в качестве запасного варианта, если этот поиск не удался. Загруженное хранилище впоследствии может выбрать сохраненный центр обработки данных.

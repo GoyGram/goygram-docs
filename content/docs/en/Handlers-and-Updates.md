@@ -1,5 +1,5 @@
 ---
-title: "Handlers and Updates"
+title: Handlers and Updates
 ---
 
 # Handlers and Updates

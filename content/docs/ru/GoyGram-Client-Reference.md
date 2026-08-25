@@ -4,6 +4,7 @@ title: "GoyGram Client Reference"
 
 # GoyGram Client Reference
 
+
 ```python
 GoyGram(
     bot_token=None,
@@ -14,6 +15,7 @@ GoyGram(
     system_version=None, system_lang_code="en", lang_pack="", lang_code="en",
 )
 ```
+
 
 Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically (with a built-in fallback). Supplying both enables both transports.
 

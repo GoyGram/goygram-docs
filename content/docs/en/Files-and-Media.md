@@ -1,5 +1,5 @@
 ---
-title: "Files and media"
+title: Files and Media
 ---
 
 # Files and media

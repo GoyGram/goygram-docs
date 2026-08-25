@@ -1,5 +1,5 @@
 ---
-title: "Configuration and transports"
+title: Configuration and Transports
 ---
 
 # Configuration and transports

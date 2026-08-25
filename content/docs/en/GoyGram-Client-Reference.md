@@ -1,5 +1,5 @@
 ---
-title: "GoyGram Client Reference"
+title: GoyGram Client Reference
 ---
 
 # GoyGram Client Reference

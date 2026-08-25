@@ -1,5 +1,5 @@
 ---
-title: "Event Objects"
+title: Event Objects
 ---
 
 # Event Objects

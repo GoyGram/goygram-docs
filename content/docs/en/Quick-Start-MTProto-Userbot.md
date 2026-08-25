@@ -25,7 +25,7 @@ if __name__ == "__main__":
     asyncio.run(app.run())
 ```
 
-Send `/ping` or `!ping` from the authorized account. `filters.me` limits this handler to outgoing messages from that account.
+Send `/ping` from the authorized account. `filters.me` limits this handler to outgoing messages from that account.
 
 ## What happens at startup
 
