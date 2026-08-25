@@ -1,12 +1,10 @@
 ---
-title: "Installation"
+title: "Установка"
 ---
 
-# Installation
+# Установка
 
-GoyGram requires Python 3.11 or newer.
-
-## Install from PyPI
+GoyGram распространяется на PyPI. Для него требуется **Python 3.11+**, а расширение Rust создается с помощью Maturin.
 
 
 ```bash
@@ -14,36 +12,31 @@ python -m pip install --upgrade goygram
 ```
 
 
-Check what was installed:
+Для конкретного выпуска:
 
 
 ```bash
-python -c "from importlib.metadata import version; print(version('goygram'))"
+python -m pip install --upgrade --force-reinstall goygram==0.7.15
 ```
 
 
-The Python command and the command that starts your bot must use the same environment.
-
-## Install from source
-
-Use a source install when your platform does not have a compatible wheel, for example on an ARM64 Termux device:
+Убедитесь, что интерпретатор, запускающий вашу программу, импортирует ожидаемый пакет:
 
 
 ```bash
-pkg update
-pkg install python rust clang
-python -m pip install --no-build-isolation .
+python -c "from importlib.metadata import version; import goygram; print(version('goygram')); print(goygram.__file__)"
 ```
 
 
-The source build needs a Rust compiler and a C compiler.
+## Примечание о платформе
 
-## Before you start
+Пакет включает сериализацию TL на базе Rust. Установите его в той же среде Python, в которой будет запускаться приложение. На платформах без совместимого колеса для установки может потребоваться локальная цепочка инструментов Rust и компилятор.
 
-For a Bot API bot, create the bot with [BotFather](https://t.me/BotFather) and keep its token private.
+## Учетные данные
 
-For an MTProto userbot, create an application at [my.telegram.org](https://my.telegram.org) and keep its `api_id` and `api_hash` private.
+- **API бота:** создайте бота с помощью BotFather и используйте его токен.
+- **MTProto:** создайте приложение на сайте [my.telegram.org](https://my.telegram.org) и используйте его `api_id` и `api_hash`.
 
-Do not commit tokens, API hashes, session files, auth keys, or vault files.
+Не фиксируйте токены, хеши API, файлы хранилища или сгенерированные материалы сеанса.
 
-Next: [[Quick-Start-Bot-API|Quick start: Bot API]] or [[Quick-Start-MTProto-Userbot|Quick start: MTProto userbot]].
+Далее: [Быстрый старт: пользовательский робот MTProto](/ru/docs/Quick-Start-MTProto-Userbot) или [Быстрый старт: Bot API](/ru/docs/Quick-Start-Bot-API).

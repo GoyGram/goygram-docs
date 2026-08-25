@@ -40,4 +40,4 @@ Convenience methods:
 - `await msg.reply(text, kbd=None, topic_id=None, link_options=None, **kw)` replies in the same chat.
 - `await msg.delete()` deletes this message.
 
-`CbObj`, `PollObj`, and `MemberObj` are likewise normalized event containers. Consult [[Event-Objects|Event objects]] for their available fields.
+`CbObj`, `PollObj`, and `MemberObj` are likewise normalized event containers. Consult [Event objects](/docs/Event-Objects) for their available fields.

@@ -26,12 +26,12 @@ GoyGram — библиотека Python для Telegram.
 
 ## Начать
 
-- [[Installation]]
-- [[Quick-Start-Bot-API|Быстрый старт: Bot API]]
-- [[Quick-Start-MTProto-Userbot|Быстрый старт: MTProto userbot]]
-- [[Writing-Code|Как писать код для GoyGram]]
-- [[Bytes-and-TL|Как GoyGram раскладывает данные по байтам]]
-- [[Configuration-and-Transports|Конфигурация и транспорты]]
+- [Installation](/ru/docs/Installation)
+- [Быстрый старт: Bot API](/ru/docs/Quick-Start-Bot-API)
+- [Быстрый старт: MTProto userbot](/ru/docs/Quick-Start-MTProto-Userbot)
+- [Как писать код для GoyGram](/ru/docs/Writing-Code)
+- [Как GoyGram раскладывает данные по байтам](/ru/docs/Bytes-and-TL)
+- [Конфигурация и транспорты](/ru/docs/Configuration-and-Transports)
 
 ## Важно
 
@@ -41,11 +41,11 @@ GoyGram — библиотека Python для Telegram.
 
 ## Остальная документация
 
-- [[GoyGram-Client-Reference|Справочник клиента]]
-- [[Handlers-and-Updates|Обработчики и обновления]]
-- [[Event-Objects|Объекты событий]]
-- [[Filters|Фильтры]]
-- [[Bot-API-Calls|Вызовы Bot API]]
-- [[MTProto-Calls|Вызовы MTProto]]
-- [[Sessions-and-Authentication|Сессии и аутентификация]]
-- [[Errors-Logging-and-Troubleshooting|Ошибки и диагностика]]
+- [Справочник клиента](/ru/docs/GoyGram-Client-Reference)
+- [Обработчики и обновления](/ru/docs/Handlers-and-Updates)
+- [Объекты событий](/ru/docs/Event-Objects)
+- [Фильтры](/ru/docs/Filters)
+- [Вызовы Bot API](/ru/docs/Bot-API-Calls)
+- [Вызовы MTProto](/ru/docs/MTProto-Calls)
+- [Сессии и аутентификация](/ru/docs/Sessions-and-Authentication)
+- [Ошибки и диагностика](/ru/docs/Errors-Logging-and-Troubleshooting)

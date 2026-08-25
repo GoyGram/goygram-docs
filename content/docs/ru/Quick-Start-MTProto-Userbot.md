@@ -37,4 +37,4 @@ Send `/ping` from the authorized account. `filters.me` limits this handler to ou
 
 Call `app.stop()` from a handler or cancel the task to end `app.run()` cleanly.
 
-See [[Sessions-and-Authentication|Sessions and authentication]], [[Handlers-and-Updates|Handlers and updates]], and [[MTProto-Calls|MTProto calls]].
+See [Sessions and authentication](/ru/docs/Sessions-and-Authentication), [Handlers and updates](/ru/docs/Handlers-and-Updates), and [MTProto calls](/ru/docs/MTProto-Calls).

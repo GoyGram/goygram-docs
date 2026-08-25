@@ -38,7 +38,7 @@ await app.mt_messages_get_history(peer="me", limit=10)
 ```
 
 
-Do not depend on generated per-method wrapper classes. Use [[Bot-API-Calls]] or [[MTProto-Calls]] for the conversion rules.
+Do not depend on generated per-method wrapper classes. Use [Bot API Calls](/ru/docs/Bot-API-Calls) or [MTProto Calls](/ru/docs/MTProto-Calls) for the conversion rules.
 
 ## Handler registration
 
@@ -56,7 +56,7 @@ Handler registration also accepts a callback directly: `app.on_msg(handler, filt
 
 ## MTProto sessions
 
-MTProto authentication is session-based. Keep the session vault secure and stable between restarts; changing `session_name` creates a different vault target. Review [[Sessions-and-Authentication]] before migrating a deployment.
+MTProto authentication is session-based. Keep the session vault secure and stable between restarts; changing `session_name` creates a different vault target. Review [Sessions and Authentication](/ru/docs/Sessions-and-Authentication) before migrating a deployment.
 
 ## Compatibility discipline
 
@@ -65,4 +65,4 @@ MTProto authentication is session-based. Keep the session vault secure and stabl
 - Treat raw MTProto schema calls as version-sensitive and test them after Telegram schema updates.
 - Do not access `app.core`, transport readers, or dispatcher internals unless you are intentionally maintaining an integration against private API.
 
-See [[Errors-Logging-and-Troubleshooting]] for upgrade diagnostics.
+See [Errors Logging and Troubleshooting](/ru/docs/Errors-Logging-and-Troubleshooting) for upgrade diagnostics.

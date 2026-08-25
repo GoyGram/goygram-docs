@@ -105,6 +105,6 @@ TL-объект начинается с 4 байтов `constructor ID`. Это 
 - TL-схема: `goygram/protocol/tl_schema.py`;
 - native-операции: `ext_rust/src/lib.rs`;
 - MTProto transport: `goygram/transports/mtproto.py`;
-- формат пакета: [[MTProto-Message-Format|формат MTProto-сообщения]].
+- формат пакета: [формат MTProto-сообщения](/ru/docs/MTProto-Message-Format).
 
 Главное правило: один пропущенный байт сдвигает всё, что идёт после него.

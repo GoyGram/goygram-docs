@@ -2,107 +2,111 @@
 title: Bytes and TL
 ---
 
-# Bytes and TL data
+# Как GoyGram раскладывает данные по байтам
 
-This page explains the bytes used on the main low-level path: Telegram TL data inside an MTProto message.
+Эта страница не обещает «каждый байт всего проекта». Она показывает, что происходит с байтами в главном низкоуровневом пути: TL-данные Telegram и MTProto-пакет.
 
-It does not pretend to describe every byte in the whole project. It describes each important field that the codec reads and writes.
+## Что такое байт
 
-## What is a byte?
-
-A byte is a small box containing eight bits, each set to `0` or `1`:
+Байт — это маленькая коробка на 8 нулей или единиц. Например:
 
 ```text
-5 = 00000101
+число 5 = 00000101
 ```
 
-Telegram does not send a Python object such as `Message(...)`. GoyGram turns the object into bytes. Telegram reads those bytes and turns them back into data.
+Telegram не отправляет по сети объекты Python вроде `Message(...)`. Перед отправкой объект превращается в последовательность байтов. На другой стороне эти байты читаются обратно.
 
-## A TL constructor
+## TL-конструктор
 
-A TL object starts with a four-byte constructor ID. The ID tells the decoder what comes next:
+TL-объект начинается с 4 байтов constructor ID. Это номер, который говорит: «дальше лежит объект такого типа».
+
+Упрощённо:
 
 ```text
-[4-byte constructor ID]
-[field 1 bytes]
-[field 2 bytes]
-[field 3 bytes]
+[4 байта constructor ID]
+[байты поля 1]
+[байты поля 2]
+[байты поля 3]
 ```
 
-Field order matters. Swapping two fields changes how every following byte is read.
+Порядок полей важен. Нельзя поменять местами два поля и ожидать тот же объект.
 
-## Integer sizes
+## Целое число
 
-- `int` is 4 bytes;
-- `long` is 8 bytes;
-- `int128` is 16 bytes;
-- `int256` is 32 bytes.
+- `int` занимает 4 байта.
+- `long` занимает 8 байт.
+- `int128` занимает 16 байт.
+- `int256` занимает 32 байта.
 
-If a decoder reads seven bytes for an 8-byte `long`, the read position is now wrong. The rest of the packet will be interpreted incorrectly.
+Внутри каждого такого числа лежат ровно эти байты. Если взять только 7 из 8 байтов для `long`, следующая часть пакета начнётся не там, где ожидает Telegram, и всё после неё станет мусором.
 
-## Strings and byte arrays
+## Строка и байтовый массив
 
-A string is first encoded as UTF-8. One character is not always one byte:
+Строка сначала превращается в UTF-8. UTF-8 может использовать разное число байтов на символ:
 
-- `A` uses 1 byte;
-- `Я` uses 2 bytes;
-- many emoji use 4 bytes.
+- английская `A` — 1 байт;
+- кириллическая `Я` — 2 байта;
+- многие emoji — 4 байта.
 
-The encoded length and the number of characters are therefore different things.
+Поэтому количество символов и количество байтов — не одно и то же.
 
-The encoded data is followed by padding so the next TL value starts on a four-byte boundary. A simplified example:
+После длины идут сами байты. Затем добавляется выравнивание, чтобы следующий TL-элемент начинался на границе 4 байт.
+
+Пример идеи, не полного Telegram-пакета:
 
 ```text
-length: 03
-data:   41 42 43
-padding: 00 00
+длина: 03
+данные: 41 42 43
+выравнивание: 00 00
 ```
 
-Short and long values use different TL length forms. Use GoyGram's codec instead of writing this by hand in application code.
+Реальное TL-правило длины зависит от значения длины: короткая длина занимает 1 байт, большая длина использует специальную форму. Всегда пользуйтесь TL codec GoyGram, а не собирайте это вручную наугад.
 
-## Vectors
+## Вектор
 
-A TL vector is more than a Python list:
+Вектор — это не «просто список Python». В TL-представлении у него есть:
 
 ```text
-[vector constructor ID]
-[number of items]
-[item 1]
-[item 2]
+[constructor ID вектора]
+[количество элементов]
+[элемент 1]
+[элемент 2]
 ...
 ```
 
-Every item is encoded according to its type. A vector of integers and a vector of objects therefore have different byte layouts.
+Каждый элемент кодируется своим типом. Поэтому список чисел и список объектов имеют разный байтовый вид.
 
-## An MTProto message
+## MTProto-пакет
 
-The TL body is wrapped by MTProto. In simplified form:
+После TL-данных добавляется слой MTProto. Упрощённая схема:
 
 ```text
-[auth_key_id: 8 bytes]
-[msg_key: 16 bytes]
-[encrypted body]
+[auth_key_id: 8 байт]
+[msg_key: 16 байт]
+[зашифрованный блок]
 ```
 
-The encrypted body contains the salt, session ID, message ID, sequence number, body length, and TL body. In normal operation these bytes are protected by AES-256-IGE.
+Внутри зашифрованного блока находятся служебные поля, salt, session ID, message ID, sequence number, длина тела и TL body. В обычном режиме эти байты нельзя читать глазами: они защищены AES-256-IGE.
 
-## Bounds checks
+## Проверки размера
 
-A decoder must check:
+GoyGram должен проверять:
 
-- that the buffer contains the next field;
-- that a declared length stays inside the buffer;
-- that padding does not move the read position past the end;
-- that the packet size matches the format;
-- that required fields were actually read.
+- что в буфере хватает байтов для очередного поля;
+- что длина не выходит за границы буфера;
+- что padding не уводит указатель за конец;
+- что размер пакета соответствует формату;
+- что обязательные поля действительно были прочитаны.
 
-Reading after the end of a buffer means the data is damaged. It is not a valid partial response.
+Если декодер продолжает чтение после конца буфера, это не «частичный ответ», а ошибка повреждённых данных.
 
-## Where to look in the source
+## Где смотреть в коде
 
-- TL schema: `goygram/protocol/tl_schema.py`;
-- native operations: `ext_rust/src/lib.rs`;
+- TL codec: `goygram/protocol/tl_schema.py` и `goygram/mtcodec.py`;
+- native операции: `ext_rust/src/lib.rs`;
 - MTProto transport: `goygram/transports/mtproto.py`;
-- message layout: [MTProto message format](MTProto-Message-Format).
+- формат пакета: страница [MTProto message format](/docs/MTProto-Message-Format).
 
-One missing byte shifts everything that follows it.
+## Главное правило
+
+Не изменяйте размер поля ради экономии места. В протоколе важен каждый байт: один пропущенный байт сдвигает чтение всех следующих полей.

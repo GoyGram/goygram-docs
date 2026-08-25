@@ -22,4 +22,4 @@ if __name__ == "__main__":
 
 `run()` использует длинный опрос. Перед опросом GoyGram пытается удалить вебхук с помощью `drop_pending_updates=False`; не оставляйте активным другой опросчик для того же бота.
 
-Обработчики получают нормализованный объект сообщения. См. [[Handlers-and-Updates|Handlers and update]] и [[Bot-API-Calls|Вызовы Bot API]].
+Обработчики получают нормализованный объект сообщения. См. [Handlers and update](/ru/docs/Handlers-and-Updates) и [Вызовы Bot API](/ru/docs/Bot-API-Calls).

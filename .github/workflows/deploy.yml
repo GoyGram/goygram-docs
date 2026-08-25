@@ -32,6 +32,7 @@ jobs:
         run: |
           python3 << 'PYEOF'
           import os
+          import re
 
           content_dir = "content/docs/en"
           wiki_dir = "wiki-temp"
@@ -160,6 +161,11 @@ jobs:
               content = content.replace(
                   "https://github.com/sepiol026-wq/GoyGram",
                   "https://github.com/GoyGram/GoyGram"
+              )
+              content = re.sub(
+                  r"\[\[([^|\]]+)(?:\|([^\]]+))?\]\]",
+                  lambda match: "[" + (match.group(2) or match.group(1).replace("-", " ")) + "](/docs/" + match.group(1) + ")",
+                  content
               )
               frontmatter = '---\ntitle: ' + title + '\n---\n\n'
               if content.lstrip().startswith('---'):

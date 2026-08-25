@@ -20,4 +20,4 @@ if __name__ == "__main__":
 
 `run()` uses long polling. Before polling, GoyGram attempts to remove a webhook with `drop_pending_updates=False`; do not keep another poller active for the same bot.
 
-Handlers receive a normalized message object. See [[Handlers-and-Updates|Handlers and updates]] and [[Bot-API-Calls|Bot API calls]].
+Handlers receive a normalized message object. See [Handlers and updates](/docs/Handlers-and-Updates) and [Bot API calls](/docs/Bot-API-Calls).

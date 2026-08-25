@@ -61,6 +61,6 @@ async def inspect(msg):
 
 ## MTProto media
 
-For MTProto, call the schema method explicitly through the `mt_` prefix, for example `mt_messages_send_media`. Arguments must match the active Telegram TL schema. Read [[MTProto-Calls]] before using raw MTProto objects.
+For MTProto, call the schema method explicitly through the `mt_` prefix, for example `mt_messages_send_media`. Arguments must match the active Telegram TL schema. Read [MTProto Calls](/ru/docs/MTProto-Calls) before using raw MTProto objects.
 
-Also see [[Bot-API-Calls]] and [[Event-Objects]].
+Also see [Bot API Calls](/ru/docs/Bot-API-Calls) and [Event Objects](/ru/docs/Event-Objects).

@@ -4,40 +4,33 @@ title: Installation
 
 # Installation
 
-GoyGram requires Python 3.11 or newer.
-
-## Install from PyPI
+GoyGram is distributed on PyPI. It requires **Python 3.11+** and builds a Rust extension through Maturin.
 
 ```bash
 python -m pip install --upgrade goygram
 ```
 
-Check what was installed:
+For a specific release:
 
 ```bash
-python -c "from importlib.metadata import version; print(version('goygram'))"
+python -m pip install --upgrade --force-reinstall goygram==0.7.45
 ```
 
-The Python command and the command that starts your bot must use the same environment.
-
-## Install from source
-
-Use a source install when your platform does not have a compatible wheel, for example on an ARM64 Termux device:
+Confirm that the interpreter which starts your program imports the expected package:
 
 ```bash
-pkg update
-pkg install python rust clang
-python -m pip install --no-build-isolation .
+python -c "from importlib.metadata import version; import goygram; print(version('goygram')); print(goygram.__file__)"
 ```
 
-The source build needs a Rust compiler and a C compiler.
+## Platform note
 
-## Before you start
+The package includes Rust-backed TL serialization. Install it in the same Python environment that will run the application. On platforms without a compatible wheel, a local Rust toolchain and a compiler may be needed for installation.
 
-For a Bot API bot, create the bot with [BotFather](https://t.me/BotFather) and keep its token private.
+## Credentials
 
-For an MTProto userbot, create an application at [my.telegram.org](https://my.telegram.org) and keep its `api_id` and `api_hash` private.
+- **Bot API:** create a bot with BotFather and use its token.
+- **MTProto:** create an application at [my.telegram.org](https://my.telegram.org) and use its `api_id` and `api_hash`.
 
-Do not commit tokens, API hashes, session files, auth keys, or vault files.
+Do not commit tokens, API hashes, vault files, or generated session material.
 
-Next: [[Quick-Start-Bot-API|Quick start: Bot API]] or [[Quick-Start-MTProto-Userbot|Quick start: MTProto userbot]].
+Next: [Quick start: MTProto userbot](/docs/Quick-Start-MTProto-Userbot) or [Quick start: Bot API](/docs/Quick-Start-Bot-API).

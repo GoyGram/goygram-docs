@@ -47,6 +47,6 @@ async def report(msg):
 
 ## State expiration
 
-[[Keyboards-Formatting-and-State|State entries]] can receive a TTL. GoyGram's runtime starts the FSM cleanup loop automatically, so expired entries disappear while `app.run()` is active.
+[State entries](/docs/Keyboards-Formatting-and-State) can receive a TTL. GoyGram's runtime starts the FSM cleanup loop automatically, so expired entries disappear while `app.run()` is active.
 
 For external schedulers such as systemd timers, cron, or a worker queue, keep the Telegram client startup separate from the job implementation and initialize only the transport that the job requires.

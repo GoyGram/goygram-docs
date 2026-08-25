@@ -50,4 +50,4 @@ async def audit(update):
 
 Raw updates are useful for observability and for Bot API additions that have not yet gained a convenience event. Do not rely on one exact dictionary shape across Bot API and MTProto; inspect and normalize the data needed by your application.
 
-Related: [[Handlers-and-Updates]], [[Event-Objects]], and [[Filters]].
+Related: [Handlers and Updates](/docs/Handlers-and-Updates), [Event Objects](/docs/Event-Objects), and [Filters](/docs/Filters).
