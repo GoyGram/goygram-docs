@@ -45,7 +45,7 @@ If a decoder reads seven bytes for an 8-byte `long`, the read position is now wr
 A string is first encoded as UTF-8. One character is not always one byte:
 
 - `A` uses 1 byte;
-- `Я` uses 2 bytes;
+- `é` uses 2 bytes;
 - many emoji use 4 bytes.
 
 The encoded length and the number of characters are therefore different things.
