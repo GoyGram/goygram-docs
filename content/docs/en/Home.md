@@ -4,9 +4,7 @@ title: Home
 
 # GoyGram
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png" alt="Логотип GoyGram" width="650">
-</p>
+![Логотип GoyGram](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
 
 GoyGram — библиотека Python для Telegram.
 
