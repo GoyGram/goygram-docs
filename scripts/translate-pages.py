@@ -14,7 +14,25 @@ from deep_translator import GoogleTranslator
 
 SRC_DIR = Path("content/docs/en")
 OUT_DIR = Path("content/docs/ru")
-MANUAL_RU_FILES = {"Home.md", "Writing-Code.md", "Bytes-and-TL.md"}
+MANUAL_RU_FILES = {
+    "Home.md",
+    "Installation.md",
+    "Quick-Start-Bot-API.md",
+    "Quick-Start-MTProto-Userbot.md",
+    "Writing-Code.md",
+    "Bytes-and-TL.md",
+    "Configuration-and-Transports.md",
+    "GoyGram-Client-Reference.md",
+    "Handlers-and-Updates.md",
+    "Event-Objects.md",
+    "Filters.md",
+    "Bot-API-Calls.md",
+    "MTProto-Calls.md",
+    "Sessions-and-Authentication.md",
+    "Files-and-Media.md",
+    "Migration-and-Compatibility.md",
+    "FAQ.md",
+}
 DELAY_SECONDS = 2.5  # conservative delay to avoid rate limits
 MAX_CHUNK_LEN = 4500  # Google Translate has ~5000 char limit per request
 

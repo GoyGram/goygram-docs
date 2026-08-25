@@ -1,26 +1,24 @@
 ---
-title: "Bot API Calls"
+title: "Вызовы Bot API"
 ---
 
-# Bot API Calls
+# Вызовы Bot API
 
-GoyGram maps snake_case attributes to Telegram Bot API camelCase methods:
-
+GoyGram переводит имена методов из `snake_case` в формат Telegram Bot API.
 
 ```python
-await app.send_message(chat_id=123, text="Hello")
+await app.send_message(chat_id=123, text="Привет")
 await app.delete_message(chat_id=123, message_id=456)
 ```
 
+Это вызовет методы Telegram `sendMessage` и `deleteMessage`. Параметры со значением `None` не отправляются.
 
-The examples above call `sendMessage` and `deleteMessage`. Keyword arguments with `None` values are omitted. Returned values are the API response as provided by the transport.
+Если нужно указать имя метода как в документации Telegram:
 
-Use `await app.bot_req("sendMessage", chat_id=123, text="Hello")` when you need an explicit Bot API method name.
+```python
+await app.bot_req("sendMessage", chat_id=123, text="Привет")
+```
 
-## Transport selection
+Динамические вызовы доступны, если приложение создано с `bot_token`. При включённых двух транспортах имя без префикса относится к Bot API. Для MTProto используется `mt_`.
 
-Dynamic Bot API methods are available only when `bot_token` configured the Bot API transport. If both transports are configured, an unprefixed dynamic method is Bot API; MTProto calls must start with `mt_`.
-
-For message helpers, pass `bot:123` or `mt:123` as a chat ID when selecting a transport matters.
-
-Bot API coverage is dynamic: a method does not need a generated Python wrapper. Use Telegram's official Bot API documentation for method-specific parameters and responses.
+Список параметров и формат ответа проверяйте в официальной документации [Telegram Bot API](https://core.telegram.org/bots/api).

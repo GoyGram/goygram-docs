@@ -1,33 +1,28 @@
 ---
-title: "Installation"
+title: "Установка"
 ---
 
-# Installation
+# Установка
 
-GoyGram requires Python 3.11 or newer.
+GoyGram требует Python 3.11 или новее.
 
-## Install from PyPI
-
+## Установка из PyPI
 
 ```bash
 python -m pip install --upgrade goygram
 ```
 
-
-Check what was installed:
-
+Проверить установленную версию:
 
 ```bash
 python -c "from importlib.metadata import version; print(version('goygram'))"
 ```
 
+Команда `python`, которой вы ставите пакет, и команда, которой запускаете бота, должны использовать одно и то же окружение.
 
-The Python command and the command that starts your bot must use the same environment.
+## Установка из исходников
 
-## Install from source
-
-Use a source install when your platform does not have a compatible wheel, for example on an ARM64 Termux device:
-
+Так ставят пакет на платформе без подходящего wheel, например на ARM64 Termux:
 
 ```bash
 pkg update
@@ -35,15 +30,10 @@ pkg install python rust clang
 python -m pip install --no-build-isolation .
 ```
 
+## Перед началом
 
-The source build needs a Rust compiler and a C compiler.
+Для Bot API создайте бота через [BotFather](https://t.me/BotFather). Для MTProto создайте приложение на [my.telegram.org](https://my.telegram.org).
 
-## Before you start
+Токен, `api_hash`, файлы сессий и vault нельзя класть в Git или показывать в логах.
 
-For a Bot API bot, create the bot with [BotFather](https://t.me/BotFather) and keep its token private.
-
-For an MTProto userbot, create an application at [my.telegram.org](https://my.telegram.org) and keep its `api_id` and `api_hash` private.
-
-Do not commit tokens, API hashes, session files, auth keys, or vault files.
-
-Next: [Quick start: Bot API](/docs/Quick-Start-Bot-API) or [Quick start: MTProto userbot](/docs/Quick-Start-MTProto-Userbot).
+Дальше: [быстрый старт Bot API](/ru/docs/Quick-Start-Bot-API) или [быстрый старт MTProto](/ru/docs/Quick-Start-MTProto-Userbot).

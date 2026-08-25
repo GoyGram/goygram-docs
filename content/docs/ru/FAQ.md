@@ -1,41 +1,37 @@
 ---
-title: "FAQ"
+title: "Частые вопросы"
 ---
 
-# FAQ
+# Частые вопросы
 
-## Can one application use Bot API and MTProto together?
+## Можно использовать Bot API и MTProto вместе?
 
-Yes. Pass `bot_token`, `api_id`, and `api_hash` to one `GoyGram` instance. Bot API calls use ordinary snake-case names; MTProto calls use the `mt_` prefix. See [Configuration and Transports](/ru/docs/Configuration-and-Transports).
+Да. Передайте в один `GoyGram` `bot_token`, `api_id` и `api_hash`. Имена Bot API пишутся в `snake_case`, MTProto — с префиксом `mt_`.
 
-## Why does `await app.send_message(...)` raise `bot net is not configured`?
+## Почему появляется `bot net is not configured`?
 
-The client was created without `bot_token`. Configure a Bot API token or use the matching MTProto method, such as `mt_messages_send_message`.
+Приложение создано без `bot_token`. Добавьте токен или используйте соответствующий метод MTProto.
 
-## Why does an MTProto call raise `mt net is not configured`?
+## Почему появляется `mt net is not configured`?
 
-Provide `api_id` and `api_hash` (or explicit MT connection details for an advanced setup). The first run must complete authentication. See [Sessions and Authentication](/ru/docs/Sessions-and-Authentication).
+Передайте `api_id` и `api_hash` и завершите первый вход.
 
-## How do I discover available methods?
+## Что получает обработчик?
 
-Call `app.help()` to print available method information. For Bot API calls, translate Telegram's camelCase method names to snake case. For MTProto calls, use `mt_` followed by the namespace and method in snake case. See [Bot API Calls](/ru/docs/Bot-API-Calls) and [MTProto Calls](/ru/docs/MTProto-Calls).
+`on_msg` получает `MsgObj`, `on_cb` — `CbObj`, `on_poll` — `PollObj`, `on_member` — `MemberObj`, а `on_update` — исходное нормализованное обновление.
 
-## What does a handler receive?
+## Можно писать обычные функции?
 
-`on_msg` receives `MsgObj`; `on_cb` receives `CbObj`; `on_poll` receives `PollObj`; `on_member` receives `MemberObj`; `on_update` receives the raw update. See [Event Objects](/ru/docs/Event-Objects).
+Нет. Обработчики должны быть `async def`. Тяжёлую синхронную работу вынесите из event loop.
 
-## Can I use synchronous handlers?
+## Как остановить приложение?
 
-No. Handlers should be `async def` functions. Blocking work must be moved out of the event loop; read [Scheduling and Background Work](/ru/docs/Scheduling-and-Background-Work).
+Вызовите `app.stop()`. GoyGram завершит reader, polling и внутренние задачи.
 
-## How do I stop the application?
+## Где хранится состояние?
 
-Call `app.stop()`. `await app.run()` then closes transports, stops FSM cleanup, and cancels GoyGram's internal tasks.
+По умолчанию в памяти, по паре `(chat_id, user_id)`. После перезапуска оно теряется. Используйте `set_state`, `get_state`, `get_state_data` и `clear_state`.
 
-## Where is conversation state stored?
+## Что проверить при ошибке Telegram?
 
-In memory, keyed by `(chat_id, user_id)`. It is lost on process restart. Use `set_state`, `get_state`, `get_state_data`, and `clear_state`; optional TTL removes stale entries. See [Keyboards, formatting and state](/ru/docs/Keyboards-Formatting-and-State).
-
-## A Telegram API call fails. What should I inspect first?
-
-Check the method name, required parameters, selected transport, token/session validity, and logs. Then consult [Errors Logging and Troubleshooting](/ru/docs/Errors-Logging-and-Troubleshooting).
+Проверьте имя метода, обязательные параметры, выбранный транспорт, токен или сессию и журнал приложения.
