@@ -28,6 +28,7 @@ MANUAL_RU_FILES = {
     "Filters.md",
     "Bot-API-Calls.md",
     "MTProto-Calls.md",
+    "MTProto-Message-Format.md",
     "Sessions-and-Authentication.md",
     "Files-and-Media.md",
     "Migration-and-Compatibility.md",
