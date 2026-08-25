@@ -4,40 +4,50 @@ title: Home
 
 # GoyGram
 
-GoyGram is an asynchronous Python library for Telegram bots and MTProto userbots. One application object exposes a shared event model, composable filters, dynamic Bot API calls, and raw MTProto calls.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png" alt="Логотип GoyGram" width="650">
+</p>
 
-Current documented release: **0.7.15**. The package requires Python 3.11 or newer.
+GoyGram — библиотека Python для Telegram.
 
-## Choose a transport
+Она умеет работать двумя разными способами:
 
-- **Bot API** — pass `bot_token`; use Telegram Bot API methods and receive bot updates by long polling.
-- **MTProto** — pass `api_id` and `api_hash`; authenticate a Telegram user account and receive MTProto updates.
-- **Both** — configure both transports only when needed. Prefix a chat ID with `bot:` or `mt:` to select a transport for helpers that accept a chat ID.
+- **Bot API** — Telegram разговаривает с программой через HTTPS. Это обычный путь для ботов.
+- **MTProto** — программа подключается как пользователь Telegram через низкоуровневое соединение. Это путь для userbot.
 
-## Start here
+Внутри есть Python-код, Rust-расширение для части быстрых операций, общая очередь событий и два независимых транспорта. Эти транспорты не становятся одним «магическим» протоколом: Bot API и MTProto остаются разными системами.
+
+Текущая опубликованная версия: **0.7.45**.
+
+## Что реально публикуется
+
+- Python wheels для Linux, Windows и macOS публикуются в PyPI.
+- FreeBSD wheel собирается в настоящей FreeBSD VM и прикладывается к GitHub Release, потому что PyPI не принимает этот нестандартный platform tag.
+- Для Termux собирается native Rust extension в `termux/termux-docker:x86_64` и прикладывается к GitHub Release. Это asset для x86_64, а не универсальный Android wheel.
+- На ARM64 Termux пакет нужно собрать из исходников на самом устройстве.
+
+## Начать
 
 - [[Installation]]
-- [[Quick-Start-Bot-API|Quick start: Bot API]]
-- [[Quick-Start-MTProto-Userbot|Quick start: MTProto userbot]]
-- [[Configuration-and-Transports|Configuration and transports]]
-- [[Handlers-and-Updates|Handlers and updates]]
-- [[Filters]]
+- [[Quick-Start-Bot-API|Быстрый старт: Bot API]]
+- [[Quick-Start-MTProto-Userbot|Быстрый старт: MTProto userbot]]
+- [[Writing-Code|Как писать код для GoyGram]]
+- [[Bytes-and-TL|Как GoyGram раскладывает данные по байтам]]
+- [[Configuration-and-Transports|Конфигурация и транспорты]]
 
-## Build features
+## Важно
 
-- [[Keyboards-Formatting-and-State|Keyboards, formatting and state]]
-- [[Polling-and-Membership|Polls and membership updates]]
-- [[Files-and-Media|Files and media]]
-- [[Scheduling-and-Background-Work|Scheduling and background work]]
+`bot_token` относится к Bot API. `api_id` и `api_hash` относятся к MTProto. Это не взаимозаменяемые ключи.
 
-## Reference
+Не вставляйте токены, API hash, session-файлы и содержимое vault в issues, логи или публичные репозитории.
 
-- [[GoyGram-Client-Reference|Client reference]]
-- [[Event-Objects|Event objects]]
-- [[Bot-API-Calls|Bot API calls]]
-- [[MTProto-Calls|MTProto calls]]
-- [[Sessions-and-Authentication|Sessions and authentication]]
-- [[Architecture-and-Runtime-Behavior|Architecture and runtime behavior]]
-- [[Errors-Logging-and-Troubleshooting|Errors, logging and troubleshooting]]
-- [[Migration-and-Compatibility|Migration and compatibility]]
-- [[FAQ]]
+## Остальная документация
+
+- [[GoyGram-Client-Reference|Справочник клиента]]
+- [[Handlers-and-Updates|Обработчики и обновления]]
+- [[Event-Objects|Объекты событий]]
+- [[Filters|Фильтры]]
+- [[Bot-API-Calls|Вызовы Bot API]]
+- [[MTProto-Calls|Вызовы MTProto]]
+- [[Sessions-and-Authentication|Сессии и аутентификация]]
+- [[Errors-Logging-and-Troubleshooting|Ошибки и диагностика]]
