@@ -1,5 +1,9 @@
 name: Deploy to GitHub Pages
 
+concurrency:
+  group: goygram-docs-sync
+  cancel-in-progress: false
+
 on:
   push:
     branches: [main]
@@ -198,6 +202,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "sync: update wiki pages and translations [skip ci]"
+            git pull --rebase origin main
             git push
           fi
 
