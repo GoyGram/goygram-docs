@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '*/10 * * * *'
   workflow_dispatch:
   repository_dispatch:
     types: [wiki-updated]
@@ -19,8 +21,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: GoyGram/GoyGram.wiki
-          token: ${{ secrets.PAGES_TOKEN }}
           path: wiki-temp
+          fetch-depth: 0
 
       - name: Sync wiki pages to content
         run: |
@@ -103,6 +105,10 @@ jobs:
               "Vault-Wire-Format.md": "Vault-Wire-Format.md",
               "Proxy-URL-Parsing.md": "Proxy-URL-Parsing.md",
            }
+          page_map = {
+              name: name for name in os.listdir(wiki_dir)
+              if name.endswith(".md") and name != "_Sidebar.md"
+          }
 
           # Determine which wiki files actually changed using git
           import subprocess
@@ -203,13 +209,7 @@ jobs:
 
       - run: npm run build
 
-      - name: Deploy to goygram.github.io
-        uses: peaceiris/actions-gh-pages@v4
+      - uses: actions/upload-artifact@v4
         with:
-          personal_token: ${{ secrets.PAGES_TOKEN }}
-          external_repository: GoyGram/goygram.github.io
-          publish_branch: main
-          publish_dir: ./out
-          force_orphan: false
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
+          name: goygram-docs-static
+          path: out

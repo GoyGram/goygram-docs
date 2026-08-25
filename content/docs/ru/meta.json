@@ -2,6 +2,8 @@
   "title": "GoyGram Documentation",
   "pages": [
     "Home",
+    "Writing-Code",
+    "Bytes-and-TL",
     "Quick-Start-Bot-API",
     "Quick-Start-MTProto-Userbot",
     "Installation",
