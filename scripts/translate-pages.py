@@ -14,6 +14,7 @@ from deep_translator import GoogleTranslator
 
 SRC_DIR = Path("content/docs/en")
 OUT_DIR = Path("content/docs/ru")
+MANUAL_RU_FILES = {"Home.md", "Writing-Code.md", "Bytes-and-TL.md"}
 DELAY_SECONDS = 2.5  # conservative delay to avoid rate limits
 MAX_CHUNK_LEN = 4500  # Google Translate has ~5000 char limit per request
 
@@ -296,6 +297,9 @@ def main():
     skipped = 0
     for sp in src_files:
         out_path = OUT_DIR / sp.name
+        if sp.name in MANUAL_RU_FILES and out_path.exists():
+            skipped += 1
+            continue
         if changed_names is not None:
             if sp.name not in changed_names and out_path.exists():
                 skipped += 1
