@@ -1,10 +1,12 @@
 ---
-title: "Установка"
+title: "Installation"
 ---
 
-# Установка
+# Installation
 
-GoyGram распространяется на PyPI. Для него требуется **Python 3.11+**, а расширение Rust создается с помощью Maturin.
+GoyGram requires Python 3.11 or newer.
+
+## Install from PyPI
 
 
 ```bash
@@ -12,31 +14,36 @@ python -m pip install --upgrade goygram
 ```
 
 
-Для конкретного выпуска:
+Check what was installed:
 
 
 ```bash
-python -m pip install --upgrade --force-reinstall goygram==0.7.15
+python -c "from importlib.metadata import version; print(version('goygram'))"
 ```
 
 
-Убедитесь, что интерпретатор, запускающий вашу программу, импортирует ожидаемый пакет:
+The Python command and the command that starts your bot must use the same environment.
+
+## Install from source
+
+Use a source install when your platform does not have a compatible wheel, for example on an ARM64 Termux device:
 
 
 ```bash
-python -c "from importlib.metadata import version; import goygram; print(version('goygram')); print(goygram.__file__)"
+pkg update
+pkg install python rust clang
+python -m pip install --no-build-isolation .
 ```
 
 
-## Примечание о платформе
+The source build needs a Rust compiler and a C compiler.
 
-Пакет включает сериализацию TL на базе Rust. Установите его в той же среде Python, в которой будет запускаться приложение. На платформах без совместимого колеса для установки может потребоваться локальная цепочка инструментов Rust и компилятор.
+## Before you start
 
-## Учетные данные
+For a Bot API bot, create the bot with [BotFather](https://t.me/BotFather) and keep its token private.
 
-- **API бота:** создайте бота с помощью BotFather и используйте его токен.
-- **MTProto:** создайте приложение на сайте [my.telegram.org](https://my.telegram.org) и используйте его `api_id` и `api_hash`.
+For an MTProto userbot, create an application at [my.telegram.org](https://my.telegram.org) and keep its `api_id` and `api_hash` private.
 
-Не фиксируйте токены, хеши API, файлы хранилища или сгенерированные материалы сеанса.
+Do not commit tokens, API hashes, session files, auth keys, or vault files.
 
-Далее: [[Quick-Start-MTProto-Userbot|Быстрый старт: пользовательский робот MTProto]] или [[Quick-Start-Bot-API|Быстрый старт: Bot API]].
+Next: [[Quick-Start-Bot-API|Quick start: Bot API]] or [[Quick-Start-MTProto-Userbot|Quick start: MTProto userbot]].
