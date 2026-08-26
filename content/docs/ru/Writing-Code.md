@@ -92,10 +92,12 @@ await app.set_my_commands(commands=[])
 ## Ошибки
 
 ```python
+import logging
+
 try:
     await msg.reply("Ответ")
 except Exception as error:
-    app.logger.exception("Не удалось отправить ответ: %s", error)
+    logging.getLogger("goygram.app").exception("Не удалось отправить ответ: %s", error)
 ```
 
 Не печатайте в журнал токен, vault или ключ аутентификации.

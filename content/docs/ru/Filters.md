@@ -10,7 +10,7 @@ title: "Фильтры"
 from goygram import filters
 from goygram.filters import command, regex
 
-@app.on_msg(filt=command("ban") & filters.admin & ~filters.me)
+@app.on_msg(filt=command("ban") & filters.chat_type("supergroup") & ~filters.me)
 async def ban(msg):
     ...
 
@@ -23,8 +23,8 @@ async def links(msg):
 - `|` — достаточно одного;
 - `~` — отрицание.
 
-Часто используются `filters.text`, `filters.me`, `filters.incoming`, `filters.outgoing`, `filters.private`, `filters.group`, `filters.channel`, `filters.photo`, `filters.document`, `filters.reply`, `filters.forwarded`, `filters.edited`, `filters.admin`.
+Часто используются `filters.text`, `filters.me`, `filters.user`, `filters.private`, `filters.group`, `filters.supergroup`, `filters.channel`, `filters.chat_type(...)`, `filters.photo`, `filters.document`, `filters.reply`, `filters.forwarded`, `filters.edited`, `filters.has_hashtag`.
 
-Для команд есть `command("start")`. Для текста подходят `regex(...)`, `startswith(...)`, `endswith(...)`, `contains(...)` и `equals(...)`.
+Для команд есть `command("start")`. Для текста подходят `regex(...)`, `startswith(...)`, `endswith(...)`, `contains(...)`, `contains_any(...)`, `contains_all(...)`, `text_len(...)`, `word_count(...)` и `line_count(...)`.
 
 Фильтр, который не подходит событию, просто не вызывает обработчик.
