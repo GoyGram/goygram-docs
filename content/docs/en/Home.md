@@ -1,5 +1,5 @@
 ---
-title: "GoyGram"
+title: Home
 ---
 
 # GoyGram
