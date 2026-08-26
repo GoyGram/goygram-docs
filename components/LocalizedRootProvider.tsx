@@ -22,7 +22,7 @@ export function LocalizedRootProvider({ locale, children }: { locale: Locale; ch
 
   return (
     <RootProvider
-      {...provider}
+      i18n={provider}
       theme={{
         defaultTheme: 'dark',
         enableSystem: false,
