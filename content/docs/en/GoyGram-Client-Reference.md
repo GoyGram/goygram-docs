@@ -19,26 +19,43 @@ GoyGram(
 )
 ```
 
-Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically (with a built-in fallback). Supplying both enables both transports.
+Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically. Supplying both enables both transports.
 
 ## Lifecycle
 
-- `await app.run()` starts the dispatcher, state engine, and configured transport(s), then waits until stopped.
-- `app.stop()` requests shutdown.
-- `await app.close()` stops the state engine, dispatcher, and networks. Normally `run()` handles this in its `finally` block.
+- `await app.run()` starts the dispatcher, state engine, and configured transport(s), then waits until stopped;
+- `app.stop()` requests shutdown;
+- `await app.close()` stops the state engine, dispatcher, and networks.
+
+## Dynamic API
+
+GoyGram does not generate hundreds of Python wrapper classes. The schema is loaded at runtime and calls are dispatched directly:
+
+```python
+result = await app.mt_req("messages.getHistory", peer=peer, limit=50)
+result = await app.mt_messages_get_history(peer=peer, limit=50)
+```
+
+Every method from the active TL schema can be called through `mt_req("namespace.method", ...)` or the `mt_namespace_method(...)` form. Bot API methods use `app.bot_req("method", ...)` or `app.method_name(...)`.
+
+Use `app.help()` to print the available helper surface. Use `app.core.mt.resolve_peer(...)` for MTProto peer resolution and preserve the returned constructor when passing a peer to later calls.
 
 ## Helpers
 
-- `app.ikb()`, `app.rkb(**opts)`, `app.frk(**opts)`, `app.rgk(**opts)` create keyboard builders.
-- `app.html(text)` returns `{"text": text, "parse_mode": "HTML"}`.
-- `app.md(text)` returns `{"text": text, "parse_mode": "MarkdownV2"}`.
-- `app.raw_chat(chat_id)` removes a `bot:`/`mt:` prefix when present.
-- `app.via(chat_id, via=None)` resolves the configured transport; use a `bot:` or `mt:` chat ID to choose explicitly when both are enabled.
-- `app.help()` prints discovered method help.
-- `await app.download_file(file_id, destination=None)` downloads a Bot API file to memory or a local path.
+- `app.ikb()`, `app.rkb(**opts)`, `app.frk(**opts)`, `app.rgk(**opts)` create keyboard builders;
+- `app.html(text)` returns a Bot API HTML payload;
+- `app.md(text)` returns a Bot API MarkdownV2 payload;
+- `app.raw_chat(chat_id)` removes a `bot:`/`mt:` prefix when present;
+- `app.via(chat_id, via=None)` selects the configured transport;
+- `await app.download_file(file_id, destination=None)` downloads a Bot API file;
+- `await app.upload_file(source, **kw)` delegates chunked MTProto upload;
+- `await app.send_msg(chat_id, text, via=None, reply_to=None, kbd=None, **kw)` sends through the selected transport;
+- `app.set_state(...)`, `app.get_state(...)`, `app.get_state_data(...)`, and `app.clear_state(...)` manage lightweight FSM state.
 
-For MTProto, `app.core.mt.resolve_peer(value)`, `app.core.mt.upload_file(source, ...)`, and `app.core.mt.download_file(location, destination, ...)` are direct low-level primitives. Bot API offsets and MTProto `pts/qts/date/seq` cursors are persisted automatically with restrictive permissions.
+## MTProto transport primitives
 
-## State
+The direct MTProto transport exposes peer resolution, schema-driven calls, chunked `upload_file` and `download_file`, durable update cursors, reconnect handling, and raw access through the returned dictionaries. It retains the complete structured TL payload instead of allocating a Python model for every Telegram constructor.
 
-`set_state(chat_id, user_id, state, data=None, ttl=None)`, `get_state(chat_id, user_id)`, `get_state_data(chat_id, user_id)`, and `clear_state(chat_id, user_id)` provide raw per-chat/per-user state. It is not a conversation framework.
+## Memory and latency model
+
+The common event path stores a compact normalized object plus the original raw dictionary. Message-specific fields are resolved lazily through `msg.field`, `msg.get(...)`, or `msg[...]`; they are not copied into a large model. This keeps the hot path small while preserving Telegram-specific fields and future layer additions.
