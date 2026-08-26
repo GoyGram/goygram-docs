@@ -1,51 +1,38 @@
 ---
-title: "Home"
+title: "GoyGram"
 ---
 
 # GoyGram
 
 ![Логотип GoyGram](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
 
-GoyGram — фреймворк на Python для Telegram.
+GoyGram — асинхронный фреймворк на Python для Telegram.
 
-Она умеет работать двумя разными способами:
+Он умеет запускать бота и подключаться к Telegram от имени пользовательского аккаунта. Выберите нужный вариант:
 
-- **Bot API** — Telegram разговаривает с программой через HTTPS. Это обычный путь для ботов.
-- **MTProto** — программа подключается как пользователь Telegram через низкоуровневое соединение. Это путь для userbot.
+- **Bot API** — для обычного бота, созданного через BotFather;
+- **MTProto** — когда программа должна работать от имени вашего аккаунта Telegram.
 
-Внутри есть Python-код, Rust-расширение для части быстрых операций, общая очередь событий и два независимых транспорта. Эти транспорты не становятся одним «магическим» протоколом: Bot API и MTProto остаются разными системами.
+## С чего начать
 
-Текущая опубликованная версия: **0.7.45**.
+- [Установка](/ru/docs/Installation)
+- [Собрать бота](/ru/docs/Quick-Start-Bot-API)
+- [Подключить аккаунт](/ru/docs/Quick-Start-MTProto-Userbot)
 
-## Что реально публикуется
+## Следующий шаг
 
-- Python wheels для Linux, Windows и macOS публикуются в PyPI.
-- FreeBSD wheel собирается в настоящей FreeBSD VM и прикладывается к GitHub Release, потому что PyPI не принимает этот нестандартный platform tag.
-- Для Termux собирается native Rust extension в `termux/termux-docker:x86_64` и прикладывается к GitHub Release. Это asset для x86_64, а не универсальный Android wheel.
-- На ARM64 Termux пакет нужно собрать из исходников на самом устройстве.
+- [Написать обработчики](/ru/docs/Writing-Code)
+- [Выбрать нужные сообщения](/ru/docs/Filters)
+- [Добавить кнопки и состояние](/ru/docs/Keyboards-Formatting-and-State)
+- [Отправлять файлы и фотографии](/ru/docs/Files-and-Media)
 
-## Начать
-
-- [Installation](/ru/docs/Installation)
-- [Быстрый старт: Bot API](/ru/docs/Quick-Start-Bot-API)
-- [Быстрый старт: MTProto userbot](/ru/docs/Quick-Start-MTProto-Userbot)
-- [Как писать код для GoyGram](/ru/docs/Writing-Code)
-- [Как GoyGram раскладывает данные по байтам](/ru/docs/Bytes-and-TL)
-- [Конфигурация и транспорты](/ru/docs/Configuration-and-Transports)
-
-## Важно
-
-`bot_token` относится к Bot API. `api_id` и `api_hash` относятся к MTProto. Это не взаимозаменяемые ключи.
-
-Не вставляйте токены, API hash, session-файлы и содержимое vault в issues, логи или публичные репозитории.
-
-## Остальная документация
+## Если понадобились подробности
 
 - [Справочник клиента](/ru/docs/GoyGram-Client-Reference)
-- [Обработчики и обновления](/ru/docs/Handlers-and-Updates)
 - [Объекты событий](/ru/docs/Event-Objects)
-- [Фильтры](/ru/docs/Filters)
 - [Вызовы Bot API](/ru/docs/Bot-API-Calls)
 - [Вызовы MTProto](/ru/docs/MTProto-Calls)
 - [Сессии и аутентификация](/ru/docs/Sessions-and-Authentication)
-- [Ошибки и диагностика](/ru/docs/Errors-Logging-and-Troubleshooting)
+- [Частые вопросы](/ru/docs/FAQ)
+
+В [репозитории на GitHub](https://github.com/GoyGram/GoyGram) находятся исходный код и обсуждения. Токены, API-ключи, файлы сессий и vault-файлы должны оставаться приватными.
