@@ -23,6 +23,7 @@ MANUAL_RU_FILES = {
     "Bytes-and-TL.md",
     "Configuration-and-Transports.md",
     "GoyGram-Client-Reference.md",
+    "Keyboards-Formatting-and-State.md",
     "Handlers-and-Updates.md",
     "Event-Objects.md",
     "Filters.md",

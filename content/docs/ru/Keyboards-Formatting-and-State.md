@@ -1,41 +1,47 @@
 ---
-title: "Keyboards Formatting and State"
+title: "Клавиатуры, форматирование и состояние"
 ---
 
-# Keyboards, Formatting, and State
+# Клавиатуры, форматирование и состояние
 
-## Keyboards
+## Клавиатуры
 
-Create builders from the application:
-
-
-```python
-keyboard = app.ikb().btn("Open", url="https://example.com").row().btn("Ping", callback_data="ping")
-await app.send_message(chat_id=123, text="Choose:", reply_markup=keyboard.build())
-```
-
-
-- `app.ikb()` creates an inline keyboard builder.
-- `app.rkb(**opts)` creates a reply keyboard builder.
-- `app.frk(**opts)` creates a force-reply builder.
-- `app.rgk(**opts)` creates a remove-keyboard builder.
-
-`KbdBuilder` supports `btn()`, `row()`, `build()`, and `to_dict()`. Button fields are passed through to the selected Telegram keyboard type.
-
-## Formatting
-
-Use `app.html(text)` or `app.md(text)` when a call accepts `text` and `parse_mode`:
-
+Клавиатуру можно собрать через объект приложения:
 
 ```python
-await app.send_message(chat_id=123, **app.html("<b>Hello</b>"))
+keyboard = (
+    app.ikb()
+    .btn("Открыть", url="https://example.com")
+    .row()
+    .btn("Проверить", callback_data="ping")
+)
+await app.send_message(
+    chat_id=123,
+    text="Выберите действие:",
+    reply_markup=keyboard.build(),
+)
 ```
 
+- `app.ikb()` создаёт inline-клавиатуру;
+- `app.rkb(**opts)` создаёт обычную reply-клавиатуру;
+- `app.frk(**opts)` создаёт ForceReply;
+- `app.rgk(**opts)` убирает клавиатуру.
 
-## State
+У `KbdBuilder` есть методы `btn()`, `row()`, `build()` и `to_dict()`. Параметры кнопки передаются выбранному типу клавиатуры Telegram.
 
-State is an in-memory raw key/value store indexed by `(chat_id, user_id)`:
+## Форматирование
 
+Если метод принимает `text` и `parse_mode`, можно подготовить их так:
+
+```python
+await app.send_message(chat_id=123, **app.html("<b>Привет</b>"))
+```
+
+Для MarkdownV2 используется `app.md(text)`. Не смешивайте HTML и MarkdownV2 в одном тексте.
+
+## Состояние
+
+По умолчанию состояние хранится в памяти и индексируется по `(chat_id, user_id)`:
 
 ```python
 app.set_state(msg.chat_id, msg.from_id, "awaiting_name", {"step": 1}, ttl=300)
@@ -44,5 +50,4 @@ data = app.get_state_data(msg.chat_id, msg.from_id)
 app.clear_state(msg.chat_id, msg.from_id)
 ```
 
-
-A TTL expires the entry. Persistent workflows and conversation routing are application responsibilities.
+`ttl` удаляет запись после указанного времени. Состояние пропадает после перезапуска процесса. Долгое хранение диалогов и маршрутизация шагов остаются задачей вашего приложения.

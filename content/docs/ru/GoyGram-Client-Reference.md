@@ -1,9 +1,8 @@
 ---
-title: "GoyGram Client Reference"
+title: "Справочник клиента"
 ---
 
-# GoyGram Client Reference
-
+# Справочник клиента GoyGram
 
 ```python
 GoyGram(
@@ -16,24 +15,35 @@ GoyGram(
 )
 ```
 
+`bot_token` включает Bot API. `api_id` и `api_hash` включают MTProto. Если передать оба набора, приложение запустит оба транспорта.
 
-Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically (with a built-in fallback). Supplying both enables both transports.
+## Жизненный цикл
 
-## Lifecycle
+- `await app.run()` запускает обработчики, состояние и настроенные транспорты;
+- `app.stop()` просит приложение остановиться;
+- `await app.close()` останавливает обработчики, состояние и сетевые соединения.
 
-- `await app.run()` starts the dispatcher, state engine, and configured transport(s), then waits until stopped.
-- `app.stop()` requests shutdown.
-- `await app.close()` stops the state engine, dispatcher, and networks. Normally `run()` handles this in its `finally` block.
+Обычно `run()` сам вызывает аккуратное закрытие.
 
-## Helpers
+## Помощники
 
-- `app.ikb()`, `app.rkb(**opts)`, `app.frk(**opts)`, `app.rgk(**opts)` create keyboard builders.
-- `app.html(text)` returns `{"text": text, "parse_mode": "HTML"}`.
-- `app.md(text)` returns `{"text": text, "parse_mode": "MarkdownV2"}`.
-- `app.raw_chat(chat_id)` removes a `bot:`/`mt:` prefix when present.
-- `app.via(chat_id, via=None)` resolves the configured transport; use a `bot:` or `mt:` chat ID to choose explicitly when both are enabled.
-- `app.help()` prints discovered method help.
+- `app.ikb()` создаёт inline-клавиатуру;
+- `app.rkb(**opts)` создаёт обычную reply-клавиатуру;
+- `app.frk(**opts)` создаёт ForceReply;
+- `app.rgk(**opts)` убирает клавиатуру;
+- `app.html(text)` готовит текст с `parse_mode="HTML"`;
+- `app.md(text)` готовит текст с `parse_mode="MarkdownV2"`;
+- `app.raw_chat(chat_id)` убирает префикс `bot:` или `mt:`;
+- `app.via(chat_id, via=None)` выбирает транспорт;
+- `app.help()` печатает найденные методы.
 
-## State
+## Состояние
 
-`set_state(chat_id, user_id, state, data=None, ttl=None)`, `get_state(chat_id, user_id)`, `get_state_data(chat_id, user_id)`, and `clear_state(chat_id, user_id)` provide raw per-chat/per-user state. It is not a conversation framework.
+```python
+app.set_state(msg.chat_id, msg.from_id, "awaiting_name", {"step": 1}, ttl=300)
+state = app.get_state(msg.chat_id, msg.from_id)
+data = app.get_state_data(msg.chat_id, msg.from_id)
+app.clear_state(msg.chat_id, msg.from_id)
+```
+
+Состояние хранится в памяти и привязано к паре `(chat_id, user_id)`. `ttl` удаляет запись после указанного времени. После перезапуска процесса состояние пропадает. Сохранение долгих диалогов во внешнюю базу — задача приложения.
