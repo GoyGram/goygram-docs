@@ -2,27 +2,28 @@
 title: "Errors Logging and Troubleshooting"
 ---
 
-# Ошибки, ведение журнала и устранение неполадок
+# Errors, Logging, and Troubleshooting
 
-GoyGram предоставляет Telegram и транспортные исключения из `goygram.errors`, включая `GoyError`, `BadRequest`, `Unauthorized`, `Forbidden`, `NotFound`, `Conflict`, `FloodWait`, `ServerError`, `NetworkError`, `MTProtoError`, `TLSerializationError` и `TLDeserializationError`.
+GoyGram exposes exceptions from `goygram.errors`, including `GoyGramError`, `TransportError`, `ConnectionClosedError`, `ProxyError`, `RPCError`, `FloodWaitError`, `AuthError`, `CodecError`, and `RustExtError`, plus Telegram-specific RPC subclasses.
 
 
 ```python
-from goygram.errors import FloodWait
+import asyncio
+from goygram.errors import FloodWaitError
 
 try:
     await app.send_message(chat_id=123, text="Hello")
-except FloodWait as exc:
-    await asyncio.sleep(exc.retry_after or 1)
+except FloodWaitError as exc:
+    await asyncio.sleep(exc.seconds)
 ```
 
 
-## Общие проверки
+## Common checks
 
-- Подтвердите установленную версию пакета и путь импорта после обновления.
-- Оставляйте активным только один опросчик Bot API; GoyGram очищает существующий веб-перехватчик перед опросом.
-- Для MTProto убедитесь, что `api_id` и `api_hash` принадлежат учетной записи/приложению и что файл хранилища доступен для записи.
-- Если пользовательский бот не получает команды, убедитесь, что процесс все еще выполняется, используйте исходящую команду с `filters.me`, когда это необходимо, и просмотрите полный журнал запуска.
-- Не делитесь файлами хранилища, токенами, кодами входа, хэшами API или облачными паролями в журналах или задачах.
+- Confirm the installed package version and import path after upgrading.
+- Keep only one Bot API poller active; GoyGram clears an existing webhook before it polls.
+- For MTProto, make sure `api_id` and `api_hash` belong to the account/application and that the vault file is writable.
+- If a userbot does not receive commands, verify the process is still running, use an outgoing command with `filters.me` when appropriate, and inspect the complete startup log.
+- Do not share vault files, tokens, login codes, API hashes, or cloud passwords in logs or issues.
 
-GoyGram использует ведение журнала Python. Настройте стандартный модуль `logging` в своем приложении, если вам нужны разные уровни или места назначения.
+GoyGram uses Python logging. Configure the standard `logging` module in your application if you need different levels or destinations.

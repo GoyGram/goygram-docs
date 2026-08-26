@@ -24,10 +24,15 @@ app = GoyGram(
     bot_token="BOT_TOKEN",
     bot_timeout=25,
     bot_base="https://api.telegram.org",
+    bot_offset_path="/path/to/bot.offset",
+    webhook_url="https://bot.example.com/telegram/webhook",
+    webhook_secret_token="WEBHOOK_SECRET",
 )
 ```
 
-`bot_timeout` is the long-poll timeout. `bot_base` is only useful for a compatible Bot API endpoint; leave its default for Telegram.
+`bot_timeout` is the long-poll timeout. `bot_base` is only useful for a compatible Bot API endpoint; leave its default for Telegram. `bot_offset_path` optionally selects the atomic Bot API offset file; when omitted, GoyGram derives a private per-bot path under `~/.goygram/offsets/`.
+
+When `webhook_url` is set, `run()` starts the local webhook listener instead of polling. Configure `webhook_host`, `webhook_port`, `webhook_path`, `webhook_secret_token`, `webhook_max_body`, and `webhook_drop_pending_updates` as needed.
 
 ## MTProto options
 
@@ -44,6 +49,8 @@ app = GoyGram(
 ```
 
 When no explicit `mt_host` is supplied, GoyGram selects a Telegram DC dynamically and falls back to DC 2 if discovery is unavailable. Normally you should not provide `mt_host`, `mt_port`, `mt_key`, or `mt_iv`; those options are for low-level or pre-authorized connections.
+
+MTProto `pts/qts/date/seq` cursors are persisted automatically under `~/.goygram/cursors/` and `updatesTooLong` triggers `updates.getDifference` recovery when a `pts` cursor is available.
 
 ## Selecting a transport
 

@@ -4,15 +4,16 @@ title: Errors Logging and Troubleshooting
 
 # Errors, Logging, and Troubleshooting
 
-GoyGram exposes Telegram and transport exceptions from `goygram.errors`, including `GoyError`, `BadRequest`, `Unauthorized`, `Forbidden`, `NotFound`, `Conflict`, `FloodWait`, `ServerError`, `NetworkError`, `MTProtoError`, `TLSerializationError`, and `TLDeserializationError`.
+GoyGram exposes exceptions from `goygram.errors`, including `GoyGramError`, `TransportError`, `ConnectionClosedError`, `ProxyError`, `RPCError`, `FloodWaitError`, `AuthError`, `CodecError`, and `RustExtError`, plus Telegram-specific RPC subclasses.
 
 ```python
-from goygram.errors import FloodWait
+import asyncio
+from goygram.errors import FloodWaitError
 
 try:
     await app.send_message(chat_id=123, text="Hello")
-except FloodWait as exc:
-    await asyncio.sleep(exc.retry_after or 1)
+except FloodWaitError as exc:
+    await asyncio.sleep(exc.seconds)
 ```
 
 ## Common checks

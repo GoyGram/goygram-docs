@@ -104,7 +104,8 @@ Bot API names can be written in snake case. Bot API and MTProto are different in
 try:
     await msg.reply("Reply")
 except Exception as error:
-    app.logger.exception("Could not send reply: %s", error)
+    import logging
+    logging.getLogger("goygram.app").exception("Could not send reply: %s", error)
 ```
 
 Do not print tokens, vault files, or authentication keys.
