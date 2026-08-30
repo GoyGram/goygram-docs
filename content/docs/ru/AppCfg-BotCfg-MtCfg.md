@@ -84,7 +84,7 @@ self.core = AppCore(AppCfg(bot=bot, mt=mt, bus_max=bus_max), ...)
 
 
 ```python
-# Both transports — the "split-brain" full config
+# Both transports — the hybrid full config
 app = GoyGram(
     bot_token="123:ABC",           # → BotCfg(token="123:ABC")
     api_id=123, api_hash="abc",    # → MtCfg(host=auto, port=443)

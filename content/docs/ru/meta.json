@@ -9,7 +9,7 @@
     "Installation",
     "Migration-Guide",
     "Architecture-Overview",
-    "Split-Brain-Design",
+    "Hybrid-Design",
     "Rust-Extension-Core",
     "Event-Bus-System",
     "Dispatcher-and-Handler-Pipeline",
