@@ -68,4 +68,4 @@ await app.send_msg("123456789", "via MTProto", via="mtproto")
 
 `default_transport` accepts `"api"`, `"mtproto"`, or `"auto"` (Bot API if a token is present, otherwise MTProto).
 
-See [[Sessions-and-Authentication|Sessions and authentication]], [[Handlers-and-Updates|Handlers and updates]], and [[MTProto-Calls|MTProto calls]].
+See [Sessions and authentication](/docs/Sessions-and-Authentication), [Handlers and updates](/docs/Handlers-and-Updates), and [MTProto calls](/docs/MTProto-Calls).

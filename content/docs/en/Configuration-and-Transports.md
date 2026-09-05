@@ -79,4 +79,4 @@ await app.send_msg("123456", "via mtproto", via="mtproto")  # MTProto
 
 Start one application with `await app.run()`. It starts the dispatcher, state cleanup, bot polling, and/or the MTProto reader. Call `app.stop()` from a handler or shutdown path; `run()` closes transports and cancels its internal tasks.
 
-See [[Sessions-and-Authentication]] before the first MTProto run.
+See [Sessions and Authentication](/docs/Sessions-and-Authentication) before the first MTProto run.
