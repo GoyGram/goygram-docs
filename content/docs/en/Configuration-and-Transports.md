@@ -4,7 +4,7 @@ title: Configuration and Transports
 
 # Configuration and transports
 
-`GoyGram` accepts Bot API and MTProto settings in the same constructor. Supplying a bot token enables Bot API long polling. Supplying `api_id` and `api_hash` enables MTProto and its session bootstrap.
+`GoyGram` accepts Bot API and MTProto settings in the same constructor. Supplying a bot token enables Bot API long polling. Supplying `api_id` and `api_hash` enables MTProto and its session bootstrap. Supply all three to run a **hybrid bot** — the Bot API transport plus a bot authorized over MTProto via `auth.importBotAuthorization`.
 
 ```python
 from goygram import GoyGram
@@ -14,8 +14,11 @@ app = GoyGram(
     api_id=12345,
     api_hash="API_HASH",
     session_name="production",
+    default_transport="mtproto",   # "api", "mtproto", or "auto"
 )
 ```
+
+`session=` accepts a `Session` instance or an encrypted session string; `session_name=` is the plain file-backed shorthand. `default_transport` picks the default outgoing transport when `via` is omitted.
 
 ## Bot API options
 
@@ -59,17 +62,21 @@ For API calls, method names make the route explicit:
 - `await app.send_message(...)` calls Bot API `sendMessage`.
 - `await app.mt_messages_get_history(...)` calls MTProto `messages.getHistory`.
 
-For helpers that accept a chat ID, use prefixes when both transports are enabled:
+For helpers that accept a chat ID, use prefixes or `via=` when both transports are enabled:
 
 ```python
 await app.send_message(chat_id="bot:123456", text="bot message")
 await app.mt_messages_send_message(peer="me", message="user message")
+
+# explicit per-call transport selection:
+await app.send_msg("123456", "via api", via="api")       # Bot API
+await app.send_msg("123456", "via mtproto", via="mtproto")  # MTProto
 ```
 
-`raw_chat("bot:123")` returns the unprefixed value. If no prefix is given, helpers prefer the Bot API transport when it exists, otherwise MTProto.
+`via="api"` is an alias for the Bot API transport and `via="mtproto"` for MTProto (`via="bot"` / `via="mt"` also work). `raw_chat("bot:123")` returns the unprefixed value. If no prefix or `via` is given, helpers follow `default_transport`, then prefer the Bot API transport when it exists, otherwise MTProto.
 
 ## Lifecycle
 
 Start one application with `await app.run()`. It starts the dispatcher, state cleanup, bot polling, and/or the MTProto reader. Call `app.stop()` from a handler or shutdown path; `run()` closes transports and cancels its internal tasks.
 
-See [Sessions and Authentication](/docs/Sessions-and-Authentication) before the first MTProto run.
+See [[Sessions-and-Authentication]] before the first MTProto run.

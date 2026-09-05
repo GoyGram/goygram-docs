@@ -9,13 +9,14 @@ GoyGram(
     bot_token=None,
     mt_host=None, mt_port=None, mt_key=None, mt_iv=None,
     bot_timeout=25, bot_base="https://api.telegram.org", bus_max=0,
-    api_id=None, api_hash=None, session_name="default", proxy=None,
+    api_id=None, api_hash=None, session_name="default", session=None,
+    default_transport="auto", proxy=None,
     app_name=None, app_version=None, device_model=None,
     system_version=None, system_lang_code="en", lang_pack="", lang_code="en",
 )
 ```
 
-`bot_token` включает Bot API. `api_id` и `api_hash` включают MTProto. Если передать оба набора, приложение запустит оба транспорта.
+`bot_token` включает Bot API. `api_id` и `api_hash` включают MTProto. Если передать оба набора, приложение запустит оба транспорта: бот также авторизуется по MTProto через `auth.importBotAuthorization`. `session=` принимает объект `Session` или зашифрованную строку сессии. `default_transport` — `"api"`, `"mtproto"` или `"auto"`. `via="api"` / `via="mtproto"` выбирают транспорт для конкретного вызова.
 
 ## Жизненный цикл
 

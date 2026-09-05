@@ -4,53 +4,72 @@ title: "Получение ключа хранилища"
 
 # Получение ключа хранилища
 
-Ключ шифрования хранилища извлекается из данных, специфичных для машины, с использованием PBKDF2 с 600 000 итераций. На этой странице описан полный конвейер деривации.
+Ключ шифрования хранилища извлекается из данных, специфичных для машины, с использованием PBKDF2 с 600 000 итераций. На этой странице описан полный конвейер деривации.
 
-## Конвейер деривации
+## Форматы хранилища
 
+Есть два формата vault:
+
+| Формат | Заголовок | Ключевой материал | Переименование |
+|--------|-----------|-------------------|----------------|
+| v2 (текущий) | `GGV2` | `f"{machine_id}"` | безопасно |
+| v1 (устаревший) | нет | `f"{machine_id}:{session_name}"` | ломает расшифровку |
+
+Новые хранилища записываются в v2. Ключ v2 не зависит от имени файла, поэтому файл сессии можно назвать или переименовать после входа (например, по `self_id`). Читатель автоматически определяет формат: если файл начинается с `GGV2`, используется деривация v2, иначе выполняется fallback на деривацию v1 с именем сессии.
+
+## Конвейер деривации (v2, rename-safe)
 
 ```python
-def _derive_vault_key(session_name, salt=None):
-    # 1. Check for explicit key override
+def _derive_vault_key_v2(salt=None):
+    # 1. Явный переопределяющий ключ
     env_key = os.getenv("GOYGRAM_VAULT_KEY", "").strip()
     if env_key:
         key = base64.b64decode(env_key)
         if len(key) == 32:
             return key, salt or b"\x00" * 16
 
-    # 2. Generate salt if not provided
+    # 2. Генерация соли, если не задана
     if salt is None:
         salt = secrets.token_bytes(16)
 
-    # 3. Build key material
-    material = f"{_get_machine_id()}:{session_name}".encode()
+    # 3. Ключевой материал — только machine-id (имя файла не участвует)
+    material = _get_machine_id().encode()
 
-    # 4. Derive key via PBKDF2
+    # 4. Деривация ключа через PBKDF2
     key = hashlib.pbkdf2_hmac("sha256", material, salt, 600000, dklen=32)
 
     return key, salt
 ```
 
+## Конвейер деривации (v1, legacy fallback)
+
+```python
+def _derive_vault_key(session_name, salt=None):
+    # ... тот же override и соль ...
+    material = f"{_get_machine_id()}:{session_name}".encode()
+    key = hashlib.pbkdf2_hmac("sha256", material, salt, 600000, dklen=32)
+    return key, salt
+```
+
+Старые vault, зашифрованные до появления v2, читаются через этот fallback. После следующей перезаписи они переходят на v2.
 
 ## Разрешение идентификатора машины
 
-
 ```python
 def _get_machine_id():
-    # Priority 1: systemd machine-id
+    # Приоритет 1: systemd machine-id
     for p in ("/etc/machine-id", "/var/lib/dbus/machine-id"):
         try:
             return Path(p).read_text().strip()
         except Exception:
             continue
 
-    # Priority 2: hostname
+    # Приоритет 2: hostname
     try:
         return platform.node() or "unknown"
     except Exception:
         return "unknown"
 ```
-
 
 Идентификатор машины привязывает хранилище к конкретной машине. Копирование файла `.vault` на другой хост не сработает, поскольку идентификатор машины отличается → ключ отличается → расшифровка не удалась.
 
@@ -58,11 +77,12 @@ def _get_machine_id():
 
 | Параметр | Значение | Обоснование |
 |-----------|-------|-----------|
-| Хэш-функция | ША-256 | Стандарт для PBKDF2 |
+| Хэш-функция | SHA-256 | Стандарт для PBKDF2 |
 | Итерации | 600 000 | ~0,5 с на современном оборудовании, что обходится слишком дорого |
-| Длина ключа | 32 байта | АЭС-256 |
+| Длина ключа | 32 байта | AES-256 |
 | Длина соли | 16 байт | 128 бит случайности |
-| Ключевой материал | `f"{machine_id}:{session_name}"` | Привязывается к машине + сеанс |
+| Ключевой материал (v2) | `f"{machine_id}"` | Привязка к машине, имя файла не участвует |
+| Ключевой материал (v1) | `f"{machine_id}:{session_name}"` | Устаревший, привязка к машине + имя сессии |
 
 ## Почему 600 000 итераций?
 
@@ -72,15 +92,13 @@ def _get_machine_id():
 
 Для сред без стабильного идентификатора машины (контейнеры, CI, автономные серверы):
 
-
 ```bash
-# Generate a random key
+# Сгенерировать случайный ключ
 python3 -c "import base64,os; print(base64.b64encode(os.urandom(32)).decode())"
 
-# Set it
+# Задать его
 export GOYGRAM_VAULT_KEY="base64_encoded_32_bytes_here"
 ```
-
 
 Когда эта переменная окружения установлена:
 - Производная PBKDF2 **полностью обходится**
@@ -90,26 +108,24 @@ export GOYGRAM_VAULT_KEY="base64_encoded_32_bytes_here"
 ## Поворот клавиш
 
 Чтобы повторно зашифровать хранилище с помощью нового ключа:
-1. Прочитайте старым ключом
-2. Удалить старое хранилище.
-3. Установите новый `GOYGRAM_VAULT_KEY` (или разрешите изменение идентификатора машины)
+1. Прочитайте старым ключом.
+2. Удалите старое хранилище.
+3. Установите новый `GOYGRAM_VAULT_KEY` (или разрешите изменение идентификатора машины).
 4. Запустите приложение → новое хранилище записывается с новым ключом.
 
 Здесь нет явного API ротации ключей — только естественный цикл чтения/записи.
 
 ## Модель безопасности
 
-
 ```
-Threat: Attacker with filesystem access to the vault file
-         but not the machine-id
+Угроза: атакующий с доступом к файлу vault, но без machine-id
 
-Protection: PBKDF2 with 600K iterations → ~0.5s per attempt
-           → brute-force infeasible without the machine-id
+Защита: PBKDF2 с 600K итераций → ~0.5s на попытку
+        → перебор нереален без machine-id
 
-Threat: Attacker with both vault file AND machine-id
-         (e.g., full disk image of the host)
+Угроза: атакующий с файлом vault И machine-id
+        (например, полный образ диска хоста)
 
-Protection: None. The key material is known.
-           → Use full disk encryption (LUKS) as defense-in-depth
+Защита: отсутствует. Ключевой материал известен.
+        → использовать полное шифрование диска (LUKS) как defence-in-depth
 ```

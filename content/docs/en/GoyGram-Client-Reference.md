@@ -12,14 +12,15 @@ GoyGram(
     webhook_url=None, webhook_host="127.0.0.1", webhook_port=8080,
     webhook_path="/telegram/webhook", webhook_secret_token=None,
     webhook_max_body=1048576, webhook_drop_pending_updates=False,
-    api_id=None, api_hash=None, session_name="default", proxy=None,
+    api_id=None, api_hash=None, session_name="default", session=None,
+    default_transport="auto", proxy=None,
     app_name=None, app_version=None, device_model=None,
     system_version=None, system_lang_code="en", lang_pack="", lang_code="en",
     bot_offset_path=None,
 )
 ```
 
-Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically. Supplying both enables both transports.
+Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically. Supplying both enables both transports: the bot is also authorized over MTProto via `auth.importBotAuthorization`. `session=` accepts a `Session` instance or an encrypted session string. `default_transport` is `"api"`, `"mtproto"`, or `"auto"`. `via="api"` / `via="mtproto"` select the transport per call.
 
 ## Lifecycle
 
