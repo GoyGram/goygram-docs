@@ -17,6 +17,7 @@ const RU_NAMES: Record<string, string> = {
   'Files and media': 'Файлы и медиа',
   'Client reference': 'Справочник клиента',
   'Event objects': 'Объекты событий',
+  'Benchmarks': 'Бенчмарки',
   'Bot API calls': 'Вызовы Bot API',
   'MTProto calls': 'Вызовы MTProto',
   'Sessions and authentication': 'Сессии и аутентификация',
@@ -69,6 +70,7 @@ const sidebarTree: PageTree.Root = {
         page('Event objects', 'Event-Objects'),
         page('Bot API calls', 'Bot-API-Calls'),
         page('MTProto calls', 'MTProto-Calls'),
+        page('Benchmarks', 'Benchmarks'),
       ],
     },
     {
