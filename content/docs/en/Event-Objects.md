@@ -28,9 +28,13 @@ async def inspect(msg):
     entities = msg.entities
     media = msg.get("media")
     views = msg.get("views", 0)
+    reactions = msg.get("reactions")
+    thread = msg.get("reply_to_top_id")
 ```
 
-`msg.field` and `msg.get("field", default)` first check the normalized event, then the original Bot API message or MTProto `message` constructor — including future schema fields. Use `msg["field"]` when a missing field should raise `KeyError`. `msg.to_dict()` returns the normalized raw dictionary without copying it.
+`msg.field` and `msg.get("field", default)` first check the normalized event, then the original Bot API message or MTProto `message` constructor. This exposes fields such as `date`, `out`, `mentioned`, `media_unread`, `silent`, `post`, `from_scheduled`, `legacy`, `edit_date`, `pinned`, `noforwards`, `invert_media`, `offline`, `via_bot_id`, `reply_to`, `fwd_from`, `replies`, `reactions`, `restriction_reason`, `ttl_period`, `media`, `entities`, `reply_markup`, and future schema fields.
+
+Use `msg["field"]` when a missing field should raise `KeyError`. `msg.to_dict()` returns the normalized raw dictionary without copying it.
 
 ## Inline mode and callbacks
 
@@ -82,7 +86,10 @@ Member events expose `old` and `new` statuses (`old_status` / `new_status` in th
 @app.on_update
 async def any_update(update):
     print(update.update_type)
+    print(update.get("message_id"))
     print(update.raw)
 ```
 
-`update.type` and `update.update_type` are aliases. Not every field exists on every Telegram update. Use `.get()` or filters for optional fields.
+`update.type` and `update.update_type` are aliases. The object also supports `update["field"]`, `update.get(...)`, attributes for raw fields, and `update.to_dict()`.
+
+Not every field exists on every Telegram update. Use `.get()` or filters for optional fields.

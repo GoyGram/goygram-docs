@@ -46,7 +46,7 @@ Dynamic names are converted from snake case to Bot API camel case: `copy_message
 
 ## Inspect incoming content
 
-A message handler receives `MsgObj`. Its normalized fields include `text`, `id`, `chat_id`, and `from_id`; media and other Bot API fields remain accessible through `msg.raw`.
+A message handler receives a `MsgObj` (an alias of the dynamic `goygram.types.Obj`). Its normalized fields include `text`, `id`, `chat_id`, and `from_id`; media and other Bot API fields remain accessible through `msg.raw`.
 
 ```python
 @app.on_msg

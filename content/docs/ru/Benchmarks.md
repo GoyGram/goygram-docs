@@ -1,45 +1,45 @@
 ---
-title: "Бенчмарки"
+title: "Benchmarks"
 ---
 
-# Бенчмарки
+# Benchmarks
 
-Воспроизводимые замеры GoyGram против основных Python-библиотек Telegram: telethon, pyrogram, aiogram и python-telegram-bot. Все цифры сняты на одном обычном VPS (AMD Ryzen 9 5950X), в свежем процессе, Python 3.11. Скрипты лежат в `benchmarks/` репозитория и запускаются одной командой.
+Reproducible measurements live in the [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks) directory of the main repository. The scripts compare GoyGram against telethon, pyrogram, aiogram, python-telegram-bot, and tgcrypto on the same machine.
 
-## Скорость крипты (AES-256-IGE, МБ/с — больше лучше)
+## AES-256-IGE throughput (MB/s, higher is better)
 
-| Библиотека | 256 Б | 4 КБ | 64 КБ |
+| Library | 256 B | 4 KiB | 64 KiB |
 |---|---|---|---|
-| GoyGram (Rust, AES-NI, встроен) | 544 | 1001 | 1094 |
-| tgcrypto (C, отдельно) | 168 | 224 | 234 |
+| GoyGram (Rust, AES-NI, built-in) | 544 | 1001 | 1094 |
+| tgcrypto 1.2.5 (C, separate install) | 168 | 224 | 234 |
 | pyrogram | 168 | 223 | 228 |
-| telethon (по умолчанию) | 12 | 14 | 14 |
+| telethon (default) | 12 | 14 | 14 |
 
-Задержка на одно сообщение (256 Б): GoyGram 0.4 мкс, tgcrypto 1.3 мкс, pyrogram 1.4 мкс, telethon 23 мкс.
+Per-message latency at 256 B: GoyGram 0.4 µs, tgcrypto 1.3 µs, pyrogram 1.4 µs, telethon 23 µs.
 
-IGE-путь GoyGram использует AES-NI-интринсики, выбираемые в рантайме, с программным fallback на старых CPU. tgcrypto 1.2.5 — табличный программный AES, поэтому разница 3–4.7x. Оба далеко за пределами того, что нужно Telegram на практике — сетевой round-trip всё равно доминирует, — но у GoyGram крипта встроена, а tgcrypto (или `cryptg` для Telethon) надо ставить отдельно.
+GoyGram's IGE path uses AES-NI intrinsics selected at runtime with a software fallback. tgcrypto 1.2.5 is table-based software AES, which is why the gap is 3-4.7x. Both are far beyond what a Telegram client needs — the network round-trip dominates — but GoyGram's crypto is built in, while tgcrypto (or Telethon's `cryptg`) is a separate install.
 
-## TL-кодек (оп/с — больше лучше)
+## TL codec (ops/s)
 
-| Операция | оп/с |
+| Operation | ops/s |
 |---|---|
-| serialize `messages.sendMessage` | ~285 000 |
-| deserialize объекта `message` | ~66 000 |
+| serialize `messages.sendMessage` | ~285,000 |
+| deserialize `message` object | ~66,000 |
 
-Полная официальная схема (слой 229, 823 метода, 1698 конструкторов) грузится из кеша за ~31 мс; тёплый вызов `serialize_method` стоит заметно меньше микросекунды. Динамическая диспетчеризация не значит медленно.
+The full official schema (layer 229, 823 methods, 1698 constructors) loads in ~31 ms from cache; a warm `serialize_method` call costs well under a microsecond. Dynamic dispatch does not mean slow.
 
-## AES-256-GCM (4 КБ, оп/с)
+## AES-256-GCM (4 KiB, ops/s)
 
-Используется для шифрования vault:
+Used for vault encryption:
 
-| Операция | оп/с |
+| Operation | ops/s |
 |---|---|
-| encrypt | ~313 000 |
-| decrypt | ~304 000 |
+| encrypt | ~313,000 |
+| decrypt | ~304,000 |
 
-## Время импорта (мс — меньше лучше)
+## Cold import time (ms, lower is better)
 
-| Библиотека | мс |
+| Library | ms |
 |---|---|
 | GoyGram | 74 |
 | python-telegram-bot | 141 |
@@ -47,9 +47,9 @@ IGE-путь GoyGram использует AES-NI-интринсики, выби�
 | pyrogram | 436 |
 | aiogram | 2699 |
 
-## Память после импорта (МБ — меньше лучше)
+## Memory, RSS delta after import (MB, lower is better)
 
-| Библиотека | МБ |
+| Library | MB |
 |---|---|
 | GoyGram | 13 |
 | python-telegram-bot | 19 |
@@ -57,9 +57,17 @@ IGE-путь GoyGram использует AES-NI-интринсики, выби�
 | telethon | 48 |
 | aiogram | 152 |
 
-## Честные оговорки
+## Reproduce
 
-- **tgcrypto проигрывает на сыром AES-IGE.** tgcrypto 1.2.5 — табличный программный AES; ядро GoyGram диспетчеризует в AES-NI-интринсики, когда CPU их поддерживает. Разница в том, что у GoyGram крипта встроена, а tgcrypto надо ставить отдельно.
-- **Telethon по умолчанию медленный**, потому что гоняет OpenSSL через `ctypes`: на каждый вызов заново считает ключ и побайтово распаковывает буфер. Его быстрый путь (`cryptg`) не ставится по умолчанию.
-- **Импорт и память aiogram утяжеляет pydantic v2.**
-- Замеры сделаны на одном железе; на другом ожидаются другие абсолютные цифры, но похожие соотношения.
+
+```bash
+git clone https://github.com/GoyGram/GoyGram && cd GoyGram/benchmarks
+uv venv .bench && source .bench/bin/activate
+uv pip install goygram telethon tgcrypto pyrogram aiogram python-telegram-bot
+python bench_crypto.py
+python bench_codec.py
+python bench_import.py
+```
+
+
+Numbers above were measured on a single VPS with an AMD Ryzen 9 5950X; expect different absolute values on other hardware, similar ratios.

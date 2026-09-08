@@ -8,7 +8,7 @@ GoyGram keeps the common event path small and preserves the complete update in `
 
 ## Poll updates
 
-For Bot API poll answers, `on_poll` receives `PollObj` with `src`, `raw`, `app`, `id`, `question`, `closed`, and `kind`. Poll-specific fields are available lazily through attributes, `.get()`, and `[]` when they are present in the source update:
+For Bot API poll answers, `on_poll` receives a `PollObj` (an alias of the dynamic `goygram.types.Obj`) with `src`, `raw`, `app`, `id`, `question`, `closed`, and `kind`. Poll-specific fields are available lazily through attributes, `.get()`, and `[]` when they are present in the source update:
 
 ```python
 @app.on_poll(filt=filters.poll_open)
@@ -22,7 +22,7 @@ Use `filters.poll_filter(...)`, `poll_open`, `poll_closed`, `poll_question(...)`
 
 ## Chat-member updates
 
-`on_member` receives `MemberObj` with `src`, `raw`, `app`, `chat_id`, `from_id`, `user_id`, `old`, `new`, and `kind`. The complete Bot API `chat_member` or MTProto participant update remains in `raw`:
+`on_member` receives a `MemberObj` (an alias of the dynamic `goygram.types.Obj`) with `src`, `raw`, `app`, `chat_id`, `from_id`, `user_id`, `old`, `new`, and `kind`. The complete Bot API `chat_member` or MTProto participant update remains in `raw`:
 
 ```python
 @app.on_member(filters.member_joined)
