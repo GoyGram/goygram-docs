@@ -41,7 +41,9 @@ Supported operations: `==`, `!=`, `>`, `>=`, `<`, `<=`, `.contains(...)`, `.star
 
 ## All exported filters
 
-The current source exports **207 filters and helper classes** (excluding the base `Filter`), plus the magic-filter builder `F`.
+The current source exports **251 filters and helper classes** (excluding the base `Filter`), plus the magic-filter builder `F`.
+
+0.7.74 added 42 filters: media presence (`has_photo`, `has_video`, `has_audio`, `has_voice`, `has_document`, `has_sticker`, `has_animation`, `has_video_note`, `has_contact`, `has_location`, `has_poll`, `has_dice`), argument checks (`args_count`, `args_n`, `arg_is`, `arg_int`, `arg_float`, `caption`), chat scope (`in_chat`, `chat_id_range`, `from_chat_type`, `outgoing`, `incoming`, `silent_msg`), reply/forward (`reply_to_me`, `forwarded_from`, `edited_recently`), content (`text_lower`, `has_digits`, `only_digits`, `is_command`, `url_contains`, `hashtag`, `has_caption_entities`, `mime_is`, `mime_prefix`, `file_ext`, `cmd_group`), and time/chaos (`time_window`, `weekday`, `random_chance`). See [Sugar API](/docs/Sugar-API) for examples.
 
 ### Text and parsing
 

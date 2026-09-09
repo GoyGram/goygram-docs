@@ -61,6 +61,10 @@ Use `app.help()` to print the available helper surface. Use `app.core.mt.resolve
 - `await app.count_history(chat_id, via=None)` returns the total message count of a chat (MTProto);
 - `app.set_state(...)`, `app.get_state(...)`, `app.get_state_data(...)`, and `app.clear_state(...)` manage lightweight FSM state.
 
+## Sugar helpers (0.7.74)
+
+The client also carries the convenience layer documented in [Sugar API](/docs/Sugar-API): media sends (`send_photo`/`send_doc`/`send_audio`/`send_video`/`send_voice`/`send_sticker`/`send_animation` via `send_media`), `edit_msg`, `delete_msg`, `get_chat`/`get_user` (cached), `copy_msg` (true `copyMessage` on Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask(chat_id, text)` (send + wait for the reply), and `app.iter_dialogs(limit, batch, folder)` — a lazy MTProto iterator over dialogs.
+
 ## MTProto transport primitives
 
 The direct MTProto transport exposes peer resolution, schema-driven calls, chunked `upload_file` and `download_file`, durable update cursors, reconnect handling, and raw access through the returned dictionaries. It retains the complete structured TL payload instead of allocating a Python model for every Telegram constructor.
