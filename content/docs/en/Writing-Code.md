@@ -67,6 +67,18 @@ async def text_from_other_people(msg):
 - `~` means not;
 - `filters.me` matches messages from the current bot or account.
 
+The `F` magic filter builds the same conditions from attribute paths:
+
+```python
+from goygram.filters import F
+
+@app.on_msg(filt=F.text == "hi" & ~F.is_me)
+async def only_hi(msg):
+    await msg.reply("hi back")
+```
+
+After a `command` filter matches, `msg.cmd` holds the command name and `msg.args` holds the rest of the text.
+
 ## 5. Use an MTProto account
 
 ```python

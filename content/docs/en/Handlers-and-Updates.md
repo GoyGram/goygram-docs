@@ -28,6 +28,43 @@ async def help_command(msg):
     await msg.reply("Commands are case-insensitive by default.")
 ```
 
+After a `command(...)` filter matches, the parsed parts are available directly on the event: `msg.cmd` is the command name without the prefix, and `msg.args` is the remaining text after it.
+
+```python
+@app.on_cmd("ping")
+async def ping(msg):
+    await msg.reply(f"pong, {msg.cmd} got args: {msg.args!r}")
+```
+
+## Handler groups
+
+Register handlers under a named group when you want to enable or remove a whole feature set at once. The group proxies every registration method:
+
+```python
+g = app.group("admin")
+
+@g.on_msg(filt=F.from_user == OWNER_ID)
+async def admin_only(msg): ...
+
+@g.on_cmd("restart")
+async def restart(msg): ...
+
+g.disable()     # all admin handlers stop matching
+g.enable()      # they come back
+g.clear()       # remove them permanently
+```
+
+Groups are plain lists of registered hooks — no wrapper classes, no extra dispatch layers. A disabled group skips its handlers before filters run.
+
+## One-shot handlers
+
+Any registration accepts `once=True` to fire a single time, and `once=` also accepts a group name so a handler removes itself together with the group:
+
+```python
+@app.on_msg(filt=F.text == "!confirm", once=True)
+async def confirm_once(msg): ...
+```
+
 ## Handler registration
 
 - `app.on_msg(fn=None, filt=None)` receives new `MsgObj` events;

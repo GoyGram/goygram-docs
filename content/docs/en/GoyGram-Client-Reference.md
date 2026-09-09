@@ -17,10 +17,11 @@ GoyGram(
     app_name=None, app_version=None, device_model=None,
     system_version=None, system_lang_code="en", lang_pack="", lang_code="en",
     bot_offset_path=None,
+    intake="auto",
 )
 ```
 
-Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically. Supplying both enables both transports: the bot is also authorized over MTProto via `auth.importBotAuthorization`. `session=` accepts a `Session` instance or an encrypted session string. `default_transport` is `"api"`, `"mtproto"`, or `"auto"`. `via="api"` / `via="mtproto"` select the transport per call.
+Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically. Supplying both enables both transports: the bot is also authorized over MTProto via `auth.importBotAuthorization`. `session=` accepts a `Session` instance or an encrypted session string. `default_transport` is `"api"`, `"mtproto"`, or `"auto"`. `via="api"` / `via="mtproto"` select the transport per call. `intake` controls which update channels feed the dispatcher — `"auto"`, `"dual"`, `"mtproto"`, or `"api"`; see [intake modes](/docs/Configuration-and-Transports).
 
 ## Lifecycle
 
@@ -48,9 +49,16 @@ Use `app.help()` to print the available helper surface. Use `app.core.mt.resolve
 - `app.md(text)` returns a Bot API MarkdownV2 payload;
 - `app.raw_chat(chat_id)` removes a `bot:`/`mt:` prefix when present;
 - `app.via(chat_id, via=None)` selects the configured transport;
+- `app.transport` reads the current default transport, `app.switch("api"|"mt")` sets it, `app.using("api"|"mt")` / `app.use_api()` / `app.use_mt()` are context managers that scope the default;
+- `app.me` is the cached own user id; `await app.get_me(refresh=False)` resolves and caches the full own user dict through the available transport;
+- `app.group(name)` returns a named handler group with `disable()` / `enable()` / `clear()`;
+- `app.every(seconds, fn, ...)` schedules an endless periodic job; `app.later(delay, fn, ...)` schedules a one-shot — both return the `asyncio.Task`;
+- `await app.conv_wait(chat_id, user_id=None, filt=None, timeout=60)` pauses a handler until the next matching message in that chat (see [conversations](/docs/Scheduling-and-Background-Work));
 - `await app.download_file(file_id, destination=None)` downloads a Bot API file;
 - `await app.upload_file(source, **kw)` delegates chunked MTProto upload;
 - `await app.send_msg(chat_id, text, via=None, reply_to=None, kbd=None, **kw)` sends through the selected transport;
+- `app.iter_history(chat_id, limit=100, batch=100, via=None)` is an async iterator over chat history (MTProto, pages fetched lazily);
+- `await app.count_history(chat_id, via=None)` returns the total message count of a chat (MTProto);
 - `app.set_state(...)`, `app.get_state(...)`, `app.get_state_data(...)`, and `app.clear_state(...)` manage lightweight FSM state.
 
 ## MTProto transport primitives

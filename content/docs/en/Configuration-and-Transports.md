@@ -55,6 +55,26 @@ When no explicit `mt_host` is supplied, GoyGram selects a Telegram DC dynamicall
 
 MTProto `pts/qts/date/seq` cursors are persisted automatically under `~/.goygram/cursors/` and `updatesTooLong` triggers `updates.getDifference` recovery when a `pts` cursor is available.
 
+## Intake modes and duplicate protection
+
+`intake=` controls which update channels feed the dispatcher:
+
+- `"auto"` (default): one transport configured takes that channel. A **user session** plus a bot token runs **dual intake** — both channels deliver updates. A bot authorized through the same bot token over both channels runs MTProto-only, so Telegram does not send the same update twice.
+- `"dual"`: force both channels on. A cross-transport duplicate gate in the dispatcher drops the second copy of the same message: the key is `(kind, chat_id, msg_id)` for messages and edits, `(kind, query_id)` for callbacks and inline queries, with a TTL sweep so the gate cannot grow unbounded.
+- `"mtproto"` / `"api"`: force a single channel; the other transport stays available for outgoing calls only.
+
+```python
+app = GoyGram(
+    bot_token="BOT_TOKEN",
+    api_id=12345,
+    api_hash="API_HASH",
+    session_name="my-account",   # a user session: auto selects dual intake
+    intake="dual",               # or "auto", "mtproto", "api"
+)
+```
+
+Every handler — bot polling, webhook, and MTProto updates — goes through the same dispatcher gate, so a userbot and a webhook bot running together cannot double-fire a handler on the same message. Delivery order between the two channels is not deterministic; the first copy to arrive wins.
+
 ## Selecting a transport
 
 For API calls, method names make the route explicit:
@@ -74,6 +94,31 @@ await app.send_msg("123456", "via mtproto", via="mtproto")  # MTProto
 ```
 
 `via="api"` is an alias for the Bot API transport and `via="mtproto"` for MTProto (`via="bot"` / `via="mt"` also work). `raw_chat("bot:123")` returns the unprefixed value. If no prefix or `via` is given, helpers follow `default_transport`, then prefer the Bot API transport when it exists, otherwise MTProto.
+
+## Switching transports at runtime
+
+The preferred way to pick a transport for outgoing calls is the `use` / `using` pair — a context manager that flips the default inside its block, plus shortcut context managers:
+
+```python
+async with app.using("api"):        # everything inside goes through Bot API
+    await app.send_msg(chat, "sent by bot")
+
+async with app.using("mt"):         # everything inside goes through MTProto
+    await app.send_msg(chat, "sent by user account")
+
+async with app.use_api():           # same, shortcuts
+    ...
+async with app.use_mt():
+    ...
+```
+
+`app.transport` returns the current default (`"api"` or `"mtproto"`), and `app.switch("mtproto")` sets it. Prefixes (`bot:`, `mt:`) and `via=` still override per call, so a context manager never blocks an explicit route.
+
+```python
+app.transport                  # -> "api"
+app.switch("mt")                # default is now "mtproto"
+app.default_transport          # -> "mtproto"
+```
 
 ## Lifecycle
 

@@ -14,9 +14,34 @@ async def media_handler(msg):
 
 A missing optional field makes a predicate false. Constructor filters such as `command(...)`, `regex(...)`, `media_size(...)`, and `update_type(...)` are created with call syntax.
 
+## Magic filter `F`
+
+The `F` object builds attribute-path predicates without a DSL or AST parsing — every attribute access records the path lazily:
+
+```python
+from goygram.filters import F
+
+@app.on_msg(filt=F.text == "hi")
+async def exact(msg): ...
+
+@app.on_msg(filt=F.chat_id == 12345 & ~F.is_me)
+async def from_that_chat(msg): ...
+
+@app.on_msg(filt=F.data.startswith("menu:"))
+async def menu_callbacks(cb): ...
+
+@app.on_msg(filt=F.text.contains("invoice"))
+async def invoices(msg): ...
+
+@app.on_msg(filt=F.photo_width > 1000)
+async def big_photos(msg): ...
+```
+
+Supported operations: `==`, `!=`, `>`, `>=`, `<`, `<=`, `.contains(...)`, `.startswith(...)`, `.endswith(...)`, and inversion with `~F.text`. A path that does not exist on the event evaluates to `False` instead of raising. Compose with the regular `&` / `|` operators.
+
 ## All exported filters
 
-The current source exports **207 filters and helper classes** (excluding the base `Filter`).
+The current source exports **207 filters and helper classes** (excluding the base `Filter`), plus the magic-filter builder `F`.
 
 ### Text and parsing
 
