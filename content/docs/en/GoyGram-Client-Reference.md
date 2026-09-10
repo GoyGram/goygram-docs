@@ -63,7 +63,7 @@ Use `app.help()` to print the available helper surface. Use `app.core.mt.resolve
 
 ## Sugar helpers (0.7.74)
 
-The client also carries the convenience layer documented in [Sugar API](/docs/Sugar-API): media sends (`send_photo`/`send_doc`/`send_audio`/`send_video`/`send_voice`/`send_sticker`/`send_animation` via `send_media`), `edit_msg`, `delete_msg`, `get_chat`/`get_user` (cached), `copy_msg` (true `copyMessage` on Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask(chat_id, text)` (send + wait for the reply), and `app.iter_dialogs(limit, batch, folder)` — a lazy MTProto iterator over dialogs.
+The client also carries the convenience layer documented in [Sugar API](/docs/Sugar-API): media sends (`send_photo`/`send_doc`/`send_audio`/`send_video`/`send_voice`/`send_sticker`/`send_animation` via `send_media`), `edit_msg`, `delete_msg`, `get_chat`/`get_user` (cached), `copy_msg` (true `copyMessage` on Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask(chat_id, text)` (send + wait for the reply), and `app.iter_dialogs(limit, batch, folder)` — a lazy MTProto iterator over dialogs. 0.7.75 adds `search_messages`/`iter_search`, `vote_poll`, `get_forum_topics`, `send_media_group`, `download_media`, `get_self`, admin helpers, and the camelCase dispatch documented in [Rich API](/docs/Rich-API).
 
 ## MTProto transport primitives
 

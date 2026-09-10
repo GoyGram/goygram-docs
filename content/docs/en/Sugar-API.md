@@ -78,6 +78,8 @@ await app.send_sticker(chat, "CAACAgIAAx0...")
 
 Other client helpers added in 0.7.74: `edit_msg`, `delete_msg` (single or list), `get_chat`/`get_user` (cached, `refresh=` to bypass), `copy_msg` (true `copyMessage` on Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask`, `iter_dialogs`.
 
+Added in 0.7.75: `send_rich`/`edit_rich` (see [Rich API](/docs/Rich-API)), `download_media` (Bot API file_id or MTProto document/photo location, both transports), `get_self`/`get_self(full=True)` (self user dict, optionally with `users.getFullUser`), `search_messages` (MTProto `messages.search`), `iter_search` (lazy search iterator with pagination), `vote_poll` (`messages.sendVote`), `get_forum_topics` (Bot API `getForumTopics` or MTProto `messages.getForumTopics`), `send_media_group` (true album via `messages.sendMultiMedia`), `send_contact`/`send_venue`/`send_location`/`send_poll`/`send_dice`, `promote_member`/`ban_member`/`unban_member`/`create_invite_link`, `set_chat_title`/`set_chat_about`, `join_chat`/`leave_chat`, `get_chat_info`, `send_draft`, `pin_msg`/`unpin_msg`/`unpin_all`, `iter_participants`/`iter_members`, and a full typing map in `send_action` (`record_video`, `upload_document`, `choose_sticker`, `find_location`, `record_video_note`, `upload_video_note`, ... with `progress=`).
+
 ## Dialog iteration
 
 ```python

@@ -1,12 +1,12 @@
 ---
-title: "Сахарный API"
+title: "Sugar API"
 ---
 
-GoyGram сохраняет свою суть с нулевой абстракцией: динамическая диспетчеризация, ленивые необработанные поля, отсутствие генерируемых моделей. Слой сахара представляет собой набор тонких оберток *поверх* транспортов, добавленных в версии 0.7.74. Ничто ниже не меняется; здесь все — необязательное удобство. Если вы никогда не импортируете его, вы ничего не платите.
+GoyGram keeps its core zero-abstraction: dynamic dispatch, lazy raw fields, no generated models. The sugar layer is a set of thin wrappers *on top of* the transports, added in 0.7.74. Nothing below changes; everything here is optional convenience. If you never import it, you pay nothing.
 
-## Помощники форматирования
+## Formatting helpers
 
-`goygram.sugar` предоставляет небольшой конструктор `html` для HTML-разметки Telegram:
+`goygram.sugar` exposes a small `html` builder for Telegram HTML markup:
 
 
 ```python
@@ -22,28 +22,28 @@ await app.send_msg(chat, text, parse_mode="HTML")
 ```
 
 
-Полный список: `b`/`bold`, `i`/`italic`, `u`, `s`/`strike`, `code`, `pre(lang)`, `link`, `mention(user_id, name)`, `spoiler`, `quote(text, expandable=)`, `emoji(custom_id)`, `join(*parts, sep=)`.
+Full list: `b`/`bold`, `i`/`italic`, `u`, `s`/`strike`, `code`, `pre(lang)`, `link`, `mention(user_id, name)`, `spoiler`, `quote(text, expandable=)`, `emoji(custom_id)`, `join(*parts, sep=)`.
 
-Утилиты форматирования находятся в том же модуле:
+Utility formatters live in the same module:
 
-| Помощник | Что он делает |
+| Helper | What it does |
 |---|---|
 | `human_size(2048)` | `2.0 KB` |
 | `human_duration(90)` | `1m 30s` |
-| `chunk_text(long, 4096)` | разбивает длинный текст на части размером с Telegram |
-| `parse_entities_html(text, entities)` | преобразует объекты API ботов в HTML |
+| `chunk_text(long, 4096)` | splits long text into Telegram-sized parts |
+| `parse_entities_html(text, entities)` | converts Bot API entities to HTML |
 | `progress_bar(done, total)` | `[#####     ]` |
-| `code_block(code, "py")` | изолированный блок как готовая к отправке строка |
-| `plural_ru(3, "ключ", "ключа", "ключей")` | Русские формы множественного числа |
-| `json_dumps(obj)` | красивый JSON, обеспечения_ascii=False |
-| `b64e`/`b64d` | помощники base64 байт |
-| `rand_id()` | случайное целое число для полей `random_id` |
+| `code_block(code, "py")` | fenced block as a ready-to-send string |
+| `plural_ru(3, "ключ", "ключа", "ключей")` | Russian plural forms |
+| `json_dumps(obj)` | pretty JSON, ensure_ascii=False |
+| `b64e`/`b64d` | base64 bytes helpers |
+| `rand_id()` | random int for `random_id` fields |
 
-Все они также реэкспортируются из пакета верхнего уровня: `from goygram import html, human_size, chunk_text`.
+All of these are also re-exported from the top-level package: `from goygram import html, human_size, chunk_text`.
 
-## Сахар объекта события
+## Event object sugar
 
-Каждый объект события (`e`) получил свойства только для чтения, которые извлекаются из необработанных полей с разумными резервными вариантами:
+Every event object (`e`) gained read-only properties that pull from raw fields with sane fallbacks:
 
 
 ```python
@@ -59,17 +59,17 @@ async def h(e):
 ```
 
 
-- Чат: `chat_type` (также читается `raw["chat"]["type"]`), `chat_title`, `username`, `is_private`, `is_group`, `is_super_group`, `is_channel`
-- Отправитель: `full_name`, `mention` (готовая HTML-ссылка), `from_id`, `is_out`
-- Носители: `media_type`, `file_name`, `file_size`, `mime`, `is_media`, `file_id`.
-– Текст: `has_text`, `words`, `word_count`, `args_list`, `command_name`, `html_text`, `urls`, `entities`.
-- Время: `date_ts`, `edit_date_ts`, `ago` (`"5m"`, `"2h"`, `"3d"`)
+- Chat: `chat_type` (also reads `raw["chat"]["type"]`), `chat_title`, `username`, `is_private`, `is_group`, `is_super_group`, `is_channel`
+- Sender: `full_name`, `mention` (ready HTML link), `from_id`, `is_out`
+- Media: `media_type`, `file_name`, `file_size`, `mime`, `is_media`, `file_id`
+- Text: `has_text`, `words`, `word_count`, `args_list`, `command_name`, `html_text`, `urls`, `entities`
+- Time: `date_ts`, `edit_date_ts`, `ago` (`"5m"`, `"2h"`, `"3d"`)
 
-Методы зеркально отражают клиента: `reply()`, `respond()`, `edit()`, `delete()`, `ask()`, `copy_to()`, `forward_to()`, `typing()`, `mark_read()`, `get_chat()`, `get_sender()`, `download()`, `answer()` (обратные вызовы/встроенные), `react()`.
+Methods mirror the client: `reply()`, `respond()`, `edit()`, `delete()`, `ask()`, `copy_to()`, `forward_to()`, `typing()`, `mark_read()`, `get_chat()`, `get_sender()`, `download()`, `answer()` (callbacks/inline), `react()`.
 
-## Отправка мультимедиа
+## Sending media
 
-Одна точка входа, два транспорта. Передача байтов, пути или URL-адреса http(s):
+One entry point, two transports. Pass bytes, a path, or an http(s) URL:
 
 
 ```python
@@ -80,11 +80,13 @@ await app.send_sticker(chat, "CAACAgIAAx0...")
 ```
 
 
-`send_photo`, `send_doc`/`send_document`, `send_audio`, `send_video`, `send_voice`, `send_sticker`, `send_animation` весь маршрут через `send_media()`, который выбирает активный транспорт (`via=` переопределяет каждый вызов), угадывает MIME по расширению и загружает через `mt.upload_file`, когда MTProto активен.
+`send_photo`, `send_doc`/`send_document`, `send_audio`, `send_video`, `send_voice`, `send_sticker`, `send_animation` all route through `send_media()`, which picks the active transport (`via=` overrides per call), guesses MIME by extension, and uploads via `mt.upload_file` when MTProto is active.
 
-Другие помощники клиента, добавленные в версии 0.7.74: `edit_msg`, `delete_msg` (одиночный или список), `get_chat`/`get_user` (кешируется, `refresh=` для обхода), `copy_msg` (истинный `copyMessage` в Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask`, `iter_dialogs`.
+Other client helpers added in 0.7.74: `edit_msg`, `delete_msg` (single or list), `get_chat`/`get_user` (cached, `refresh=` to bypass), `copy_msg` (true `copyMessage` on Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask`, `iter_dialogs`.
 
-## Итерация диалога
+Added in 0.7.75: `send_rich`/`edit_rich` (see [Rich API](/docs/Rich-API)), `download_media` (Bot API file_id or MTProto document/photo location, both transports), `get_self`/`get_self(full=True)` (self user dict, optionally with `users.getFullUser`), `search_messages` (MTProto `messages.search`), `iter_search` (lazy search iterator with pagination), `vote_poll` (`messages.sendVote`), `get_forum_topics` (Bot API `getForumTopics` or MTProto `messages.getForumTopics`), `send_media_group` (true album via `messages.sendMultiMedia`), `send_contact`/`send_venue`/`send_location`/`send_poll`/`send_dice`, `promote_member`/`ban_member`/`unban_member`/`create_invite_link`, `set_chat_title`/`set_chat_about`, `join_chat`/`leave_chat`, `get_chat_info`, `send_draft`, `pin_msg`/`unpin_msg`/`unpin_all`, `iter_participants`/`iter_members`, and a full typing map in `send_action` (`record_video`, `upload_document`, `choose_sticker`, `find_location`, `record_video_note`, `upload_video_note`, ... with `progress=`).
+
+## Dialog iteration
 
 
 ```python
@@ -93,31 +95,32 @@ async for d in app.iter_dialogs(limit=50, batch=100):
 ```
 
 
-Только для MTProto, разбиение на страницы с помощью `messages.getDialogs`, тот же ленивый шаблон, что и `iter_history`.
+MTProto-only, paginated via `messages.getDialogs`, same lazy pattern as `iter_history`.
 
-## Горячие клавиши в конструкторе клавиатуры
+## Keyboard builder shortcuts
 
-`KbdBuilder` получил сочетания клавиш на уровне строк (полный API см. на странице «Клавиатуры»): `url()`, `cb()`, `copy()`, `switch()`, `web()`, а также `row()`, `line(btn_dict)`, `join(other_builder)`, `len()` и правдивость. Всё цепляет.
+`KbdBuilder` got row-level shortcuts (see Keyboards page for the full API): `url()`, `cb()`, `copy()`, `switch()`, `web()`, plus `row()`, `line(btn_dict)`, `join(other_builder)`, `len()`, and truthiness. Everything chains.
 
-## Новые фильтры
+## New filters
 
-К существующему набору добавляются 42 новых фильтра (всего экспортировано 251). Основные моменты:
+42 new filters join the existing set (251 total exported). Highlights:
 
 
 ```python
 from goygram.filters import has_document, file_ext, arg_int, in_chat, reply_to_me, outgoing, mime_prefix
 ```
 
-- Присутствие в СМИ: `has_photo`, `has_video`, `has_audio`, `has_voice`, `has_document`, `has_sticker`, `has_animation`, `has_video_note`, `has_contact`, `has_location`, `has_poll`, `has_dice`
-- Аргументы: `args_count(n)`, `args_n(n)`, `arg_is(i, v)`, `arg_int(i)`, `arg_float(i)`, `caption(sub?)`
-– Область чата: `in_chat(ids...)`, `chat_id_range(lo, hi)`, `from_chat_type(types...)`, `outgoing`, `incoming`, `silent_msg`.
-- Ответить/переслать: `reply_to_me`, `forwarded_from(uid)`, `edited_recently(within)`
-- Содержимое: `text_lower`, `has_digits`, `only_digits`, `is_command`, `url_contains`, `hashtag(tags...)`, `has_caption_entities(type?)`, `mime_is`, `mime_prefix`, `file_ext(exts...)`, `cmd_group(names...)`
-- Время/хаос: `time_window(start, end, tz)`, `weekday(days...)`, `random_chance(p)`
 
-## Обработка ошибок
+- Media presence: `has_photo`, `has_video`, `has_audio`, `has_voice`, `has_document`, `has_sticker`, `has_animation`, `has_video_note`, `has_contact`, `has_location`, `has_poll`, `has_dice`
+- Arguments: `args_count(n)`, `args_n(n)`, `arg_is(i, v)`, `arg_int(i)`, `arg_float(i)`, `caption(sub?)`
+- Chat scope: `in_chat(ids...)`, `chat_id_range(lo, hi)`, `from_chat_type(types...)`, `outgoing`, `incoming`, `silent_msg`
+- Reply/forward: `reply_to_me`, `forwarded_from(uid)`, `edited_recently(within)`
+- Content: `text_lower`, `has_digits`, `only_digits`, `is_command`, `url_contains`, `hashtag(tags...)`, `has_caption_entities(type?)`, `mime_is`, `mime_prefix`, `file_ext(exts...)`, `cmd_group(names...)`
+- Time/chaos: `time_window(start, end, tz)`, `weekday(days...)`, `random_chance(p)`
 
-Зарегистрируйте обработчики исключений, возникающих внутри ваших собственных обработчиков:
+## Error handling
+
+Register handlers for exceptions raised inside your own handlers:
 
 
 ```python
@@ -127,11 +130,11 @@ async def report(evt, exc):
 ```
 
 
-Функции синхронизации также поддерживаются. Обработчики срабатывают после записи внутреннего журнала; сломанный обработчик ошибок регистрируется и никогда не распространяется. `StopPropagation` по-прежнему учитывается — это не ошибка.
+Sync functions are supported too. Handlers fire after the internal log entry; a broken error handler is logged, never propagated. `StopPropagation` is still respected — it is not an error.
 
-## Разговоры
+## Conversations
 
-Соответствие `conv_wait` теперь стало точным: входящее сообщение сначала разрешает будущее ожидание с ключом `(chat_id, from_id)`, затем `(chat_id, None)` и возвращается к любому-ожидающему только тогда, когда событие не содержит отправителя. `Obj.ask(prompt)` ожидает *того же пользователя*, который инициировал его по умолчанию (вместо этого `from_me=True` ждет вас).
+`conv_wait` matching is now precise: an incoming message resolves the waiting future with key `(chat_id, from_id)` first, then `(chat_id, None)`, and only falls back to any-waiter when the event carries no sender. `Obj.ask(prompt)` waits for the *same user* who triggered it by default (`from_me=True` waits for yourself instead).
 
 
 ```python
