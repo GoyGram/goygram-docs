@@ -20,6 +20,14 @@ text = html.join(
 await app.send_msg(chat, text, parse_mode="HTML")
 ```
 
+`parse_mode="md"` (MarkdownV2) is also supported on MTProto sends and edits: `md_to_entities()` converts `*bold*`, `_italic_`, `__underline__`, `~~strike~~`, `||spoiler||`, `` `code` ``, ` ```lang ...``` `, and `[text](url)` / `[text](tg://user?id=...)` into native entities, stripping escapes and markers from the plain text. Both parsers emit offsets in UTF-16 code units (what Telegram expects), so emoji before an entity never shifts it. `md_escape(text)` escapes MarkdownV2 specials for raw Bot API sends.
+
+```python
+from goygram import md_to_entities, md_escape
+plain, entities = md_to_entities("*hi* _there_ `[x](y)_")
+await app.send_msg(chat, "*bold*", parse_mode="md")
+```
+
 Full list: `b`/`bold`, `i`/`italic`, `u`, `s`/`strike`, `code`, `pre(lang)`, `link`, `mention(user_id, name)`, `spoiler`, `quote(text, expandable=)`, `emoji(custom_id)`, `join(*parts, sep=)`.
 
 Utility formatters live in the same module:
@@ -64,6 +72,8 @@ async def h(e):
 Methods mirror the client: `reply()`, `respond()`, `edit()`, `delete()`, `ask()`, `copy_to()`, `forward_to()`, `typing()`, `mark_read()`, `get_chat()`, `get_sender()`, `download()`, `answer()` (callbacks/inline), `react()`.
 
 ## Sending media
+
+Media sends carry automatic metadata: `send_voice`/`send_audio` probe the real duration via `media_duration()` (stdlib `wave` for WAV, `mutagen` if installed, `ffprobe` fallback) and attach `documentAttributeAudio` with the true length, so voice bubbles never show `0:00`. Non-OGG files sent as `voice` get their mime forced to `audio/ogg`. MTProto uploads now serialize nested constructors correctly (`inputFile` with `md5_checksum`) — photo/voice/audio sends work end-to-end.
 
 One entry point, two transports. Pass bytes, a path, or an http(s) URL:
 
