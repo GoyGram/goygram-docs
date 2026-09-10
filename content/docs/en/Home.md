@@ -30,6 +30,7 @@ It can run a bot or connect to Telegram as a user account. Pick the one you need
 
 - [Client reference](/docs/GoyGram-Client-Reference)
 - [Sugar API: formatting, media sends, new filters](/docs/Sugar-API)
+- [Rich messages: in-message buttons, blocks, html entities](/docs/Rich-API)
 - [Event objects](/docs/Event-Objects)
 - [Bot API calls](/docs/Bot-API-Calls)
 - [MTProto calls](/docs/MTProto-Calls)
