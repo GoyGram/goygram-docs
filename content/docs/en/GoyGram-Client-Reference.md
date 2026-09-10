@@ -21,7 +21,7 @@ GoyGram(
 )
 ```
 
-Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically. Supplying both enables both transports: the bot is also authorized over MTProto via `auth.importBotAuthorization`. `session=` accepts a `Session` instance or an encrypted session string. `default_transport` is `"api"`, `"mtproto"`, or `"auto"`. `via="api"` / `via="mtproto"` select the transport per call. `intake` controls which update channels feed the dispatcher — `"auto"`, `"dual"`, `"mtproto"`, or `"api"`; see [[Configuration-and-Transports|intake modes]].
+Supplying `bot_token` enables the Bot API transport. Supplying MTProto credentials without an explicit endpoint enables MTProto and resolves a Telegram data center dynamically. Supplying both enables both transports: the bot is also authorized over MTProto via `auth.importBotAuthorization`. `session=` accepts a `Session` instance or an encrypted session string. `default_transport` is `"api"`, `"mtproto"`, or `"auto"`. `via="api"` / `via="mtproto"` select the transport per call. `intake` controls which update channels feed the dispatcher — `"auto"`, `"dual"`, `"mtproto"`, or `"api"`; see [intake modes](/docs/Configuration-and-Transports).
 
 ## Lifecycle
 
@@ -53,7 +53,7 @@ Use `app.help()` to print the available helper surface. Use `app.core.mt.resolve
 - `app.me` is the cached own user id; `await app.get_me(refresh=False)` resolves and caches the full own user dict through the available transport;
 - `app.group(name)` returns a named handler group with `disable()` / `enable()` / `clear()`;
 - `app.every(seconds, fn, ...)` schedules an endless periodic job; `app.later(delay, fn, ...)` schedules a one-shot — both return the `asyncio.Task`;
-- `await app.conv_wait(chat_id, user_id=None, filt=None, timeout=60)` pauses a handler until the next matching message in that chat (see [[Scheduling-and-Background-Work|conversations]]);
+- `await app.conv_wait(chat_id, user_id=None, filt=None, timeout=60)` pauses a handler until the next matching message in that chat (see [conversations](/docs/Scheduling-and-Background-Work));
 - `await app.download_file(file_id, destination=None)` downloads a Bot API file;
 - `await app.upload_file(source, **kw)` delegates chunked MTProto upload;
 - `await app.send_msg(chat_id, text, via=None, reply_to=None, kbd=None, **kw)` sends through the selected transport;
@@ -63,7 +63,7 @@ Use `app.help()` to print the available helper surface. Use `app.core.mt.resolve
 
 ## Sugar helpers (0.7.74)
 
-The client also carries the convenience layer documented in [[Sugar-API]]: media sends (`send_photo`/`send_doc`/`send_audio`/`send_video`/`send_voice`/`send_sticker`/`send_animation` via `send_media`), `edit_msg`, `delete_msg`, `get_chat`/`get_user` (cached), `copy_msg` (true `copyMessage` on Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask(chat_id, text)` (send + wait for the reply), and `app.iter_dialogs(limit, batch, folder)` — a lazy MTProto iterator over dialogs. 0.7.75 adds `search_messages`/`iter_search`, `vote_poll`, `get_forum_topics`, `send_media_group`, `download_media`, `get_self`, admin helpers, and the camelCase dispatch documented in [[Rich-API]]. 0.7.79 adds the domain layer: stories (`get_stories`/`send_story`/`edit_story`/`delete_story`/`read_stories`/`get_story_views`/`export_story_link`), stars and gifts (`get_stars_balance`/`get_stars_history`/`get_star_gifts`/`send_star_gift`), drafts and scheduled messages (`save_draft`/`get_all_drafts`/`get_scheduled_messages`/`send_scheduled`/`delete_scheduled`), full admin/moderation (`restrict_member`/`promote_member`/`demote_member`/`set_slow_mode`/`get_invite_links`/`edit_invite_link`/`revoke_invite_link`/`approve_join_request`/`decline_join_request`), and takeout (`start_takeout`/`finish_takeout` + `takeout_id=` on any call).
+The client also carries the convenience layer documented in [Sugar API](/docs/Sugar-API): media sends (`send_photo`/`send_doc`/`send_audio`/`send_video`/`send_voice`/`send_sticker`/`send_animation` via `send_media`), `edit_msg`, `delete_msg`, `get_chat`/`get_user` (cached), `copy_msg` (true `copyMessage` on Bot API), `forward_msg`, `send_action`, `mark_read`, `send_reaction`, `pin_msg`, `ask(chat_id, text)` (send + wait for the reply), and `app.iter_dialogs(limit, batch, folder)` — a lazy MTProto iterator over dialogs. 0.7.75 adds `search_messages`/`iter_search`, `vote_poll`, `get_forum_topics`, `send_media_group`, `download_media`, `get_self`, admin helpers, and the camelCase dispatch documented in [Rich API](/docs/Rich-API). 0.7.79 adds the domain layer: stories (`get_stories`/`send_story`/`edit_story`/`delete_story`/`read_stories`/`get_story_views`/`export_story_link`), stars and gifts (`get_stars_balance`/`get_stars_history`/`get_star_gifts`/`send_star_gift`), drafts and scheduled messages (`save_draft`/`get_all_drafts`/`get_scheduled_messages`/`send_scheduled`/`delete_scheduled`), full admin/moderation (`restrict_member`/`promote_member`/`demote_member`/`set_slow_mode`/`get_invite_links`/`edit_invite_link`/`revoke_invite_link`/`approve_join_request`/`decline_join_request`), and takeout (`start_takeout`/`finish_takeout` + `takeout_id=` on any call).
 
 ## MTProto transport primitives
 
@@ -72,4 +72,3 @@ The direct MTProto transport exposes peer resolution, schema-driven calls, chunk
 ## Memory and latency model
 
 The common event path stores a compact normalized object plus the original raw dictionary. Message-specific fields are resolved lazily through `msg.field`, `msg.get(...)`, or `msg[...]`; they are not copied into a large model. This keeps the hot path small while preserving Telegram-specific fields and future layer additions.
-
