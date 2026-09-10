@@ -81,6 +81,22 @@ All handlers must be `async def`. A filter is evaluated before its handler; non-
 
 The runtime uses the loaded Telegram TL schema dynamically. It recognizes the update containers `updates`, `updatesCombined`, `updateShort`, `updateShortMessage`, `updateShortChatMessage`, `updateShortSentMessage`, `msg_container`, and gzip-packed payloads. Message updates are classified as new or edited messages; all other structured constructors keep their original constructor name and payload in `UpdateObj`. `on_update` receives every event before its specialized hook.
 
+Typed fields are extracted for the important update families before raw fallback: typing (user/chat/channel), stories, folder and dialog-filter changes, boosts, message reactions, join requests, drafts, pinned messages, read-history events, user status/name/phone, and service notifications. An unknown constructor still arrives with `update_type` and the full `raw` payload — nothing is discarded:
+
+```python
+@app.on_update(filt=filters.update_type("updateStory"))
+async def story(update):
+    print(update.owner_id, update.story_id, update.raw)
+
+@app.on_update(filt=filters.update_type("updateUserTyping"))
+async def typing(update):
+    print(update.user_id, update.typing_kind, update.action)
+```
+
+## Update recovery
+
+If the connection drops or the server sends `updatesTooLong`, GoyGram heals itself: `getDifference` runs in a slice loop (`differenceSlice` follows until a final `difference`/`differenceTooLong`), so a gap of any size is drained without losing events. Channels are tracked per-channel: on `updateChannelTooLong` or a version gap, `getChannelDifference` fetches exactly what that channel is missing. Nothing is configured — recovery is automatic on every MTProto connection.
+
 The official layer currently exposes more than 150 update constructors. You do not need a Python class for every constructor: use the generic path and access fields lazily:
 
 ```python

@@ -144,3 +144,84 @@ async def form(e):
         return
     await e.reply(f"Hi, {html.b(name.text)}")
 ```
+
+## Admin and moderation
+
+Rights are plain dicts, mapping is identical on both transports:
+
+```python
+await app.ban_member(chat, user, until=ts)
+await app.unban_member(chat, user)
+await app.kick_member(chat, user)
+await app.promote_member(chat, user, rights={"can_delete_messages": True}, title="mod")
+await app.demote_member(chat, user)
+await app.restrict_member(chat, user, {"send_messages": True}, until=ts)
+await app.set_slow_mode(chat, 30)
+```
+
+Invite links (MTProto path uses `messages.getExportedChatInvites` / `messages.editExportedChatInvite`):
+
+```python
+links = await app.get_invite_links(chat, admin_id=me)
+await app.edit_invite_link(chat, link, name="main", member_limit=50)
+await app.revoke_invite_link(chat, link)
+await app.approve_join_request(chat, user)
+await app.decline_join_request(chat, user)
+```
+
+`on_update` receives typed `updatePendingJoinRequests` / `updateBotChatInviteRequester` events with `chat_id` / `from_id` resolved.
+
+## Stories
+
+MTProto-only domain (Bot API has no story methods for bots):
+
+```python
+mine = await app.get_stories("me")
+res = await app.send_story("me", "photo.jpg", "caption", pinned=True, period=86400)
+await app.edit_story("me", story_id, caption="new")
+await app.delete_story("me", [1, 2])
+await app.read_stories(peer, max_id=5)
+views = await app.get_story_views(peer, [1])
+link = await app.export_story_link(peer, story_id)
+```
+
+`updateStory` / `updateReadStories` / `updateSentStoryReaction` arrive as typed update events with `owner_id` / `story_id`.
+
+## Stars and gifts
+
+```python
+balance = await app.get_stars_balance()
+gifts = await app.get_star_gifts()
+await app.send_star_gift(peer, gift_id, message="happy birthday")
+```
+
+`send_star_gift` follows the real flow: `inputInvoiceStarGift` → `payments.getPaymentForm` → `payments.sendStarsForm`. `updateBotChatBoost` arrives typed with the raw `boost` payload.
+
+## Drafts and scheduled messages
+
+```python
+await app.save_draft(chat, "half-written text")
+drafts = await app.get_all_drafts()
+sched = await app.get_scheduled_messages(chat)
+await app.send_scheduled(chat, "hi", schedule_date=ts)
+await app.delete_scheduled(chat, [msg_id])
+```
+
+`updateDraftMessage` arrives typed with `chat_id` and the raw draft payload.
+
+## Takeout (data export)
+
+Any MTProto call accepts `takeout_id=` and is automatically wrapped into `invokeWithTakeout`:
+
+```python
+t = await app.start_takeout(files=True)
+tid = t["result"]["id"]
+res = await app.mt_req("account.getPrivacy", takeout_id=tid, key={"_": "inputPrivacyKeyStatusTimestamp"})
+await app.finish_takeout(tid, success=False)
+```
+
+Init and finish do not wrap themselves; every other call with `takeout_id` rides inside the takeout context.
+
+## Update coverage
+
+`on_update` now maps every significant update family to typed fields before reaching raw fallback: typing (user/chat/channel), stories, folders/dialog filters, boosts, reactions (message + bot variants), join requests, drafts, pinned messages, read history, user status/name/phone/emoji, service notifications, deleted messages, and channel participant changes. Unknown updates still arrive as `update_type` + `raw` without data loss.

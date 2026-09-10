@@ -59,4 +59,12 @@ async def inspect(msg):
 
 For MTProto, `app.core.mt.upload_file(source, file_name=None, part_size=524288)` uploads raw file parts through `upload.saveFilePart`, and `app.core.mt.download_file(location, destination, offset=0, limit=524288)` downloads raw file parts through `upload.getFile`. Arguments for media methods such as `messages.sendMedia` must match the active Telegram TL schema. Read [MTProto Calls](/docs/MTProto-Calls) before using raw MTProto objects.
 
+A Telegram `file_reference` expires after a while. When the server answers `FILE_REFERENCE_EXPIRED` during a download, GoyGram automatically refreshes the reference from the message media it already has and retries the same download — no extra call from your side:
+
+```python
+data = await core.download_media(msg, dest=None)
+```
+
+The refresh uses the media payload of the source message/document, so old-but-valid references heal themselves on first use.
+
 Also see [Bot API Calls](/docs/Bot-API-Calls) and [Event Objects](/docs/Event-Objects).

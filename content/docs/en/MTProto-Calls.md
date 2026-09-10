@@ -47,7 +47,22 @@ Uploads and downloads use bounded chunks and atomic destination replacement. Raw
 
 ## Retries and recovery
 
-`FloodWaitError` retries are bounded by the `retry=` keyword. MTProto update cursors (`pts`, `qts`, `date`, `seq`) are persisted and `updates.getDifference` is used after a gap. Do not create a second receive loop: `app.run()` owns the reader and dispatcher.
+`FloodWaitError` retries are bounded by the `retry=` keyword. MTProto update cursors (`pts`, `qts`, `date`, `seq`) are persisted and `updates.getDifference` is used after a gap — since 0.7.79 as a full slice loop with `differenceTooLong` handling, plus per-channel `getChannelDifference` recovery on `updateChannelTooLong`. Do not create a second receive loop: `app.run()` owns the reader and dispatcher.
+
+`FILE_REFERENCE_EXPIRED` during a download triggers an automatic reference refresh and a single retry of the same request.
+
+## Takeout
+
+Any MTProto call accepts `takeout_id=` and is wrapped into `invokeWithTakeout` for you:
+
+```python
+t = await app.start_takeout(files=True)
+tid = t["result"]["id"]
+rules = await app.mt_req("account.getPrivacy", takeout_id=tid, key={"_": "inputPrivacyKeyStatusTimestamp"})
+await app.finish_takeout(tid, success=False)
+```
+
+`start_takeout` / `finish_takeout` are the only methods that never wrap themselves; everything else with `takeout_id` rides inside the takeout context.
 
 ## Dynamic result handling
 
