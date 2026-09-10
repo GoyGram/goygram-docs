@@ -1,13 +1,12 @@
 ---
-title: "Update Reference"
+title: "Справочник обновлений"
 ---
 
-# Update Reference
+# Справочник обновлений
 
-This page lists the update constructors in the active Telegram TL schema used by GoyGram. The current cache contains **172 update constructors**: **165** returning `Update` and **7** returning an `Updates` envelope.
+На этой странице перечислены конструкторы обновлений из активной TL-схемы Telegram, с которой работает GoyGram. В текущем кэше **172 конструктора обновлений**: **165** возвращают `Update` и **7** — обёртку `Updates`.
 
-GoyGram does not allocate a Python class for every constructor. Structured updates are decoded by the dynamic schema and delivered to `on_update` as `UpdateObj`. Message, edit, callback, poll, and member events also pass through `on_update` before their specialized handler.
-
+GoyGram не создаёт Python-класс под каждый конструктор. Структурные обновления декодируются динамической схемой и приходят в `on_update` как `UpdateObj`. События сообщений, правок, колбэков, опросов и участников сначала проходят через `on_update`, и только потом — в свой специализированный обработчик.
 
 ```python
 @app.on_update(filt=filters.update_type("updateMessageReactions"))
@@ -16,10 +15,9 @@ async def event(update):
     print(update.raw)
 ```
 
+## Конструкторы
 
-## Constructors
-
-### Returning `Update`
+### Возвращают `Update`
 
 | Constructor | CID |
 |---|---|
@@ -189,7 +187,7 @@ async def event(update):
 | `updateEphemeralBotCallbackQuery` | `0x7c1079d6` |
 | `updateBotStarsSubscription` | `0x6c0d8e23` |
 
-### Returning `Updates`
+### Возвращают `Updates`
 
 | Constructor | CID |
 |---|---|

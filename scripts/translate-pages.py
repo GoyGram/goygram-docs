@@ -34,6 +34,13 @@ MANUAL_RU_FILES = {
     "Files-and-Media.md",
     "Migration-and-Compatibility.md",
     "FAQ.md",
+    "Sugar-API.md",
+    "Update-Reference.md",
+    "Benchmarks.md",
+    "Polling-and-Membership.md",
+    "Scheduling-and-Background-Work.md",
+    "Architecture-and-Runtime-Behavior.md",
+    "Rich-API.md",
 }
 DELAY_SECONDS = 2.5  # conservative delay to avoid rate limits
 MAX_CHUNK_LEN = 4500  # Google Translate has ~5000 char limit per request

@@ -127,4 +127,5 @@ The dispatcher preserves the order in which updates are decoded. New messages an
 
 ## Message object
 
-`MsgObj` provides common fields such as `id`, `chat_id`, `from_id`, `text`, and `is_me`. It also supports `msg.field`, `msg.get("field", default)`, `msg["field"]`, and `msg.raw` for Telegram-specific fields. See [Event objects](/docs/Event-Objects) for the full lazy-field contract.
+`MsgObj` provides common fields such as `id`, `chat_id`, `from_id`, `text`, and `is_me`. It also supports `msg.field`, `msg.get("field", default)`, `msg["field"]`, and `msg.raw` for Telegram-specific fields. See [[Event-Objects|Event objects]] for the full lazy-field contract.
+

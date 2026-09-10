@@ -133,3 +133,4 @@ await app.UsersGetUsers(id=[{"_": "inputUserSelf"}])        # camel MTProto
 ```
 
 Names starting with a known MTProto namespace (`users`, `channels`, `messages`, `contacts`, ...) route to MTProto first; everything else routes to Bot API first. Existing snake_case methods win over any dynamic resolution.
+

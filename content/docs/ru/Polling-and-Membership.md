@@ -1,15 +1,14 @@
 ---
-title: "Polling and Membership"
+title: "Опросы и участники"
 ---
 
-# Polls and membership updates
+# Опросы и обновления участников
 
-GoyGram keeps the common event path small and preserves the complete update in `raw`.
+GoyGram держит общий путь событий маленьким и сохраняет обновление целиком в `raw`.
 
-## Poll updates
+## Обновления опросов
 
-For Bot API poll answers, `on_poll` receives a `PollObj` (an alias of the dynamic `goygram.types.Obj`) with `src`, `raw`, `app`, `id`, `question`, `closed`, and `kind`. Poll-specific fields are available lazily through attributes, `.get()`, and `[]` when they are present in the source update:
-
+Для ответов Bot API `on_poll` получает `PollObj` (алиас динамического `goygram.types.Obj`) с полями `src`, `raw`, `app`, `id`, `question`, `closed`, `kind`. Специфичные для опроса поля читаются лениво через атрибуты, `.get()` и `[]`, если они есть в исходном обновлении:
 
 ```python
 @app.on_poll(filt=filters.poll_open)
@@ -19,13 +18,11 @@ async def poll_answer(poll):
     print(poll.raw)
 ```
 
+Для отбора событий опросов используйте `filters.poll_filter(...)`, `poll_open`, `poll_closed`, `poll_question(...)`, `poll_contains(...)`, `poll_regex(...)`, `poll_type(...)`, `poll_chat(...)`, `poll_option(...)`, `poll_any`, `poll_answer`.
 
-Use `filters.poll_filter(...)`, `poll_open`, `poll_closed`, `poll_question(...)`, `poll_contains(...)`, `poll_regex(...)`, `poll_type(...)`, `poll_chat(...)`, `poll_option(...)`, `poll_any`, and `poll_answer` to select poll events.
+## Обновления участников чата
 
-## Chat-member updates
-
-`on_member` receives a `MemberObj` (an alias of the dynamic `goygram.types.Obj`) with `src`, `raw`, `app`, `chat_id`, `from_id`, `user_id`, `old`, `new`, and `kind`. The complete Bot API `chat_member` or MTProto participant update remains in `raw`:
-
+`on_member` получает `MemberObj` (алиас динамического `goygram.types.Obj`) с полями `src`, `raw`, `app`, `chat_id`, `from_id`, `user_id`, `old`, `new`, `kind`. Полное обновление `chat_member` Bot API или участника MTProto остаётся в `raw`:
 
 ```python
 @app.on_member(filters.member_joined)
@@ -35,13 +32,11 @@ async def joined(member):
     print(member.raw)
 ```
 
+Дополнительные поля — даты, привилегии, кастомные титулы, информация о приглашении, `qts` и состояние списка каналов — доступны через `member.get(...)` или `member[...]`.
 
-Additional fields such as dates, privileges, custom titles, invite information, `qts`, and channel-list state are available through `member.get(...)` or `member[...]`.
+## Общие обновления MTProto
 
-## Generic MTProto updates
-
-The current layer-229 schema contains 172 update-related constructors: 165 `Update` constructors and 7 `Updates` envelopes. Every structured constructor is decoded dynamically. Constructors without a specialized event object arrive through `on_update`:
-
+В актуальной схеме layer 229 содержится 172 конструктора обновлений: 165 `Update` и 7 обёрток `Updates`. Каждый структурный конструктор декодируется динамически. Конструкторы без специализированного объекта события приходят через `on_update`:
 
 ```python
 @app.on_update(filt=filters.update_type("updateMessageReactions"))
@@ -50,9 +45,8 @@ async def reactions(update):
     print(update.raw)
 ```
 
+`on_update` также получает сообщения, правки, колбэки, опросы и участников до их специализированных обработчиков. Конструктор различается по `update.update_type`.
 
-`on_update` also receives messages, edits, callbacks, polls, and members before their specialized handlers. Use `update.update_type` to distinguish the constructor.
+## Восстановление пропущенного
 
-## Recovery
-
-MTProto persists `pts`, `qts`, `date`, and `seq`. After `updatesTooLong` or a reconnect gap, GoyGram requests `updates.getDifference`, applies its returned `state`, dispatches recovered messages and `other_updates`, and advances the durable cursor monotonically.
+MTProto хранит курсоры `pts`, `qts`, `date` и `seq`. После `updatesTooLong` или разрыва при реконнекте GoyGram запрашивает `updates.getDifference`, применяет возвращённый `state`, диспетчеризует восстановленные сообщения и `other_updates` и монотонно двигает персистентный курсор. С 0.7.79 разбор идёт полным циклом по слайсам с обработкой `differenceTooLong`, а для каналов — через `getChannelDifference` по отдельности.

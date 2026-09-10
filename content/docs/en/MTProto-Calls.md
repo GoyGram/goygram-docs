@@ -67,3 +67,4 @@ await app.finish_takeout(tid, success=False)
 ## Dynamic result handling
 
 Results are ordinary dictionaries/lists containing the constructor key `_`, scalar fields, nested constructors, vectors, and raw values when the schema cannot decode a node. Check the constructor before consuming a result and retain unknown fields for forward compatibility.
+

@@ -1,45 +1,45 @@
 ---
-title: "Benchmarks"
+title: "Бенчмарки"
 ---
 
-# Benchmarks
+# Бенчмарки
 
-Reproducible measurements live in the [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks) directory of the main repository. The scripts compare GoyGram against telethon, pyrogram, aiogram, python-telegram-bot, and tgcrypto on the same machine.
+Воспроизводимые замеры лежат в каталоге [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks) основного репозитория. Скрипты сравнивают GoyGram с telethon, pyrogram, aiogram, python-telegram-bot и tgcrypto на одной машине.
 
-## AES-256-IGE throughput (MB/s, higher is better)
+## Пропускная способность AES-256-IGE (МБ/с, больше — лучше)
 
-| Library | 256 B | 4 KiB | 64 KiB |
+| Библиотека | 256 Б | 4 КиБ | 64 КиБ |
 |---|---|---|---|
-| GoyGram (Rust, AES-NI, built-in) | 544 | 1001 | 1094 |
-| tgcrypto 1.2.5 (C, separate install) | 168 | 224 | 234 |
+| GoyGram (Rust, AES-NI, встроено) | 544 | 1001 | 1094 |
+| tgcrypto 1.2.5 (C, отдельная установка) | 168 | 224 | 234 |
 | pyrogram | 168 | 223 | 228 |
-| telethon (default) | 12 | 14 | 14 |
+| telethon (по умолчанию) | 12 | 14 | 14 |
 
-Per-message latency at 256 B: GoyGram 0.4 µs, tgcrypto 1.3 µs, pyrogram 1.4 µs, telethon 23 µs.
+Задержка на сообщение при 256 Б: GoyGram 0.4 мкс, tgcrypto 1.3 мкс, pyrogram 1.4 мкс, telethon 23 мкс.
 
-GoyGram's IGE path uses AES-NI intrinsics selected at runtime with a software fallback. tgcrypto 1.2.5 is table-based software AES, which is why the gap is 3-4.7x. Both are far beyond what a Telegram client needs — the network round-trip dominates — but GoyGram's crypto is built in, while tgcrypto (or Telethon's `cryptg`) is a separate install.
+IGE-путь GoyGram использует интринсики AES-NI, выбираемые в рантайме, с программным фолбэком. tgcrypto 1.2.5 — табличный программный AES, отсюда разрыв в 3–4.7 раза. Оба варианта многократно быстрее потребностей Telegram-клиента — узкое место всегда сеть — но криптография GoyGram встроена, тогда как tgcrypto (или `cryptg` для Telethon) ставится отдельно.
 
-## TL codec (ops/s)
+## TL-кодек (операций/с)
 
-| Operation | ops/s |
+| Операция | ops/s |
 |---|---|
-| serialize `messages.sendMessage` | ~285,000 |
-| deserialize `message` object | ~66,000 |
+| сериализация `messages.sendMessage` | ~285 000 |
+| десериализация объекта `message` | ~66 000 |
 
-The full official schema (layer 229, 823 methods, 1698 constructors) loads in ~31 ms from cache; a warm `serialize_method` call costs well under a microsecond. Dynamic dispatch does not mean slow.
+Полная официальная схема (layer 229, 823 метода, 1698 конструкторов) грузится из кэша за ~31 мс; тёплый вызов `serialize_method` стоит сильно меньше микросекунды. Динамическая диспетчеризация не значит «медленно».
 
-## AES-256-GCM (4 KiB, ops/s)
+## AES-256-GCM (4 КиБ, операций/с)
 
-Used for vault encryption:
+Используется для шифрования хранилищ сессий (vault):
 
-| Operation | ops/s |
+| Операция | ops/s |
 |---|---|
-| encrypt | ~313,000 |
-| decrypt | ~304,000 |
+| шифрование | ~313 000 |
+| расшифровка | ~304 000 |
 
-## Cold import time (ms, lower is better)
+## Время холодного импорта (мс, меньше — лучше)
 
-| Library | ms |
+| Библиотека | мс |
 |---|---|
 | GoyGram | 74 |
 | python-telegram-bot | 141 |
@@ -47,9 +47,9 @@ Used for vault encryption:
 | pyrogram | 436 |
 | aiogram | 2699 |
 
-## Memory, RSS delta after import (MB, lower is better)
+## Память, прирост RSS после импорта (МБ, меньше — лучше)
 
-| Library | MB |
+| Библиотека | МБ |
 |---|---|
 | GoyGram | 13 |
 | python-telegram-bot | 19 |
@@ -57,8 +57,7 @@ Used for vault encryption:
 | telethon | 48 |
 | aiogram | 152 |
 
-## Reproduce
-
+## Как воспроизвести
 
 ```bash
 git clone https://github.com/GoyGram/GoyGram && cd GoyGram/benchmarks
@@ -69,5 +68,4 @@ python bench_codec.py
 python bench_import.py
 ```
 
-
-Numbers above were measured on a single VPS with an AMD Ryzen 9 5950X; expect different absolute values on other hardware, similar ratios.
+Числа выше измерены на VPS с AMD Ryzen 9 5950X; на другом железе абсолютные значения будут другими, соотношения — близкими.
