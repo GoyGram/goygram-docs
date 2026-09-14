@@ -67,4 +67,21 @@ data = await core.download_media(msg, dest=None)
 
 Обновление берётся из медиа-данных сообщения или документа, поэтому старые, но ещё валидные ссылки восстанавливаются при первом использовании.
 
+## Параллельные загрузки charged
+
+Для больших файлов стандартные `upload_file` / `download_file` работают по одному соединению. Транспорт `charged` открывает до 20 параллельных MTProto-соединений на общем auth-ключе сессии и раскидывает части файла по ним (stride-схема):
+
+```python
+handle = await app.charged_upload("big_video.mp4", part_size=524288)
+
+size = await app.charged_download(location, "backup.mp4", size=known_size)
+```
+
+- `charged_upload(source, file_name, part_size, progress, connections)` — возвращает описатель загрузки (id, parts, md5), маленькие файлы (до 10 МБ) отправляются как единый `upload.saveBigFilePart`-набор, большие — как big-file по частям;
+- `charged_download(location, destination, size, part_size, progress, media_source, connections)` — если размер заранее неизвестен (size=0), автоматически откатывается на обычный `download_file`;
+- при ответе `FILE_MIGRATE_X` charged сам экспортирует авторизацию в файловый DC (`auth.exportAuthorization` / `auth.importAuthorization`), кэширует ключ этого DC в vault и повторяет загрузку;
+- число соединений подбирается автоматически по размеру файла (1 МБ — 1 соединение, 50 МБ — 10, от 100 МБ — 20) либо задаётся аргументом `connections`.
+
+Техника параллельных соединений адаптирована из mautrix-telegram (parallel_file_transfer, AGPL-3.0).
+
 См. также [Вызовы Bot API](/docs/Bot-API-Calls) и [Объекты событий](/docs/Event-Objects).
