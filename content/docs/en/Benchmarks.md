@@ -6,7 +6,7 @@ title: Benchmarks
 
 Reproducible measurements live in the [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks) directory of the main repository. The scripts compare GoyGram against telethon, pyrogram, aiogram, python-telegram-bot, and tgcrypto on the same machine.
 
-Codec numbers are GoyGram 0.7.89 after the JSON/hex bridge was removed.
+Codec numbers are GoyGram 0.7.89 on an AMD Ryzen 9 5950X VPS after the JSON/hex bridge was removed.
 
 ## AES-256-IGE throughput (MB/s, higher is better)
 
