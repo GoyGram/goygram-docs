@@ -4,9 +4,9 @@ title: Benchmarks
 
 # Benchmarks
 
-Reproducible measurements live in the [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks) directory of the main repository.
+Reproducible measurements live in the [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks) directory of the main repository. The scripts compare GoyGram against telethon, pyrogram, aiogram, python-telegram-bot, and tgcrypto on the same machine.
 
-Codec numbers below are GoyGram 0.7.89 on an AMD Ryzen 9 5950X VPS after the JSON/hex bridge was removed. Native PyDict `dumps`/`loads`. Not a live Telegram run and not a mock DC.
+Codec numbers are GoyGram 0.7.89 after the JSON/hex bridge was removed.
 
 ## AES-256-IGE throughput (MB/s, higher is better)
 
@@ -19,28 +19,38 @@ Codec numbers below are GoyGram 0.7.89 on an AMD Ryzen 9 5950X VPS after the JSO
 
 Per-message latency at 256 B: GoyGram 0.4 µs, tgcrypto 1.3 µs, pyrogram 1.4 µs, telethon 23 µs.
 
-## TL codec (ops/s)
+GoyGram's IGE path uses AES-NI intrinsics selected at runtime with a software fallback. tgcrypto 1.2.5 is table-based software AES, which is why the gap is 3-4.7x. Both are far beyond what a Telegram client needs. The network round-trip dominates. GoyGram's crypto is built in, while tgcrypto (or Telethon's `cryptg`) is a separate install.
 
-Payload: `updateNewMessage` with ~200-char text, forward header, inline keyboard. Packet 356 B.
+## TL codec, simple (ops/s)
 
 | Operation | ops/s |
 |---|---|
-| serialize `messages.sendMessage` | 343,991 |
-| dumps `updateNewMessage` | 106,580 |
-| loads `updateNewMessage` | 228,493 |
-| echo loads+dumps | 106,562 |
-| AES-256-IGE enc+dec of that packet | 850,540 |
+| serialize `messages.sendMessage` | 355,320 |
+| loads `message` | 567,799 |
 
-loads latency (µs): p50 3.7, p95 6.6, p99 8.2, p99.9 20.0.
+## TL codec, realistic `updateNewMessage` (ops/s)
 
-Layer 229 schema (823 methods, 1698 constructors) loads once. Warm `loads` is a few microseconds.
+Payload: ~200-char text, forward header, inline keyboard. Packet 356 B.
+
+| Operation | ops/s |
+|---|---|
+| dumps `updateNewMessage` | 105,803 |
+| loads `updateNewMessage` | 235,798 |
+| echo loads+dumps | 107,615 |
+| AES-256-IGE enc+dec of that packet | 862,432 |
+
+loads latency (µs): p50 3.7, p95 6.5, p99 9.1, p99.9 26.5.
+
+The full official schema (layer 229, 823 methods, 1698 constructors) loads once per process. Warm `loads` is a few microseconds.
 
 ## AES-256-GCM (4 KiB, ops/s)
 
+Used for vault encryption:
+
 | Operation | ops/s |
 |---|---|
-| encrypt | 292,099 |
-| decrypt | 308,479 |
+| encrypt | 288,219 |
+| decrypt | 283,700 |
 
 ## Cold import time (ms, lower is better)
 
@@ -72,3 +82,5 @@ python bench_crypto.py
 python bench_codec.py
 python bench_import.py
 ```
+
+Numbers above were measured on a single VPS with an AMD Ryzen 9 5950X; expect different absolute values on other hardware, similar ratios.

@@ -4,7 +4,9 @@ title: "Бенчмарки"
 
 # Бенчмарки
 
-Воспроизводимые замеры лежат в [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks). Цифры кодека: GoyGram 0.7.89, нативный PyDict, без JSON/hex моста. Это не живой Telegram и не mock DC.
+Воспроизводимые замеры лежат в [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks). Скрипты сравнивают GoyGram с telethon, pyrogram, aiogram, python-telegram-bot и tgcrypto на одной машине.
+
+Цифры кодека: GoyGram 0.7.89, нативный PyDict, без JSON/hex моста.
 
 ## Пропускная способность AES-256-IGE (МБ/с, больше лучше)
 
@@ -17,26 +19,38 @@ title: "Бенчмарки"
 
 Задержка на 256 Б: GoyGram 0.4 мкс, tgcrypto 1.3 мкс, pyrogram 1.4 мкс, telethon 23 мкс.
 
-## TL-кодек (операций/с)
+IGE-путь GoyGram использует AES-NI в рантайме, с программным запасным путём. tgcrypto 1.2.5 это табличный программный AES, отсюда разрыв в 3-4.7 раза. Оба быстрее, чем нужно клиенту: узкое место сеть. Криптография GoyGram встроена, tgcrypto (или `cryptg` у Telethon) ставится отдельно.
 
-Пакет: `updateNewMessage`, текст ~200 символов, форвард, инлайн-клавиатура. 356 байт.
+## TL-кодек, простой (операций/с)
 
 | Операция | ops/s |
 |---|---|
-| serialize `messages.sendMessage` | 343 991 |
-| dumps `updateNewMessage` | 106 580 |
-| loads `updateNewMessage` | 228 493 |
-| echo loads+dumps | 106 562 |
-| AES-256-IGE enc+dec этого пакета | 850 540 |
+| serialize `messages.sendMessage` | 355 320 |
+| loads `message` | 567 799 |
 
-Задержка loads (мкс): p50 3.7, p95 6.6, p99 8.2, p99.9 20.0.
+## TL-кодек, реалистичный `updateNewMessage` (операций/с)
+
+Пакет: текст ~200 символов, форвард, инлайн-клавиатура. 356 байт.
+
+| Операция | ops/s |
+|---|---|
+| dumps `updateNewMessage` | 105 803 |
+| loads `updateNewMessage` | 235 798 |
+| echo loads+dumps | 107 615 |
+| AES-256-IGE enc+dec этого пакета | 862 432 |
+
+Задержка loads (мкс): p50 3.7, p95 6.5, p99 9.1, p99.9 26.5.
+
+Полная схема (layer 229, 823 метода, 1698 конструкторов) грузится один раз на процесс. Тёплый `loads` это несколько микросекунд.
 
 ## AES-256-GCM (4 КиБ, операций/с)
 
+Шифрование хранилищ сессий (vault):
+
 | Операция | ops/s |
 |---|---|
-| шифрование | 292 099 |
-| расшифровка | 308 479 |
+| шифрование | 288 219 |
+| расшифровка | 283 700 |
 
 ## Холодный импорт (мс, меньше лучше)
 
@@ -68,3 +82,5 @@ python bench_crypto.py
 python bench_codec.py
 python bench_import.py
 ```
+
+Числа сняты на VPS с AMD Ryzen 9 5950X. На другом железе абсолютные значения будут другими, соотношения близкими.
