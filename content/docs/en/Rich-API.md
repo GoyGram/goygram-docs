@@ -9,7 +9,7 @@ Rich Messages are Telegram's new-generation message format: in-message buttons, 
 No model classes, no tree structures. `Rich` is a parts list; `build()` joins it:
 
 ```python
-from goygram import Rich
+from goygram.rich import Rich
 
 r = Rich().b("Bold").text(" plain").nl().link("Site", "https://example.com")
 print(r.to_html())
@@ -83,7 +83,7 @@ await app.send_msg(chat_id, "<b>bold</b> <i>italic</i>", parse_mode="html")
 With `parse_mode="html"` on MTProto, `send_msg`/`edit_msg` strip the tags and attach `messageEntityBold` / `messageEntityItalic` / `messageEntityTextUrl` / `messageEntityPre` / `messageEntitySpoiler` / `messageEntityBlockquote` / `inputMessageEntityMentionName` / `messageEntityCustomEmoji` spans automatically. The same function is importable directly:
 
 ```python
-from goygram import html_to_entities
+from goygram.sugar import html_to_entities
 plain, entities = html_to_entities('<a href="tg://user?id=42">Sam</a> works')
 ```
 
@@ -92,7 +92,7 @@ plain, entities = html_to_entities('<a href="tg://user?id=42">Sam</a> works')
 Sending long formatted output used to need a hand-rolled splitter that reopens tags on every part. Now:
 
 ```python
-from goygram import split_html_text
+from goygram.sugar import split_html_text
 for part in split_html_text(big_html, limit=4096):
     await app.send_msg(chat_id, part)
 ```
@@ -104,7 +104,7 @@ It tokenizes tags and text, tracks open tags on a stack, reserves room for closi
 `send_msg` / `send_media` return the raw RPC result, which may be an `updates` wrapper, a bare message, or an `updateShortSentMessage`. Extract the message dict in one call:
 
 ```python
-from goygram import extract_sent_message
+from goygram.sugar import extract_sent_message
 res = await app.send_msg(chat_id, "hi")
 msg = extract_sent_message(res)
 msg_id = msg["id"] if msg else None

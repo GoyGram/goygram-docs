@@ -9,7 +9,7 @@ GoyGram keeps its core zero-abstraction: dynamic dispatch, lazy raw fields, no g
 `goygram.sugar` exposes a small `html` builder for Telegram HTML markup:
 
 ```python
-from goygram import html
+from goygram.sugar import html
 
 text = html.join(
     html.b("Title"),
@@ -23,7 +23,7 @@ await app.send_msg(chat, text, parse_mode="HTML")
 `parse_mode="md"` (MarkdownV2) is also supported on MTProto sends and edits: `md_to_entities()` converts `*bold*`, `_italic_`, `__underline__`, `~~strike~~`, `||spoiler||`, `` `code` ``, ` ```lang ...``` `, and `[text](url)` / `[text](tg://user?id=...)` into native entities, stripping escapes and markers from the plain text. Both parsers emit offsets in UTF-16 code units (what Telegram expects), so emoji before an entity never shifts it. `md_escape(text)` escapes MarkdownV2 specials for raw Bot API sends.
 
 ```python
-from goygram import md_to_entities, md_escape
+from goygram.sugar import md_to_entities, md_escape
 plain, entities = md_to_entities("*hi* _there_ `[x](y)_")
 await app.send_msg(chat, "*bold*", parse_mode="md")
 ```
@@ -45,7 +45,7 @@ Utility formatters live in the same module:
 | `b64e`/`b64d` | base64 bytes helpers |
 | `rand_id()` | random int for `random_id` fields |
 
-All of these are also re-exported from the top-level package: `from goygram import html, human_size, chunk_text`.
+Import them from the sugar module: `from goygram.sugar import html, human_size, chunk_text`.
 
 ## Event object sugar
 
