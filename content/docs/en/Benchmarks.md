@@ -6,7 +6,7 @@ title: Benchmarks
 
 Reproducible measurements live in the [`benchmarks/`](https://github.com/GoyGram/GoyGram/tree/main/benchmarks) directory of the main repository.
 
-Codec numbers are GoyGram 0.7.89 after the JSON/hex bridge was removed. Native PyDict `dumps`/`loads`. Not a live Telegram run and not a mock DC.
+Codec numbers below are GoyGram 0.7.89 on an AMD Ryzen 9 5950X VPS after the JSON/hex bridge was removed. Native PyDict `dumps`/`loads`. Not a live Telegram run and not a mock DC.
 
 ## AES-256-IGE throughput (MB/s, higher is better)
 
@@ -32,6 +32,8 @@ Payload: `updateNewMessage` with ~200-char text, forward header, inline keyboard
 | AES-256-IGE enc+dec of that packet | 850,540 |
 
 loads latency (µs): p50 3.7, p95 6.6, p99 8.2, p99.9 20.0.
+
+Layer 229 schema (823 methods, 1698 constructors) loads once. Warm `loads` is a few microseconds.
 
 ## AES-256-GCM (4 KiB, ops/s)
 
