@@ -6,7 +6,7 @@ title: Home
 
 ![GoyGram logo](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
 
-GoyGram is an asynchronous Python framework for Telegram.
+GoyGram is an asynchronous Python framework for Telegram. It supports CPython 3.8 and newer, with schema-generated IDE autocomplete for the dynamic Bot API and MTProto method surface.
 
 It can run a bot or connect to Telegram as a user account. Pick the one you need:
 

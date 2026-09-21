@@ -110,7 +110,17 @@ await app.set_my_commands(commands=[])
 
 Bot API names can be written in snake case. Bot API and MTProto are different interfaces, so their method names and arguments are not interchangeable.
 
-## 7. Handle errors
+## 7. Enable complete IDE autocomplete
+
+GoyGram resolves Telegram methods dynamically at runtime. Generate local stubs once after installation so VS Code, PyCharm, basedpyright, and other type-aware editors can see the same surface:
+
+```bash
+python -m goygram.stubgen
+```
+
+The generator reads the current MTProto and Bot API schemas and writes `client.pyi` plus `telegram.py` next to the installed package. The editor then completes direct dynamic calls such as `app.messages_send_message(...)` and `app.send_message(...)`, all `mt_` aliases, and method-specific `mt_req()` or `bot_req()` arguments. Unknown keyword arguments are reported before runtime. Regenerate after upgrading GoyGram or when Telegram publishes new methods. This path works on Python 3.8 and newer.
+
+## 8. Handle errors
 
 ```python
 try:
@@ -122,7 +132,7 @@ except Exception as error:
 
 Do not print tokens, vault files, or authentication keys.
 
-## 8. Add a new feature
+## 9. Add a new feature
 
 1. Choose Bot API or MTProto.
 2. Choose the event your feature needs.

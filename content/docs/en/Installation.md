@@ -4,7 +4,7 @@ title: Installation
 
 # Installation
 
-GoyGram requires Python 3.11 or newer.
+GoyGram supports CPython 3.8 and newer. PyPI wheels use `cp38-abi3`, so one native wheel covers every supported CPython version on the same platform.
 
 ## Install from PyPI
 
