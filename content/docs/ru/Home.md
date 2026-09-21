@@ -6,7 +6,7 @@ title: "GoyGram"
 
 ![Логотип GoyGram](https://raw.githubusercontent.com/GoyGram/GoyGram/main/GoyGram.png)
 
-GoyGram — асинхронный фреймворк на Python для Telegram.
+GoyGram — асинхронный фреймворк на Python для Telegram. Он работает на CPython 3.8 и новее, а генератор схем даёт IDE автодополнение для динамических методов Bot API и MTProto.
 
 Он умеет запускать бота и подключаться к Telegram от имени пользовательского аккаунта. Выберите нужный вариант:
 
