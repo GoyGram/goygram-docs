@@ -8,7 +8,7 @@ This guide covers the current compact GoyGram API. Prefer the public `GoyGram` o
 
 ## Python and installation
 
-GoyGram requires Python 3.11 or newer. Install or upgrade with:
+GoyGram requires Python 3.13 or newer. Install or upgrade with:
 
 ```bash
 python -m pip install -U goygram

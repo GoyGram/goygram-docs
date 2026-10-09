@@ -97,7 +97,7 @@ GoyGram находит методы Telegram динамически во вре�
 python -m goygram.stubgen
 ```
 
-Команда читает актуальные схемы MTProto и Bot API, затем записывает `client.pyi` и `telegram.py` рядом с установленным пакетом. После этого VS Code, PyCharm, basedpyright и другие IDE видят прямые динамические вызовы вроде `app.messages_send_message(...)` и `app.send_message(...)`, все варианты с `mt_`, а также точные параметры `mt_req()` и `bot_req()`. Неизвестные аргументы подсвечиваются до запуска. Повторите команду после обновления GoyGram или схем Telegram. Генератор работает на Python 3.8 и новее.
+Команда читает актуальные схемы MTProto и Bot API, затем записывает `client.pyi` и `telegram.py` рядом с установленным пакетом. После этого VS Code, PyCharm, basedpyright и другие IDE видят прямые динамические вызовы вроде `app.messages_send_message(...)` и `app.send_message(...)`, все варианты с `mt_`, а также точные параметры `mt_req()` и `bot_req()`. Неизвестные аргументы подсвечиваются до запуска. Повторите команду после обновления GoyGram или схем Telegram. Генератор работает на Python 3.13 и новее.
 
 ## Ошибки
 

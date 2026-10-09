@@ -118,7 +118,7 @@ GoyGram resolves Telegram methods dynamically at runtime. Generate local stubs o
 python -m goygram.stubgen
 ```
 
-The generator reads the current MTProto and Bot API schemas and writes `client.pyi` plus `telegram.py` next to the installed package. The editor then completes direct dynamic calls such as `app.messages_send_message(...)` and `app.send_message(...)`, all `mt_` aliases, and method-specific `mt_req()` or `bot_req()` arguments. Unknown keyword arguments are reported before runtime. Regenerate after upgrading GoyGram or when Telegram publishes new methods. This path works on Python 3.8 and newer.
+The generator reads the current MTProto and Bot API schemas and writes `client.pyi` plus `telegram.py` next to the installed package. The editor then completes direct dynamic calls such as `app.messages_send_message(...)` and `app.send_message(...)`, all `mt_` aliases, and method-specific `mt_req()` or `bot_req()` arguments. Unknown keyword arguments are reported before runtime. Regenerate after upgrading GoyGram or when Telegram publishes new methods. This path works on Python 3.13 and newer.
 
 ## 8. Handle errors
 

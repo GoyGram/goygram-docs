@@ -4,7 +4,7 @@ title: "Установка"
 
 # Установка
 
-GoyGram работает на CPython 3.8 и новее. Wheel-файлы на PyPI используют `cp38-abi3`, поэтому один нативный wheel подходит для всех поддерживаемых версий CPython на той же платформе.
+GoyGram работает на CPython 3.13 и новее. Wheel-файлы на PyPI собраны под стабильный ABI и несут тег `cp38-abi3`, поэтому один нативный wheel подходит для всех поддерживаемых версий CPython на одной платформе.
 
 ## Установка из PyPI
 
@@ -20,15 +20,33 @@ python -c "from importlib.metadata import version; print(version('goygram'))"
 
 Команда `python`, которой вы ставите пакет, и команда, которой запускаете бота, должны использовать одно и то же окружение.
 
-## Установка из исходников
+## Установка на Termux
 
-Так ставят пакет на платформе без подходящего wheel, например на ARM64 Termux:
+Termux приносит свой CPython, и начиная с 3.13 он отдаёт android-теги платформы, поэтому pip находит готовый wheel так же, как на любой другой системе:
 
 ```bash
 pkg update
-pkg install python rust clang
+pkg install python-pip
+pip install goygram
+```
+
+Готовые wheel есть для телефонов `arm64_v8a` и для эмуляторов и Chromebook на `x86_64`, собраны под Android API 24. Единственная зависимость без android-wheel на PyPI это `aiohttp`, а Termux её пакетирует, поэтому её ставят из репозитория:
+
+```bash
+pkg install python-aiohttp
+```
+
+## Установка из исходников
+
+Так ставят пакет на платформе без подходящего wheel:
+
+```bash
+git clone https://github.com/GoyGram/GoyGram
+cd GoyGram
 python -m pip install --no-build-isolation .
 ```
+
+Для сборки из исходников нужны компиляторы Rust и C. В Termux это `pkg install rust clang`.
 
 ## Перед началом
 

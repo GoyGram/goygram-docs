@@ -8,7 +8,7 @@ title: "Миграция и совместимость"
 
 ## Python и установка
 
-GoyGram требует Python 3.11 или новее. Установка и обновление:
+GoyGram требует Python 3.13 или новее. Установка и обновление:
 
 ```bash
 python -m pip install -U goygram

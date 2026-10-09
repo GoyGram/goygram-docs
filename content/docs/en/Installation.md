@@ -4,7 +4,7 @@ title: Installation
 
 # Installation
 
-GoyGram supports CPython 3.8 and newer. PyPI wheels use `cp38-abi3`, so one native wheel covers every supported CPython version on the same platform.
+GoyGram supports CPython 3.13 and newer. PyPI wheels are built against the stable ABI and carry the `cp38-abi3` tag, so one native wheel covers every supported CPython version on the same platform.
 
 ## Install from PyPI
 
@@ -20,17 +20,33 @@ python -c "from importlib.metadata import version; print(version('goygram'))"
 
 The Python command and the command that starts your bot must use the same environment.
 
-## Install from source
+## Install on Termux
 
-Use a source install when your platform does not have a compatible wheel, for example on an ARM64 Termux device:
+Termux brings its own CPython, and from 3.13 that build reports Android platform tags, so pip picks a prebuilt wheel here the same way it does anywhere else:
 
 ```bash
 pkg update
-pkg install python rust clang
+pkg install python-pip
+pip install goygram
+```
+
+The wheels cover `arm64_v8a` phones and `x86_64` emulators and Chromebooks, built against Android API level 24. `aiohttp` is the one dependency with no Android wheel on PyPI; Termux packages it, so install that one from the repository and pip will use it instead of compiling:
+
+```bash
+pkg install python-aiohttp
+```
+
+## Install from source
+
+Use a source install when your platform does not have a compatible wheel:
+
+```bash
+git clone https://github.com/GoyGram/GoyGram
+cd GoyGram
 python -m pip install --no-build-isolation .
 ```
 
-The source build needs a Rust compiler and a C compiler.
+The source build needs a Rust compiler and a C compiler. On Termux that is `pkg install rust clang`.
 
 ## Before you start
 
