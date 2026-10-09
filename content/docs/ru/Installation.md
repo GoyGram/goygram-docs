@@ -30,11 +30,7 @@ pkg install python-pip
 pip install goygram
 ```
 
-Готовые wheel есть для телефонов `arm64_v8a` и для эмуляторов и Chromebook на `x86_64`, собраны под Android API 24. Единственная зависимость без android-wheel на PyPI это `aiohttp`, а Termux её пакетирует, поэтому её ставят из репозитория:
-
-```bash
-pkg install python-aiohttp
-```
+Готовые wheel есть для телефонов `arm64_v8a` и для эмуляторов и Chromebook на `x86_64`, собраны под Android API 24. Зависимости тоже приходят готовыми wheel, поэтому на устройстве ничего не собирается.
 
 ## Установка из исходников
 

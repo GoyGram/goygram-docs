@@ -30,11 +30,7 @@ pkg install python-pip
 pip install goygram
 ```
 
-The wheels cover `arm64_v8a` phones and `x86_64` emulators and Chromebooks, built against Android API level 24. `aiohttp` is the one dependency with no Android wheel on PyPI; Termux packages it, so install that one from the repository and pip will use it instead of compiling:
-
-```bash
-pkg install python-aiohttp
-```
+The wheels cover `arm64_v8a` phones and `x86_64` emulators and Chromebooks, built against Android API level 24. The dependencies resolve to wheels as well, so nothing is compiled on the device.
 
 ## Install from source
 
